@@ -26,6 +26,7 @@ module.exports = {
             'files': ['*.ts', '*.mts', '*.cts', '*.tsx'],
             'rules': {
                 '@typescript-eslint/explicit-member-accessibility': 'error',
+                'indent': ['error', 4, { 'SwitchCase': 1 }]
             },
         },
     ],
