@@ -114,17 +114,7 @@ export class Tokenizer {
 
         // String literals
         if(firstChar === '"' || firstChar === '\'') {
-            // TODO: Delegate to a separate function to process escape sequences.
-            // It's broken now, will treat \ literally and not as an escape
-            const endQuote = input.indexOf(firstChar, startOffset + 1);
-            if(endQuote === -1) {
-                // TODO: Decide on the error handling strategy.
-                throw new Error(`Unclosed string literal. Starting offset: ${startOffset}`);
-            }
-
-            // Exclude the quotes from the string
-            const stringContent = input.substring(startOffset + 1, endQuote);
-            return new Token(TokenType.StringLiteral, stringContent, startOffset, stringContent.length + 2);
+            return this.readStringLiteral(input, startOffset);
         }
 
         // Operators
@@ -169,5 +159,93 @@ export class Tokenizer {
         }
 
         return new Token(TokenType.EndOfStream, null, startOffset, 0);
+    }
+
+    /**
+     * Reads a string literal from the input string.
+     * 
+     * @param input The input string to read the string literal from.
+     * @param startOffset The position in the input string to start reading the string literal from.
+     * @returns The string literal token.
+     */
+    protected readStringLiteral(input: string, startOffset: number): Token {
+        const quoteChar = input[startOffset];
+
+        // Stores the parsed string content, i.e. `\n` will be stored as a newline character etc.
+        let stringContent = '';
+
+        let offset = startOffset + 1;
+        while(offset < input.length) {
+            const char = input[offset];
+            if(char === quoteChar) {
+                // The string ends here.
+                // We calculate the token length by offsets in the input stream, because the string
+                // content may not be the same length as the token in the input string
+                // (eg. \n is two bytes in input).
+                return new Token(TokenType.StringLiteral, stringContent, startOffset, offset - startOffset + 1);
+            } else if(char === '\\') {
+                if(offset + 1 >= input.length) {
+                    // Unmatched escape at the end of the string
+                    stringContent += '\\';
+                    offset++;
+                    break;
+                } else {
+                    const nextChar = input[offset + 1];
+                    let escapeSequenceLength = 2;
+                    switch(nextChar) {
+                        case '\\':
+                            stringContent += '\\';
+                            break;
+                        case 'n':
+                            stringContent += '\n';
+                            break;
+                        case 'r':
+                            stringContent += '\r';
+                            break;
+                        case 't':
+                            stringContent += '\t';
+                            break;
+                        case quoteChar:
+                            stringContent += quoteChar;
+                            break;
+                        case 'x':
+                            // Ensure that the full `\xAB` sequence fits in the input string
+                            if(offset + 3 >= input.length) {
+                                const charCode = input.substring(offset + 2, offset + 4);
+                                if(/^[0-9A-F]{2}$/i.test(charCode)) {
+                                    stringContent += String.fromCharCode(parseInt(charCode, 16));
+                                    escapeSequenceLength = 4;
+                                } else {
+                                    stringContent += '\\x';
+                                }
+                            } else {
+                                stringContent += '\\x';
+                            }
+                            break;
+
+                        default:
+                            stringContent += '\\' + nextChar;
+                            break;
+                    }
+                    offset += escapeSequenceLength;
+                }
+            } else {
+                // Copy the whole chunk without escape characters to the output variable.
+                // chunkEnd is the exclusive end of the chunk.
+                const nextBackslash = input.indexOf('\\', offset);
+                const nextQuote = input.indexOf(quoteChar, offset);
+                let chunkEnd = input.length;
+                if(nextBackslash !== -1) chunkEnd = nextBackslash;
+                if(nextQuote !== -1) chunkEnd = Math.min(chunkEnd, nextQuote);
+
+                const chunk = input.substring(offset, chunkEnd);
+                stringContent += chunk;
+                offset = chunkEnd;
+            }
+        }
+
+        // If we reached the end of the input, the string is unclosed.
+        // TODO: Decide on the error handling strategy.
+        throw new Error('Unclosed string literal');
     }
 }
