@@ -163,4 +163,25 @@ describe('Tokenizer tests', () => {
             assert.equal(firstToken.value, 'if');
         });
     });
+
+    describe('Expressions', () => {
+        it('should tokenize assignment', () => {
+            const tokenizer = new Tokenizer();
+            const tokens = tokenizer.tokenize('a := 5');
+
+            assert.equal(tokens.length, 4);
+
+            const firstToken = tokens[0];
+            assert.equal(firstToken.type, TokenType.Identifier);
+            assert.equal(firstToken.value, 'a');
+
+            const secondToken = tokens[1];
+            assert.equal(secondToken.type, TokenType.Operator);
+            assert.equal(secondToken.value, ':=');
+
+            const thirdToken = tokens[2];
+            assert.equal(thirdToken.type, TokenType.IntLiteral);
+            assert.equal(thirdToken.value, '5');
+        });
+    });
 });
