@@ -63,7 +63,7 @@ export class Tokenizer {
         // Initialize the token variable with a dummy token.
         // Its position will make our parser start at the beginning of the input.
         // The actual type is not important here, as the parser will replace it immediately.
-        let token = new Token(TokenType.EndOfStream, null, 0, 0);
+        let token = new Token(TokenType.EndOfStream, Token.EOF, 0, 0);
 
         do {
             token = this.getNextToken(input, token.startPosition + token.length);
@@ -101,7 +101,7 @@ export class Tokenizer {
         // If we reached the end of the input, return the EOF token.
         // Any further rules will not adjust startOffset, so we can safely do the check here.
         if(startOffset >= input.length) {
-            return new Token(TokenType.EndOfStream, null, startOffset, 0);
+            return new Token(TokenType.EndOfStream, Token.EOF, startOffset, 0);
         }
 
         const firstChar = input[startOffset];
@@ -158,7 +158,7 @@ export class Tokenizer {
             return new Token(tokenType, identifier, startOffset, tokenLength);
         }
 
-        return new Token(TokenType.EndOfStream, null, startOffset, 0);
+        return new Token(TokenType.EndOfStream, Token.EOF, startOffset, 0);
     }
 
     /**
