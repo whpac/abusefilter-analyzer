@@ -45,8 +45,16 @@ export class Tokenizer {
         ['o', 8],
     ]);
 
+    /** Lists all digits that are legal for a number in a given base */
+    private static readonly digitsInBases = new Map<number, string>([
+        [2, '01'],
+        [8, '01234567'],
+        [10, '0123456789'],
+        [16, '0123456789ABCDEF'],
+    ]);
+
     /** Set of keywords recognized by the tokenizer. */
-    private static readonly keywords = new Set([
+    public static readonly keywords = new Set([
         'in', 'like', 'true', 'false', 'null', 'contains', 'matches',
         'rlike', 'irlike', 'regex', 'if', 'then', 'else', 'end',
     ]);
@@ -136,12 +144,18 @@ export class Tokenizer {
             // TODO: Vulnerable to malformed data like `0xfa.07` or `0b23` (has to try/catch and throw)
             // TODO: Check if we need to parse non-decimal floats
             // TODO: Maybe abandon the complex regex and use simple parser like for strings
+            // Checking for being NaN is needed, otherwise token `a` will be interpreted as
+            // `0x0a` and not as an identifier
             if(number.indexOf('.') !== -1) {
                 const numberValue = parseFloat(number);
-                return new Token(TokenType.FloatLiteral, numberValue.toString(), startOffset, tokenLength);
+                if(!isNaN(numberValue)) {
+                    return new Token(TokenType.FloatLiteral, numberValue.toString(), startOffset, tokenLength);
+                }
             } else {
                 const numberValue = parseInt(number, base);
-                return new Token(TokenType.IntLiteral, numberValue.toString(), startOffset, tokenLength);
+                if(!isNaN(numberValue)) {
+                    return new Token(TokenType.IntLiteral, numberValue.toString(), startOffset, tokenLength);
+                }
             }
         }
 
