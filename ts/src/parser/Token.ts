@@ -41,7 +41,10 @@ export class Token {
      * @param value The token value to check. Can be a string, an array of strings or null.
      * @returns True if type and value are equal. If value is an array, returns true if the token value is in the array.
      */
-    public is(type: TokenType, value: string[] | string | null): boolean {
+    public is(type: TokenType, value?: string[] | string | null): boolean {
+        if (value === undefined) {
+            return this.type === type;
+        }
         if (typeof value === 'string' || value === null) {
             return this.type === type && this.value === value;
         }

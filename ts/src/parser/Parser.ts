@@ -441,7 +441,7 @@ export class Parser {
                         // TODO: Figure out if we need this condition
                         this.throwUnexpectedToken(this.currentToken);
                     }
-                } while(this.currentToken.type === TokenType.Comma);
+                } while(this.currentToken.is(TokenType.Comma));
             } else {
                 this.move();
             }
@@ -483,6 +483,8 @@ export class Parser {
             case TokenType.SquareBracket:
                 if(this.currentToken.value === '[') {
                     const array = [];
+                    
+                    // eslint-disable-next-line no-constant-condition
                     while(true) {
                         this.move();
                         if(this.currentToken.is(TokenType.SquareBracket, ']')) {
@@ -494,7 +496,7 @@ export class Parser {
                         if(this.currentToken.is(TokenType.SquareBracket, ']')) {
                             break;
                         }
-                        if(this.currentToken.type !== TokenType.Comma) {
+                        if(!this.currentToken.is(TokenType.Comma)) {
                             this.throwExpectedNotFound(this.currentToken, ', or ]');
                         }
                     }
