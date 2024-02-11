@@ -4,6 +4,8 @@ import { TokenType } from './TokenType.js';
 import { Tokenizer } from './Tokenizer.js';
 import { TreeNode } from './TreeNode.js';
 import { TreeNodeType } from './TreeNodeType.js';
+import { AtomNode } from './nodes/AtomNode.js';
+import { OperatorNode } from './nodes/OperatorNode.js';
 
 /**
  * A parser for the AbuseFilter syntax.
@@ -12,13 +14,13 @@ import { TreeNodeType } from './TreeNodeType.js';
  */
 export class Parser {
     /** Stores the sequence of tokens that the parser is currently processing. */
-    private mTokens: Token[] = [];
+    private tokens: Token[] = [];
 
     /** The current token */
-    private mCur: Token;
+    private currentToken: Token = new Token(TokenType.EndOfStream, Token.EOF, 0, 0);
 
     /** The position of the current token */
-    private mPos: number = -1; // TODO: Analyze how it's used; -1 so that the first call to move() sets it to 0
+    private mPos: number = -1; // -1 so that the first call to move() sets it to 0
     // TODO: It'd be better to use some Queue<Token> like structure to avoid using mPos and mCur
 
     /**
@@ -28,7 +30,7 @@ export class Parser {
      * @returns The parsed expression tree.
      */
     public parse(tokens: Token[]): TreeNode | null {
-        this.mTokens = tokens;
+        this.tokens = tokens;
 
         return this.doLevelEntry();
     }
@@ -38,17 +40,15 @@ export class Parser {
      */
     private move(): void {
         this.mPos++;
-        this.mCur = this.mTokens[this.mPos];
+        this.currentToken = this.tokens[this.mPos];
     }
 
     /**
      * Get the next token. This is similar to move() but doesn't change class members,
      *   allowing to look ahead without rolling back the state.
-     *
-     * @return AFPToken
      */
     private getNextToken(): Token {
-        return this.mTokens[this.mPos + 1];
+        return this.tokens[this.mPos + 1];
     }
 
     /**
@@ -58,7 +58,7 @@ export class Parser {
      * @return AFPParserState
      */
     private getState(): [Token, number] {
-        return [this.mCur, this.mPos];
+        return [this.currentToken, this.mPos];
     }
 
     /**
@@ -68,7 +68,7 @@ export class Parser {
      * @param AFPParserState state
      */
     private setState(state: [Token, number]) {
-        this.mCur = state[0];
+        this.currentToken = state[0];
         this.mPos = state[1];
     }
 
@@ -83,10 +83,10 @@ export class Parser {
 
         // At the top level, the filter consists of a single expression.
         // Thus, the only legal token to be found later is the end of the stream.
-        if(this.mCur.type !== TokenType.EndOfStream) {
+        if(this.currentToken.type !== TokenType.EndOfStream) {
             throw new ParserException(
                 'unexpectedatend',
-                this.mPos, [this.mCur.type]
+                this.currentToken.startPosition, [this.currentToken.type]
             );
         }
 
@@ -100,24 +100,24 @@ export class Parser {
 
         do {
             this.move();
-            position = this.mPos;
+            position = this.currentToken.startPosition;
 
             if(
-                this.mCur.type === TokenType.EndOfStream ||
-                (this.mCur.type === TokenType.Parenthesis && this.mCur.value == ')')
+                this.currentToken.type === TokenType.EndOfStream ||
+                (this.currentToken.type === TokenType.Parenthesis && this.currentToken.value == ')')
             ) {
                 // Handle special cases which the other parser handled in doLevelAtom
                 break;
             }
 
             // Allow empty statements.
-            if(this.mCur.type === TokenType.StatementSeparator) {
+            if(this.currentToken.type === TokenType.StatementSeparator) {
                 continue;
             }
 
             statements.push(this.doLevelSet());
-            position = this.mPos;
-        } while(this.mCur.type === TokenType.StatementSeparator);
+            position = this.currentToken.startPosition;
+        } while(this.currentToken.type === TokenType.StatementSeparator);
 
         // Flatten the tree if possible.
         if(statements.length === 0) {
@@ -125,14 +125,14 @@ export class Parser {
         } else if(statements.length === 1) {
             return statements[0];
         } else {
-            return new TreeNode(TreeNodeType.Semicolon, statements, position);
+            return new OperatorNode(TreeNodeType.Semicolon, position, ';', statements);
         }
     }
 
     /** Handles variable assignment. */
     private doLevelSet(): TreeNode {
-        if(this.mCur.type === TokenType.Identifier) {
-            const varname = this.mCur.value;
+        if(this.currentToken.type === TokenType.Identifier) {
+            const variableNode = new AtomNode(this.currentToken);
 
             // Speculatively parse the assignment statement assuming it can
             // potentially be an assignment, but roll back if it isn't.
@@ -140,42 +140,44 @@ export class Parser {
             const initialState = this.getState();
             this.move();
 
-            if(this.mCur.is(TokenType.Operator, ':=')) {
-                const position = this.mPos;
+            if(this.currentToken.is(TokenType.Operator, ':=')) {
+                const position = this.currentToken.startPosition;
                 this.move();
                 const value = this.doLevelSet();
 
-                return new TreeNode(TreeNodeType.Assignment, [varname, value], position);
+                return new OperatorNode(
+                    TreeNodeType.Assignment, position, ':=', [variableNode, value]
+                );
             }
 
-            if(this.mCur.is(TokenType.SquareBracket, '[')) {
+            if(this.currentToken.is(TokenType.SquareBracket, '[')) {
                 this.move();
 
                 // Parse index offset.
                 let index: TreeNode | 'append' | null = 'append';
-                if(!(this.mCur.is(TokenType.SquareBracket, ']'))) {
+                if(!(this.currentToken.is(TokenType.SquareBracket, ']'))) {
                     this.setState(initialState);
                     this.move();
                     index = this.doLevelSemicolon();
-                    if(!this.mCur.is(TokenType.SquareBracket, ']')) {
-                        this.throwExpectedNotFound(this.mPos, this.mCur, ']');
+                    if(!this.currentToken.is(TokenType.SquareBracket, ']')) {
+                        this.throwExpectedNotFound(this.currentToken, ']');
                     }
                 }
 
                 this.move();
-                if(this.mCur.is(TokenType.Operator, ':=')) {
-                    const position = this.mPos;
+                if(this.currentToken.is(TokenType.Operator, ':=')) {
+                    const position = this.currentToken.startPosition;
                     this.move();
                     const value = this.doLevelSet();
 
                     if(index === 'append') {
-                        return new TreeNode(
-                            TreeNodeType.ArrayAppend, [varname, value], position);
+                        return new OperatorNode(
+                            TreeNodeType.ArrayAppend, position, '[] :=', [variableNode, value]
+                        );
                     } else {
-                        return new TreeNode(
-                            TreeNodeType.IndexAssignment,
-                            [varname, index!, value], // TODO: index could be null, but the original parser acts this way
-                            position
+                        // TODO: index could be null, but the original parser acts this way
+                        return new OperatorNode(
+                            TreeNodeType.IndexAssignment, position, '[_] :=', [variableNode, index!, value]
                         );
                     }
                 }
@@ -191,52 +193,51 @@ export class Parser {
 
     /** Handles ternary operator and if-then-else-end. */
     private doLevelConditions(): TreeNode {
-        if(this.mCur.is(TokenType.Keyword, 'if')) {
-            const position = this.mPos;
+        if(this.currentToken.is(TokenType.Keyword, 'if')) {
+            const position = this.currentToken.startPosition;
             this.move();
             const condition = this.doLevelBoolOps();
 
-            if(!this.mCur.is(TokenType.Keyword, 'then')) {
-                this.throwExpectedNotFound(this.mPos, this.mCur, 'then');
+            if(!this.currentToken.is(TokenType.Keyword, 'then')) {
+                this.throwExpectedNotFound(this.currentToken, 'then');
             }
             this.move();
 
             const valueIfTrue = this.doLevelConditions();
-            let valueIfFalse = null;
-
-            if(this.mCur.is(TokenType.Keyword, 'else')) {
+            const args = [condition, valueIfTrue];
+            
+            if(this.currentToken.is(TokenType.Keyword, 'else')) {
                 this.move();
-                valueIfFalse = this.doLevelConditions();
+
+                const valueIfFalse = this.doLevelConditions();
+                args.push(valueIfFalse);
             }
 
-            if(!this.mCur.is(TokenType.Keyword, 'end')) {
-                this.throwExpectedNotFound(this.mPos, this.mCur, 'end');
+            if(!this.currentToken.is(TokenType.Keyword, 'end')) {
+                this.throwExpectedNotFound(this.currentToken, 'end');
             }
             this.move();
 
-            return new TreeNode(
-                TreeNodeType.Conditional,
-                [condition, valueIfTrue, valueIfFalse],
-                position
-            );
+            return new OperatorNode( TreeNodeType.Conditional, position, '?:', args);
         }
 
         const condition = this.doLevelBoolOps();
-        if(this.mCur.is(TokenType.Operator, '?')) {
-            const position = this.mPos;
+        if(this.currentToken.is(TokenType.Operator, '?')) {
+            const position = this.currentToken.startPosition;
             this.move();
 
             const valueIfTrue = this.doLevelConditions();
-            if(!this.mCur.is(TokenType.Operator, ':')) {
-                this.throwExpectedNotFound(this.mPos, this.mCur, ':');
+            if(!this.currentToken.is(TokenType.Operator, ':')) {
+                this.throwExpectedNotFound(this.currentToken, ':');
             }
             this.move();
 
             const valueIfFalse = this.doLevelConditions();
-            return new TreeNode(
+            return new OperatorNode(
                 TreeNodeType.Conditional,
+                position,
+                '?:',
                 [condition, valueIfTrue, valueIfFalse],
-                position
             );
         }
 
@@ -247,17 +248,18 @@ export class Parser {
     private doLevelBoolOps(): TreeNode {
         let leftOperand = this.doLevelCompares();
         const ops = ['&', '|', '^'];
-        while(this.mCur.is(TokenType.Operator, ops)) {
-            const op = this.mCur.value;
-            const position = this.mPos;
+        while(this.currentToken.is(TokenType.Operator, ops)) {
+            const op = this.currentToken.value;
+            const position = this.currentToken.startPosition;
             this.move();
 
             const rightOperand = this.doLevelCompares();
 
-            leftOperand = new TreeNode(
+            leftOperand = new OperatorNode(
                 TreeNodeType.Logic,
-                [op, leftOperand, rightOperand],
-                position
+                position,
+                op,
+                [leftOperand, rightOperand],
             );
         }
         return leftOperand;
@@ -271,16 +273,17 @@ export class Parser {
         // Only allow either a single operation, or a combination of a single equalityOps and a single
         // orderOps. This resembles what PHP does, and allows `a < b == c` while rejecting `a < b < c`
         let allowedOps = equalityOps.concat(orderOps);
-        while(this.mCur.is(TokenType.Operator, allowedOps)) {
-            const op = this.mCur.value;
+        while(this.currentToken.is(TokenType.Operator, allowedOps)) {
+            const op = this.currentToken.value;
             allowedOps = equalityOps.includes(op) ? orderOps : equalityOps;
-            const position = this.mPos;
+            const position = this.currentToken.startPosition;
             this.move();
             const rightOperand = this.doLevelSumRels();
-            leftOperand = new TreeNode(
+            leftOperand = new OperatorNode(
                 TreeNodeType.Compare,
-                [op, leftOperand, rightOperand],
-                position
+                position,
+                op,
+                [leftOperand, rightOperand],
             );
         }
         return leftOperand;
@@ -290,15 +293,16 @@ export class Parser {
     private doLevelSumRels(): TreeNode {
         let leftOperand = this.doLevelMulRels();
         const ops = ['+', '-'];
-        while(this.mCur.is(TokenType.Operator, ops)) {
-            const op = this.mCur.value;
-            const position = this.mPos;
+        while(this.currentToken.is(TokenType.Operator, ops)) {
+            const op = this.currentToken.value;
+            const position = this.currentToken.startPosition;
             this.move();
             const rightOperand = this.doLevelMulRels();
-            leftOperand = new TreeNode(
+            leftOperand = new OperatorNode(
                 TreeNodeType.ArithmeticAdditive,
-                [op, leftOperand, rightOperand],
-                position
+                position,
+                op,
+                [leftOperand, rightOperand],
             );
         }
         return leftOperand;
@@ -308,15 +312,16 @@ export class Parser {
     private doLevelMulRels(): TreeNode {
         let leftOperand = this.doLevelPow();
         const ops = ['*', '/', '%'];
-        while(this.mCur.is(TokenType.Operator, ops)) {
-            const op = this.mCur.value;
-            const position = this.mPos;
+        while(this.currentToken.is(TokenType.Operator, ops)) {
+            const op = this.currentToken.value;
+            const position = this.currentToken.startPosition;
             this.move();
             const rightOperand = this.doLevelPow();
-            leftOperand = new TreeNode(
+            leftOperand = new OperatorNode(
                 TreeNodeType.ArithmeticMultiplicative,
-                [op, leftOperand, rightOperand],
-                position
+                position,
+                op,
+                [leftOperand, rightOperand],
             );
         }
         return leftOperand;
@@ -325,22 +330,22 @@ export class Parser {
     /** Handles exponentiation. */
     private doLevelPow(): TreeNode {
         let base = this.doLevelBoolInvert();
-        while(this.mCur.is(TokenType.Operator, '**')) {
-            const position = this.mPos;
+        while(this.currentToken.is(TokenType.Operator, '**')) {
+            const position = this.currentToken.startPosition;
             this.move();
             const exponent = this.doLevelBoolInvert();
-            base = new TreeNode(TreeNodeType.Exponentiation, [base, exponent], position);
+            base = new OperatorNode(TreeNodeType.Exponentiation, position, '**', [base, exponent]);
         }
         return base;
     }
 
     /** Handles boolean inversion. */
     private doLevelBoolInvert(): TreeNode {
-        if(this.mCur.is(TokenType.Operator, '!')) {
-            const position = this.mPos;
+        if(this.currentToken.is(TokenType.Operator, '!')) {
+            const position = this.currentToken.startPosition;
             this.move();
             const argument = this.doLevelKeywordOperators();
-            return new TreeNode(TreeNodeType.BooleanNegation, [argument], position);
+            return new OperatorNode(TreeNodeType.BooleanNegation, position, '!', [argument]);
         }
 
         return this.doLevelKeywordOperators();
@@ -349,17 +354,18 @@ export class Parser {
     /** Handles keyword operators. */
     private doLevelKeywordOperators(): TreeNode {
         const leftOperand = this.doLevelUnarys();
-        const keyword = this.mCur.value.toLowerCase();
+        const keyword = this.currentToken.value.toLowerCase();
         const availableKeywords: string[] = Array.from(Tokenizer.keywords);
-        if(this.mCur.is(TokenType.Keyword, availableKeywords)) {
-            const position = this.mPos;
+        if(this.currentToken.is(TokenType.Keyword, availableKeywords)) {
+            const position = this.currentToken.startPosition;
             this.move();
             const rightOperand = this.doLevelUnarys();
 
-            return new TreeNode(
+            return new OperatorNode(
                 TreeNodeType.KeywordOperator,
-                [keyword, leftOperand, rightOperand],
-                position
+                position,
+                keyword,
+                [leftOperand, rightOperand],
             );
         }
 
@@ -368,12 +374,12 @@ export class Parser {
 
     /** Handles unary operators. */
     private doLevelUnarys(): TreeNode {
-        const op = this.mCur.value;
-        if(this.mCur.is(TokenType.Operator, ['+', '-'])) {
-            const position = this.mPos;
+        const op = this.currentToken.value;
+        if(this.currentToken.is(TokenType.Operator, ['+', '-'])) {
+            const position = this.currentToken.startPosition;
             this.move();
             const argument = this.doLevelArrayElements();
-            return new TreeNode(TreeNodeType.ArithmeticUnary, [op, argument], position);
+            return new OperatorNode(TreeNodeType.ArithmeticUnary, position, op, [argument]);
         }
         return this.doLevelArrayElements();
     }
@@ -381,13 +387,13 @@ export class Parser {
     /** Handles accessing an array element by an offset. */
     private doLevelArrayElements(): TreeNode {
         let array = this.doLevelParenthesis();
-        while(this.mCur.is(TokenType.SquareBracket, '[')) {
-            const position = this.mPos;
+        while(this.currentToken.is(TokenType.SquareBracket, '[')) {
+            const position = this.currentToken.startPosition;
             const index = this.doLevelSemicolon()!; // TODO: index could be null, but the original parser acts this way
-            array = new TreeNode(TreeNodeType.ArrayIndexing, [array, index], position);
+            array = new OperatorNode(TreeNodeType.ArrayIndexing, position, '[]', [array, index]);
 
-            if(!this.mCur.is(TokenType.SquareBracket, ']')) {
-                this.throwExpectedNotFound(this.mPos, this.mCur, ']');
+            if(!this.currentToken.is(TokenType.SquareBracket, ']')) {
+                this.throwExpectedNotFound(this.currentToken, ']');
             }
             this.move();
         }
@@ -397,16 +403,16 @@ export class Parser {
 
     /** Handles parenthesis. */
     private doLevelParenthesis(): TreeNode {
-        if(this.mCur.is(TokenType.Parenthesis, '(')) {
+        if(this.currentToken.is(TokenType.Parenthesis, '(')) {
             const next = this.getNextToken();
             if(next.is(TokenType.Parenthesis, ')')) {
                 // Empty parentheses are never allowed
-                this.throwUnexpectedToken(this.mPos, this.mCur);
+                this.throwUnexpectedToken(this.currentToken);
             }
             const result = this.doLevelSemicolon() as TreeNode; // TODO: result could be null, but the original parser acts this way
 
-            if(!this.mCur.is(TokenType.Parenthesis, ')')) {
-                this.throwExpectedNotFound(this.mPos, this.mCur, ')');
+            if(!this.currentToken.is(TokenType.Parenthesis, ')')) {
+                this.throwExpectedNotFound( this.currentToken, ')');
             }
             this.move();
 
@@ -419,9 +425,9 @@ export class Parser {
     /** Handles function calls. */
     private doLevelFunction(): TreeNode {
         let next = this.getNextToken();
-        if(this.mCur.type === TokenType.Identifier && next.is(TokenType.Parenthesis, '(')) {
-            const func = this.mCur.value;
-            const position = this.mPos;
+        if(this.currentToken.type === TokenType.Identifier && next.is(TokenType.Parenthesis, '(')) {
+            const func = this.currentToken.value;
+            const position = this.currentToken.startPosition;
             this.move();
 
             const args: TreeNode[] = [];
@@ -433,19 +439,19 @@ export class Parser {
                         args.push(thisArg);
                     } else if(!this.functionIsVariadic(func)) {
                         // TODO: Figure out if we need this condition
-                        this.throwUnexpectedToken(this.mPos, this.mCur);
+                        this.throwUnexpectedToken(this.currentToken);
                     }
-                } while(this.mCur.type === TokenType.Comma);
+                } while(this.currentToken.type === TokenType.Comma);
             } else {
                 this.move();
             }
 
-            if(!this.mCur.is(TokenType.Parenthesis, ')')) {
-                this.throwExpectedNotFound(this.mPos, this.mCur, ')');
+            if(!this.currentToken.is(TokenType.Parenthesis, ')')) {
+                this.throwExpectedNotFound(this.currentToken, ')');
             }
             this.move();
 
-            return new TreeNode(TreeNodeType.FunctionCall, [func, ...args], position);
+            return new OperatorNode(TreeNodeType.FunctionCall, position, func, args);
         }
 
         return this.doLevelAtom();
@@ -453,53 +459,53 @@ export class Parser {
 
     /** Handle literals. */
     private doLevelAtom(): TreeNode {
-        const tok = this.mCur.value;
+        const tok = this.currentToken.value;
         let result: TreeNode;
-        switch(this.mCur.type) {
+        switch(this.currentToken.type) {
             case TokenType.Identifier:
             case TokenType.StringLiteral:
             case TokenType.FloatLiteral:
             case TokenType.IntLiteral:
-                result = new TreeNode(TreeNodeType.Atom, this.mCur, this.mPos);
+                result = new AtomNode(this.currentToken);
                 break;
             case TokenType.Keyword:
                 if(['true', 'false', 'null'].includes(tok)) {
-                    result = new TreeNode(TreeNodeType.Atom, this.mCur, this.mPos);
+                    result = new AtomNode(this.currentToken);
                     break;
                 }
 
                 throw new ParserException(
                     'unrecognisedkeyword',
-                    this.mPos,
+                    this.currentToken.startPosition,
                     [tok]
                 );
 
             case TokenType.SquareBracket:
-                if(this.mCur.value === '[') {
+                if(this.currentToken.value === '[') {
                     const array = [];
                     while(true) {
                         this.move();
-                        if(this.mCur.is(TokenType.SquareBracket, ']')) {
+                        if(this.currentToken.is(TokenType.SquareBracket, ']')) {
                             break;
                         }
 
                         array.push(this.doLevelSet());
 
-                        if(this.mCur.is(TokenType.SquareBracket, ']')) {
+                        if(this.currentToken.is(TokenType.SquareBracket, ']')) {
                             break;
                         }
-                        if(this.mCur.type !== TokenType.Comma) {
-                            this.throwExpectedNotFound(this.mPos, this.mCur, ', or ]');
+                        if(this.currentToken.type !== TokenType.Comma) {
+                            this.throwExpectedNotFound(this.currentToken, ', or ]');
                         }
                     }
 
-                    result = new TreeNode(TreeNodeType.ArrayDefinition, array, this.mPos);
+                    result = new OperatorNode(TreeNodeType.ArrayDefinition, this.currentToken.startPosition, '[]', array);
                     break;
                 }
 
             // Fallthrough expected
             default:
-                this.throwUnexpectedToken(this.mPos, this.mCur);
+                this.throwUnexpectedToken(this.currentToken);
         }
 
         this.move();
@@ -524,13 +530,12 @@ export class Parser {
 
     /**
      * Throws an exception stating that the found token was not expected
-     * @param position The position of the unexpected token.
      * @param currentToken The unexpected token.
      */
-    private throwUnexpectedToken(position: number, currentToken: Token): never {
+    private throwUnexpectedToken(currentToken: Token): never {
         throw new ParserException(
             'unexpectedtoken',
-            position,
+            currentToken.startPosition,
             [
                 currentToken.type,
                 currentToken.value
@@ -540,14 +545,13 @@ export class Parser {
 
     /**
      * Throws an exception stating that an expected token was not found.
-     * @param position The position of the current token.
      * @param currentToken The current token.
      * @param expected The expected token.
      */
-    private throwExpectedNotFound(position: number, currentToken: Token, expected: string): never {
+    private throwExpectedNotFound(currentToken: Token, expected: string): never {
         throw new ParserException(
             'expectednotfound',
-            position,
+            currentToken.startPosition,
             [
                 expected,
                 currentToken.type,

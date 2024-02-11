@@ -1,4 +1,3 @@
-import { Token } from './Token.js';
 import { TreeNodeType } from './TreeNodeType.js';
 
 /**
@@ -6,34 +5,19 @@ import { TreeNodeType } from './TreeNodeType.js';
  * 
  * Based on https://phabricator.wikimedia.org/diffusion/EABF/browse/master/includes/Parser/AFPTreeNode.php
  */
-export class TreeNode {
+export abstract class TreeNode {
 
     /** Type of this node */
-    public type: TreeNodeType;
-
-    /**
-     * Parameters for the node. For atoms it's a single Token, while for other nodes
-     * it's an array of other TreeNodes or strings. The precise structure depends on the node type
-     * and is reflected in the constructor signatures.
-     */
-    public children: (TreeNode | string | null)[] | Token;
+    public readonly type: TreeNodeType;
 
     /**
      * The position of the node in the source code, used for error reporting.
      */
-    public position: number;
+    public readonly position: number;
 
-    public constructor(type: TypesWithManyNodeChildren, children: TreeNode[], position: number);
-    public constructor(type: TypesWithStringAndSingleNode, children: [string, TreeNode], position: number);
-    public constructor(type: TypesWithStringAndTwoNodes, children: [string, TreeNode, TreeNode], position: number);
-    public constructor(type: TypesWithTwoNodes, children: [TreeNode, TreeNode], position: number);
-    public constructor(type: TypesWithStringAndManyNodes, children: [string, ...TreeNode[]], position: number);
-    public constructor(type: TreeNodeType.BooleanNegation, children: [TreeNode], position: number);
-    public constructor(type: TreeNodeType.Conditional, children: [TreeNode, TreeNode, TreeNode | null], position: number);
-    public constructor(type: TreeNodeType.Atom, children: Token, position: number);
-    public constructor(type: TreeNodeType, children: (TreeNode | string | null)[] | Token, position: number) {
+
+    public constructor(type: TreeNodeType, position: number) {
         this.type = type;
-        this.children = children;
         this.position = position;
     }
 
@@ -44,83 +28,8 @@ export class TreeNode {
         return this.toDebugStringInner().join('\n');
     }
 
-    private toDebugStringInner(): string[] {
-        if (this.type === TreeNodeType.Atom) {
-            const token = this.children as Token;
-            return [ `Atom(${token.type} ${token.value})` ];
-        }
-
-        let lines = [ this.type.toString() ];
-        for (const subnode of this.children as (TreeNode | string | null)[]) {
-            let sublines: string[];
-            if (subnode === null) {
-                sublines = [ '  null' ];
-            } else if (typeof subnode === 'string') {
-                sublines = [ `  ${subnode}` ];
-            } else {
-                // Align sublines to the right
-                sublines = subnode.toDebugStringInner().map(
-                    (line: string) => '  ' + line
-                );
-            }
-
-            lines = lines.concat(sublines);
-        }
-
-        return lines;
-    }
+    /**
+     * An internal method for generating debug strings. It's called recursively by toDebugString.
+     */
+    public abstract toDebugStringInner(): string[];
 }
-
-/**
- * Supplementary type for better type checking in TreeNode constructor.
- * 
- * It's used to ensure that the children parameter of the TreeNode constructor is
- * only an array of some TreeNodes (any number of elements).
- */
-type TypesWithManyNodeChildren =
-    TreeNodeType.Semicolon |
-    TreeNodeType.ArrayDefinition;
-
-/**
- * Supplementary type for better type checking in TreeNode constructor.
- * 
- * It's used to ensure that the children parameter of the TreeNode constructor is
- * an array like [string, TreeNode]
- */
-type TypesWithStringAndSingleNode =
-    TreeNodeType.Assignment |
-    TreeNodeType.ArrayAppend |
-    TreeNodeType.ArithmeticUnary;
-
-/**
- * Supplementary type for better type checking in TreeNode constructor.
- * 
- * It's used to ensure that the children parameter of the TreeNode constructor is
- * an array like [string, TreeNode, TreeNode]
- */
-type TypesWithStringAndTwoNodes =
-    TreeNodeType.IndexAssignment |
-    TreeNodeType.Compare |
-    TreeNodeType.KeywordOperator;
-
-/**
- * Supplementary type for better type checking in TreeNode constructor.
- * 
- * It's used to ensure that the children parameter of the TreeNode constructor is
- * an array like [TreeNode, TreeNode]
- */
-type TypesWithTwoNodes =
-    TreeNodeType.Exponentiation |
-    TreeNodeType.ArrayIndexing;
-
-/**
- * Supplementary type for better type checking in TreeNode constructor.
- * 
- * It's used to ensure that the children parameter of the TreeNode constructor is
- * an array like [string, TreeNode, ...]
- */
-type TypesWithStringAndManyNodes =
-    TreeNodeType.Logic |
-    TreeNodeType.ArithmeticAdditive |
-    TreeNodeType.ArithmeticMultiplicative |
-    TreeNodeType.FunctionCall;
