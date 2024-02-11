@@ -8,26 +8,26 @@ import { TreeNodeType } from '../TreeNodeType.js';
  */
 export class AtomNode extends TreeNode {
     /** The token that's wrapped into this atom */
-    protected readonly underlyingToken: Token;
+    public readonly token: Token;
 
     public constructor(token: Token) {
         super(TreeNodeType.Atom, token.startPosition);
 
-        this.underlyingToken = token;
+        this.token = token;
     }
 
     /** The value of the underlying token */
     public get tokenValue() {
-        return this.underlyingToken.value;
+        return this.token.value;
     }
 
     /** The type of the underlying token */
     public get tokenType() {
-        return this.underlyingToken.type;
+        return this.token.type;
     }
 
     protected override toDebugStringInner(): string[] {
-        const token = this.underlyingToken;
+        const token = this.token;
         return [ `Atom(${token.type} ${token.value})` ];
     }
 }
