@@ -13,31 +13,10 @@ export class OperatorNode extends TreeNode {
      */
     public readonly operation: string;
 
-    /**
-     * Parameters for the node. For atoms it's a single Token, while for other nodes
-     * it's an array of other TreeNodes.
-     */
-    public readonly children: TreeNode[];
-
 
     public constructor(type: TreeNodeType, position: number, operation: string, children: TreeNode[]) {
-        super(type, position);
+        super(type, position, children);
 
         this.operation = operation;
-        this.children = children;
-    }
-
-    public override toDebugStringInner(): string[] {
-        let lines = [ this.type.toString() ];
-        for (const subnode of this.children) {
-            // Align sublines to the right
-            const sublines = subnode.toDebugStringInner().map(
-                (line: string) => '  ' + line
-            );
-
-            lines = lines.concat(sublines);
-        }
-
-        return lines;
     }
 }

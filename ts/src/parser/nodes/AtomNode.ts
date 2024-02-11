@@ -26,7 +26,7 @@ export class AtomNode extends TreeNode {
         return this.underlyingToken.type;
     }
 
-    public override toDebugStringInner(): string[] {
+    protected override toDebugStringInner(): string[] {
         const token = this.underlyingToken;
         return [ `Atom(${token.type} ${token.value})` ];
     }

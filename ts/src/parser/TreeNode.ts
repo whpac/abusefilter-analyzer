@@ -15,10 +15,17 @@ export abstract class TreeNode {
      */
     public readonly position: number;
 
+    /**
+     * Parameters for the node. For atoms it's a single Token, while for other nodes
+     * it's an array of other TreeNodes.
+     */
+    public readonly children: TreeNode[];
 
-    public constructor(type: TreeNodeType, position: number) {
+
+    public constructor(type: TreeNodeType, position: number, children: TreeNode[] = []) {
         this.type = type;
         this.position = position;
+        this.children = children;
     }
 
     /**
@@ -28,8 +35,17 @@ export abstract class TreeNode {
         return this.toDebugStringInner().join('\n');
     }
 
-    /**
-     * An internal method for generating debug strings. It's called recursively by toDebugString.
-     */
-    public abstract toDebugStringInner(): string[];
+    protected toDebugStringInner(): string[] {
+        let lines = [ this.type.toString() ];
+        for (const subnode of this.children) {
+            // Align sublines to the right
+            const sublines = subnode.toDebugStringInner().map(
+                (line: string) => '  ' + line
+            );
+
+            lines = lines.concat(sublines);
+        }
+
+        return lines;
+    }
 }
