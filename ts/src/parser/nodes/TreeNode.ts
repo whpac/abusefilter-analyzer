@@ -1,4 +1,4 @@
-import { TreeNodeType } from './TreeNodeType.js';
+import { TreeNodeType } from '../TreeNodeType.js';
 
 /**
  * Represents a single node in the parser tree. It chan contain other nodes or simple values.

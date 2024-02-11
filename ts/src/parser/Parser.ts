@@ -2,7 +2,7 @@ import { ParserException } from './ParserException.js';
 import { Token } from './Token.js';
 import { TokenType } from './TokenType.js';
 import { Tokenizer } from './Tokenizer.js';
-import { TreeNode } from './TreeNode.js';
+import { TreeNode } from './nodes/TreeNode.js';
 import { TreeNodeType } from './TreeNodeType.js';
 import { AtomNode } from './nodes/AtomNode.js';
 import { OperatorNode } from './nodes/OperatorNode.js';
@@ -483,7 +483,7 @@ export class Parser {
             case TokenType.SquareBracket:
                 if(this.currentToken.value === '[') {
                     const array = [];
-                    
+
                     // eslint-disable-next-line no-constant-condition
                     while(true) {
                         this.move();

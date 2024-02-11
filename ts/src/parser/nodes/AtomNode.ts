@@ -1,5 +1,5 @@
 import { Token } from '../Token.js';
-import { TreeNode } from '../TreeNode.js';
+import { TreeNode } from './TreeNode.js';
 import { TreeNodeType } from '../TreeNodeType.js';
 
 /**
