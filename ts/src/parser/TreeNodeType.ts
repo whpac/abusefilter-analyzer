@@ -37,7 +37,7 @@ export enum TreeNodeType {
     /**
      * Represents a conditional node. It's composed of three children:
      * a condition, a value if the condition is true and a value if the condition is false.
-     * All three children are tree nodes and the last one can be null if there's no else specified.
+     * All three children are tree nodes and but the last one can be unspecified if there's no else specified.
      * 
      * This type is applied to both ternary operator and if-then-else-end construct.
      */
@@ -47,8 +47,6 @@ export enum TreeNodeType {
     /**
      * Represents a logic operator node. It's composed of three children:
      * an operation (string), a left operand and a right operand (tree nodes).
-     * 
-     * @see {@link Value.boolOp}
      */
     Logic = 'Logic',
 
@@ -56,8 +54,6 @@ export enum TreeNodeType {
     /**
      * Represents a comparison operator node. It's composed of three children:
      * an operation (string), a left operand and a right operand (tree nodes).
-     * 
-     * @see {@link Value.compare}
      */
     Compare = 'Compare',
 
@@ -65,9 +61,6 @@ export enum TreeNodeType {
     /**
      * Represents an addition or subtraction operator node. It's composed of three children:
      * an operation (string), a left operand and a right operand (tree nodes).
-     * 
-     * @see {@link Value.add}
-     * @see {@link Value.subtract}
      */
     ArithmeticAdditive = 'ArithmeticAdditive',
 
@@ -75,10 +68,6 @@ export enum TreeNodeType {
     /**
      * Represents a multiplication, division or modulo operator node. It's composed of three children:
      * an operation (string), a left operand and a right operand (tree nodes).
-     * 
-     * @see {@link Value.multiply}
-     * @see {@link Value.divide}
-     * @see {@link Value.modulo}
      */
     ArithmeticMultiplicative = 'ArithmeticMultiplicative',
 
@@ -86,8 +75,6 @@ export enum TreeNodeType {
     /**
      * Represents an exponentiation operator node. It's composed of two children:
      * a base and an exponent (tree nodes).
-     * 
-     * @see {@link Value.pow}
      */
     Exponentiation = 'Exponentiation',
 
@@ -95,8 +82,6 @@ export enum TreeNodeType {
     /**
      * Represents a boolean negation operator node. It's composed of a single child:
      * an operand (tree node).
-     * 
-     * @see {@link Value.boolNot}
      */
     BooleanNegation = 'BooleanNegation',
 
