@@ -13,5 +13,8 @@
     "test": "mocha",
     "build": "tsc"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@types/node": "^20.11.19"
+  }
 }
