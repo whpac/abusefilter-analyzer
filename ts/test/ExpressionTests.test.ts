@@ -16,16 +16,21 @@ describe('Expressions from .t files', () => {
     fs.readdirSync(testFolder).forEach((file: string) => {
         if (path.extname(file) === '.t') {
             it(`should evaluate ${file} as a truthy expression`, async () => {
-                const content = fs.readFileSync(path.join(testFolder, file), 'utf8');
-                const tokenizer = new Tokenizer();
-                const parser = new Parser();
-                const tokens = tokenizer.tokenize(content);
-                const rootNode = parser.parse(tokens)!;
-                const evaluatedRootNode = new EvaluatedTreeNode(rootNode);
-                await evaluatedRootNode.evaluate(new EvaluationContext(), new NodeEvaluator());
-
-                assert.isTrue(evaluatedRootNode.wasEvaluated);
-                assert.isTrue(evaluatedRootNode.value.isTruthy());
+                try {
+                    const content = fs.readFileSync(path.join(testFolder, file), 'utf8');
+                    const tokenizer = new Tokenizer();
+                    const parser = new Parser();
+                    const tokens = tokenizer.tokenize(content);
+                    const rootNode = parser.parse(tokens)!;
+                    const evaluatedRootNode = new EvaluatedTreeNode(rootNode);
+                    await evaluatedRootNode.evaluate(new EvaluationContext(), new NodeEvaluator());
+    
+                    assert.isTrue(evaluatedRootNode.wasEvaluated);
+                    assert.isTrue(evaluatedRootNode.value.isTruthy());
+                } catch(e) {
+                    console.error((e as Error).toString());
+                    throw e;
+                }
             });
         }
     });
