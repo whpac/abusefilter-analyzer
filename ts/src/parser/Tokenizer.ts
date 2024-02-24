@@ -99,6 +99,7 @@ export class Tokenizer {
                 throw new Error('Unclosed comment');
             }
             startOffset = commentEnd + 2;
+            this.commentStartRegex.lastIndex = startOffset;
         }
 
         // Skip whitespaces.
