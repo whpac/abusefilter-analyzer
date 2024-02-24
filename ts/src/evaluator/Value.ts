@@ -480,6 +480,46 @@ export class Value<TValue = unknown> {
         return this.isTruthy() ? Value.False : Value.True;
     }
 
+    //! String operators
+    /** Checks if this value contains the needle (both are converted to string first) */
+    public contains(needle: Value): Value<boolean> {
+        const thisString = this.toString();
+        const needleString = needle.toString();
+
+        if (thisString === '' || needleString === '') {
+            return Value.False;
+        }
+
+        return new Value(ValueDataType.Boolean, thisString.includes(needleString));
+    }
+
+    /** Checks if this value is matched by the regex pattern */
+    public testRegex(pattern: Value, caseInsensitive: boolean = false): Value<boolean> {
+        const subject = this.toString();
+        const patternRegex = new RegExp(pattern.toString(), caseInsensitive ? 'iu' : 'u');
+        return new Value(ValueDataType.Boolean, patternRegex.test(subject));
+    }
+
+    /** Checks if this value is matched by the glob pattern */
+    public testGlob(pattern: Value): Value<boolean> {
+        const subject = this.toString();
+        let globPattern = pattern.toString();
+
+        // First, escape the pattern according to Regex rules
+        // See: https://stackoverflow.com/a/9310752/8127198
+        globPattern = globPattern.replace(/[[\]{}()*+?.,\\/^$|#\s]/g, '\\$&');
+
+        // Then substitute the glob wildcards with regex sequences
+        globPattern = globPattern.replace(/\\\*/g, '.*')
+            .replace(/\\\?/g, '.')
+            .replace(/\\\[/g, '[')
+            .replace(/\\\[!/g, '[^')
+            .replace(/\\\]/g, ']');
+
+        const patternRegex = new RegExp(globPattern, 'u');
+        console.log(`Matching "${subject}" against "${patternRegex.source}"`);
+        return new Value(ValueDataType.Boolean, patternRegex.test(subject));
+    }
 }
 
 enum ComparisonResult {

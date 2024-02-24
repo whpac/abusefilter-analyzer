@@ -58,7 +58,8 @@ export class NodeEvaluator {
                 return this.calculateExponentiationResult(values);
             case TreeNodeType.BooleanNegation:
                 return this.calculateBooleanNegationResult(values);
-            // TODO: Keyword operators
+            case TreeNodeType.KeywordOperator:
+                return this.calculateKeywordOperatorResult(values, operation);
             case TreeNodeType.ArithmeticUnary:
                 return this.calculateArithmeticUnaryResult(values, operation);
             case TreeNodeType.ArrayIndexing:
@@ -69,8 +70,7 @@ export class NodeEvaluator {
         }
 
         // If we got here, the node type is not supported
-        // TODO: Perhaps an error should be raised?
-        return Value.Undefined;
+        throw new Error(`Unsupported node type: ${nodeType}`);
     }
 
     /**
@@ -262,7 +262,23 @@ export class NodeEvaluator {
         return operand.not();
     }
 
-    // TODO: Keyword operators
+    protected calculateKeywordOperatorResult(values: Value[], operation: string): Value {
+        switch (operation) {
+            case 'in':
+                return values[1].contains(values[0]);
+            case 'contains':
+                return values[0].contains(values[1]);
+            case 'like':
+            case 'matches':
+                return values[0].testGlob(values[1]);
+            case 'irlike':
+                return values[0].testRegex(values[1], true);
+            case 'rlike':
+            case 'regex':
+                return values[0].testRegex(values[1]);
+        }
+        throw new Error(`Unrecognized keyword operator: ${operation}.`);
+    }
 
     protected calculateArithmeticUnaryResult(values: Value[], operation: string): Value {
         const operand = values[0];
