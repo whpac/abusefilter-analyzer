@@ -142,6 +142,57 @@ export class Value<TValue = unknown> {
         return Value.True;
     }
 
+    /**
+     * Returns a value stored at a given index of the array. The array is 0-indexed.
+     * @param index The index of the element to retrieve
+     */
+    public getElementAt(index: number | Value): Value {
+        if (this.dataType !== ValueDataType.Array) {
+            throw new Error('Cannot index a non-array value');
+        }
+
+        if (typeof index === 'object') {
+            index = index.toNumber();
+        }
+
+        const array = this.value as Value[];
+        if (index < 0 || index >= array.length) {
+            throw new Error('Index out of bounds');
+        }
+        return array[index] ?? Value.Undefined;
+    }
+
+    /**
+     * Stores a given value at the given index of the array. The array is 0-indexed.
+     * @param index The index where to store the value
+     */
+    public setElementAt(index: number | Value, value: Value): void {
+        if (this.dataType !== ValueDataType.Array) {
+            throw new Error('Cannot index a non-array value');
+        }
+
+        if (typeof index === 'object') {
+            index = index.toNumber();
+        }
+
+        const array = this.value as Value[];
+        if (index < 0 || index >= array.length) {
+            throw new Error('Index out of bounds');
+        }
+        array[index] = value;
+    }
+
+    /**
+     * Appends a value to the array.
+     * @param value The value to be appended to the array
+     */
+    public appendElement(value: Value): void {
+        if (this.dataType !== ValueDataType.Array) {
+            throw new Error('Cannot append to a non-array value');
+        }
+        (this.value as Value[]).push(value);
+    }
+
     // ! Equality operators
 
     /**

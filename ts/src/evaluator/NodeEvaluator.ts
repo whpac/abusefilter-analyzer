@@ -3,6 +3,8 @@ import { OperatorNode } from '../parser/nodes/OperatorNode.js';
 import { EvaluatedTreeNode } from './EvaluatedTreeNode.js';
 import { EvaluationContext } from './EvaluationContext.js';
 import { Value } from './Value.js';
+import { ValueDataType } from './ValueDataType.js';
+import { VariableValue } from './VariableValue.js';
 
 export class NodeEvaluator {
     
@@ -32,7 +34,12 @@ export class NodeEvaluator {
         switch (nodeType) {
             case TreeNodeType.Semicolon:
                 return this.calculateSemicolonResult(values);
-            // TODO: Assignments
+            case TreeNodeType.Assignment:
+                return this.calculateAssignmentResult(context, values);
+            case TreeNodeType.IndexAssignment:
+                return this.calculateIndexAssignmentResult(values);
+            case TreeNodeType.ArrayAppend:
+                return this.calculateArrayAppendResult(values);
             case TreeNodeType.Conditional:
                 return this.calculateConditionalResult(values);
             case TreeNodeType.Logic:
@@ -50,9 +57,11 @@ export class NodeEvaluator {
             // TODO: Keyword operators
             case TreeNodeType.ArithmeticUnary:
                 return this.calculateArithmeticUnaryResult(values, operation);
-            // TODO: Array indexing
+            case TreeNodeType.ArrayIndexing:
+                return this.calculateArrayIndexingResult(values);
             // TODO: Function call
-            // TODO: Array definition
+            case TreeNodeType.ArrayDefinition:
+                return this.calculateArrayDefinitionResult(values);
         }
 
         // If we got here, the node type is not supported
@@ -131,7 +140,32 @@ export class NodeEvaluator {
         return lastValue;
     }
 
-    // TODO: Assignment etc.
+    protected calculateAssignmentResult(context: EvaluationContext, values: Value[]): Value {
+        const variable = values[0];
+        const newValue = values[1];
+
+        if (!(variable instanceof VariableValue)) {
+            throw new Error('Left-hand side of an assignment must be a variable');
+        }
+
+        context.setVariable(variable.name, newValue);
+        return newValue;
+    }
+
+    protected calculateIndexAssignmentResult(values: Value[]): Value {
+        const array = values[0];
+        const index = values[1];
+        const newValue = values[2];
+        array.setElementAt(index, newValue);
+        return newValue;
+    }
+
+    protected calculateArrayAppendResult(values: Value[]): Value {
+        const array = values[0];
+        const newValue = values[1];
+        array.appendElement(newValue);
+        return newValue;
+    }
 
     protected calculateConditionalResult(values: Value[]): Value {
         const condition = values[0];
@@ -239,9 +273,16 @@ export class NodeEvaluator {
         }
     }
 
-    // TODO: Array indexing
+    protected calculateArrayIndexingResult(values: Value[]): Value {
+        const array = values[0];
+        const index = values[1];
+
+        return array.getElementAt(index);
+    }
 
     // TODO: Function call
 
-    // TODO: Array definition
+    protected calculateArrayDefinitionResult(values: Value[]): Value {
+        return new Value(ValueDataType.Array, values);
+    }
 }

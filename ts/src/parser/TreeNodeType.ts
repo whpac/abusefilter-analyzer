@@ -24,12 +24,12 @@ export enum TreeNodeType {
     Assignment = 'Assignment',
     /**
      * Represents an assignment to an array element node. It's composed of three children:
-     * a variable name (string), an index and a value (tree nodes).
+     * a variable, an index and a value (tree nodes).
      */
     IndexAssignment = 'IndexAssignment',
     /**
      * Represents an array append node. It's composed of two children:
-     * a variable name (string) and a value (tree node).
+     * a variable and a value (tree node).
      */
     ArrayAppend = 'ArrayAppend',
 
@@ -102,7 +102,7 @@ export enum TreeNodeType {
 
     /**
      * Represents an array access by index node. It's composed of two children:
-     * an array name (string) and an offset (tree node).
+     * an array and an offset (both being tree nodes).
      */
     ArrayIndexing = 'ArrayIndexing',
 

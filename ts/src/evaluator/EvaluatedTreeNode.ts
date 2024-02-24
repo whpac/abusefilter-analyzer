@@ -15,7 +15,7 @@ export class EvaluatedTreeNode {
     /** The children that will be used to compute this node's value */
     public readonly children: EvaluatedTreeNode[];
 
-    /** The value of this node. IUsed for caching */
+    /** The value of this node. Used for caching */
     private _value: Value;
 
     public constructor(node: TreeNode) {
