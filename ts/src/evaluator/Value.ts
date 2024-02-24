@@ -11,8 +11,12 @@ export class Value<TValue = unknown> {
     /** The stored data type */
     public readonly dataType: ValueDataType;
 
+    protected readonly _value: TValue;
+
     /** The stored value */
-    public readonly value: TValue;
+    public get value(): TValue {
+        return this._value;
+    }
 
     /** For convenience, an undefined value */
     public static readonly Undefined = new Value(ValueDataType.Undefined, null);
@@ -25,7 +29,7 @@ export class Value<TValue = unknown> {
 
     public constructor(dataType: ValueDataType, value: TValue) {
         this.dataType = dataType;
-        this.value = value;
+        this._value = value;
 
         if (!this.isValid()) {
             throw new Error(`Invalid value for data type ${dataType}: ${value}`);

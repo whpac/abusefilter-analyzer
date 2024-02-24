@@ -24,7 +24,7 @@ export class EvaluationContext {
             return this.parentContext.getVariable(variableName);
         }
 
-        throw new Error(`Variable ${variableName} does not exist`);
+        return VariableValue.fromUndefined(variableName);
     }
 
     /**
