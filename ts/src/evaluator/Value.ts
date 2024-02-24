@@ -66,7 +66,11 @@ export class Value<TValue = unknown> {
             case ValueDataType.String:
                 return typeof this.value === 'string';
             case ValueDataType.Array:
-                return Array.isArray(this.value);
+                if (!Array.isArray(this.value)) return false;
+                for (const item of this.value) {
+                    if (!(item instanceof Value)) return false;
+                }
+                return true;
             case ValueDataType.Null:
                 return this.value === null;
             case ValueDataType.Undefined:
@@ -104,9 +108,9 @@ export class Value<TValue = unknown> {
     /** Converts the value to array */
     public toArray(): unknown[] {
         if (this.dataType === ValueDataType.Array) {
-            return this.value as unknown[];
+            return this.value as Value[];
         }
-        return [ this.value ];
+        return [ this ];
     }
 
     /**
