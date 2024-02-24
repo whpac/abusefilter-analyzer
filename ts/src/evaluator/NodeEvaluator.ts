@@ -7,6 +7,10 @@ import { ValueDataType } from './ValueDataType.js';
 import { VariableValue } from './VariableValue.js';
 
 export class NodeEvaluator {
+    /** An array of keywords that are supported as operators */
+    public static readonly operatorKeywords = [
+        'in', 'like', 'contains', 'matches', 'rlike', 'irlike', 'regex',
+    ];
     
     /**
      * Evaluates all the subnodes first and then calculates the node value. This is not for AtomNodes.

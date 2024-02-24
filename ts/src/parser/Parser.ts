@@ -1,11 +1,11 @@
 import { ParserException } from './ParserException.js';
 import { Token } from './Token.js';
 import { TokenType } from './TokenType.js';
-import { Tokenizer } from './Tokenizer.js';
 import { TreeNode } from './nodes/TreeNode.js';
 import { TreeNodeType } from './TreeNodeType.js';
 import { AtomNode } from './nodes/AtomNode.js';
 import { OperatorNode } from './nodes/OperatorNode.js';
+import { NodeEvaluator } from '../evaluator/NodeEvaluator.js';
 
 /**
  * A parser for the AbuseFilter syntax.
@@ -355,7 +355,7 @@ export class Parser {
     private doLevelKeywordOperators(): TreeNode {
         const leftOperand = this.doLevelUnarys();
         const keyword = this.currentToken.value.toLowerCase();
-        const availableKeywords: string[] = Array.from(Tokenizer.keywords);
+        const availableKeywords: string[] = NodeEvaluator.operatorKeywords;
         if(this.currentToken.is(TokenType.Keyword, availableKeywords)) {
             const position = this.currentToken.startPosition;
             this.move();
