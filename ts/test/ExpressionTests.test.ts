@@ -15,7 +15,7 @@ describe('Expressions from .t files', () => {
 
     fs.readdirSync(testFolder).forEach((file: string) => {
         if (path.extname(file) === '.t') {
-            it(`should evaluate ${file} as a truthy expression`, async () => {
+            it(file, async () => {
                 try {
                     const content = fs.readFileSync(path.join(testFolder, file), 'utf8');
                     const tokenizer = new Tokenizer();
