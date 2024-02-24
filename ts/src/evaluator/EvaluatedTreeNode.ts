@@ -18,6 +18,9 @@ export class EvaluatedTreeNode {
     /** The value of this node. Used for caching */
     private _value: Value;
 
+    /** These functions will be called when the value of this node is ready */
+    private onReadyCallbacks: ((node: EvaluatedTreeNode) => void)[] = [];
+
     public constructor(node: TreeNode) {
         this.node = node;
         this._value = Value.Undefined;
@@ -43,13 +46,6 @@ export class EvaluatedTreeNode {
         // If the value is already computed, return it
         if (this.wasEvaluated) return;
 
-        // Evaluation modes:
-        // - turn atom into a simple value (from literal or keyword)
-        // - retrieve a variable value
-        // - store a variable value
-        // - calculate a value from subnodes
-        // - call a function
-
         // Atoms store value literals and variable reads
         if (this.node.type === TreeNodeType.Atom) {
             const atomNode = this.node as AtomNode;
@@ -65,6 +61,26 @@ export class EvaluatedTreeNode {
             this._value = await evaluator.evaluateNodeLazily(this, evaluationContext);
         }
 
-        // this.onValueReady();
+        this.notifyOnValueReady();
+    }
+
+    /**
+     * Adds a callback to be called when the value of this node is ready.
+     * @param callback The callback to be called.
+     */
+    public onValueReady(callback: (node: EvaluatedTreeNode) => void): void {
+        this.onReadyCallbacks.push(callback);
+        if (this.wasEvaluated) {
+            callback(this);
+        }
+    }
+
+    /**
+     * Notifies all the callbacks that the value of this node is ready.
+     */
+    protected notifyOnValueReady(): void {
+        for (const callback of this.onReadyCallbacks) {
+            callback(this);
+        }
     }
 }
