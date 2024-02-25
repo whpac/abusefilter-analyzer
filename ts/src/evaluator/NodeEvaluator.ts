@@ -108,7 +108,7 @@ export class NodeEvaluator {
      * @returns A promise representing the result of the logical operation
      */
     protected async evaluateLogicalOperatorLazily(operands: EvaluatedTreeNode[], context: EvaluationContext, neutralElement: boolean): Promise<Value> {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             const lastOperand = operands[operands.length - 1];
 
             let wasResolved = false;
@@ -134,7 +134,16 @@ export class NodeEvaluator {
                             context = context.createChildContext();
                         }
                     })
-                );
+                ).catch((e) => {
+                    // Explicitly propagate the error
+                    // It breaks the evaluation but errors should not happen
+                    // during evaluation of syntax tree
+                    console.error(e);
+                    if (!wasResolved) {
+                        wasResolved = true;
+                        reject(e);
+                    }
+                });
             }
         });
     }
