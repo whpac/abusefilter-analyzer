@@ -517,7 +517,6 @@ export class Value<TValue = unknown> {
             .replace(/\\\]/g, ']');
 
         const patternRegex = new RegExp(globPattern, 'u');
-        console.log(`Matching "${subject}" against "${patternRegex.source}"`);
         return new Value(ValueDataType.Boolean, patternRegex.test(subject));
     }
 }
