@@ -1,3 +1,4 @@
+import { AbuseFilterFunction, AbuseFilterFunctions } from './AbuseFilterFunctions.js';
 import { Value } from './Value.js';
 import { VariableValue } from './VariableValue.js';
 
@@ -36,6 +37,23 @@ export class EvaluationContext {
      */
     public setVariable(variableName: string, newValue: Value): void {
         this.variables.set(variableName, newValue);
+    }
+
+    /**
+     * Returns a function by its name. If the function is not found in this context,
+     * it will look up in its parent.
+     * If the function is not found in the parent, it will return `null`.
+     * @param functionName A function name to look up
+     */
+    public getFunction(functionName: string): AbuseFilterFunction<unknown> {
+        const func = AbuseFilterFunctions.getFunction(functionName);
+        if (func !== undefined) return func;
+
+        if (this.parentContext !== null) {
+            return this.parentContext.getFunction(functionName);
+        }
+
+        throw new Error(`Function ${functionName} not found`);
     }
 
     /**

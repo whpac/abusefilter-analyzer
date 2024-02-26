@@ -64,7 +64,8 @@ export class NodeEvaluator {
                 return this.calculateArithmeticUnaryResult(values, operation);
             case TreeNodeType.ArrayIndexing:
                 return this.calculateArrayIndexingResult(values);
-            // TODO: Function call
+            case TreeNodeType.FunctionCall:
+                return await this.calculateFunctionCallResult(context, operation, values);
             case TreeNodeType.ArrayDefinition:
                 return this.calculateArrayDefinitionResult(values);
         }
@@ -309,7 +310,9 @@ export class NodeEvaluator {
         return array.getElementAt(index);
     }
 
-    // TODO: Function call
+    protected async calculateFunctionCallResult(context: EvaluationContext, func: string, values: Value[]): Promise<Value> {
+        return await context.getFunction(func)(context, values);
+    }
 
     protected calculateArrayDefinitionResult(values: Value[]): Value {
         return new Value(ValueDataType.Array, values);
