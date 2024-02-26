@@ -22,6 +22,12 @@ export class NodeEvaluator {
             throw new Error('Cannot evaluate an atom node greedily. Use EvaluatedTreeNode.evaluate instead.');
         }
 
+        // The only node that can't be evaluated using a standard greedy execution is a conditional node
+        const operatorNode = treeNode.node as OperatorNode;
+        if (operatorNode.type == TreeNodeType.Conditional) {
+            return this.evaluateConditionalOperatorLazily(treeNode.children, context);
+        }
+
         // This is a greedy evaluation so we can calculate all the children first
         // and then the parent value. The order of evaluation is important (eg. because of variables)
         // but all nodes will use the same context, as there's no speculative execution here.
@@ -30,7 +36,6 @@ export class NodeEvaluator {
         }
 
         const values = treeNode.children.map((child) => child.value);
-        const operatorNode = treeNode.node as OperatorNode;
 
         const nodeType = operatorNode.type;
         const operation = operatorNode.operation;
@@ -44,8 +49,6 @@ export class NodeEvaluator {
                 return this.calculateIndexAssignmentResult(values);
             case TreeNodeType.ArrayAppend:
                 return this.calculateArrayAppendResult(values);
-            case TreeNodeType.Conditional:
-                return this.calculateConditionalResult(values);
             case TreeNodeType.Logic:
                 return this.calculateLogicResult(values, operation);
             case TreeNodeType.Compare:
@@ -149,6 +152,26 @@ export class NodeEvaluator {
         });
     }
 
+    protected async evaluateConditionalOperatorLazily(operands: EvaluatedTreeNode[], context: EvaluationContext): Promise<Value> {
+        const condition = operands[0];
+        const ifTrue = operands[1];
+        const ifFalse = operands[2] ?? null;
+
+        await condition.evaluate(context, this);
+        const childContext = context.createChildContext();
+
+        // Evaluate both branches, but one in a speculative mode
+        if (condition.value.isTruthy()) {
+            ifFalse?.evaluate(childContext, this);
+            await ifTrue.evaluate(context, this);
+            return ifTrue.value;
+        } else {
+            ifTrue.evaluate(childContext, this);
+            await ifFalse?.evaluate(context, this);
+            return ifFalse?.value ?? Value.Null;
+        }
+    }
+
     protected calculateSemicolonResult(values: Value[]): Value {
         const lastValue = values[values.length - 1];
         return lastValue;
@@ -181,13 +204,7 @@ export class NodeEvaluator {
         return newValue;
     }
 
-    protected calculateConditionalResult(values: Value[]): Value {
-        const condition = values[0];
-        const ifTrue = values[1];
-        const ifFalse = values[2] ?? Value.Null;
-
-        return condition.isTruthy() ? ifTrue : ifFalse;
-    }
+    // Conditional operator cannot be evaluated greedily
 
     protected calculateLogicResult(values: Value[], operation: string): Value {
         switch (operation) {
