@@ -91,6 +91,12 @@ export class Value<TValue = unknown> {
 
     /** Converts the value to string */
     public toString(): string {
+        switch (this.dataType) {
+            case ValueDataType.Array:
+                return (this.value as Value[]).map(v => v.toString()).join('\n') + '\n';
+            case ValueDataType.Boolean:
+                return this.value ? '1' : ''; // Like PHP's strval()...
+        }
         return '' + this.value;
     }
 
@@ -104,6 +110,8 @@ export class Value<TValue = unknown> {
                 return this.value ? 1 : 0;
             case ValueDataType.Null:
                 return 0;
+            case ValueDataType.Array:
+                return (this.value as Value[]).length;
             default:
                 return parseFloat(this.toString());
         }
@@ -340,8 +348,8 @@ export class Value<TValue = unknown> {
             return new Value(ValueDataType.Array, this.toArray().concat(addend.toArray()));
         } else {
             const res = this.toNumber() + addend.toNumber();
-            const type = (this.dataType === ValueDataType.Integer) && (addend.dataType === ValueDataType.Integer) ?
-                ValueDataType.Integer : ValueDataType.Float;
+            const type = (this.dataType === ValueDataType.Float) || (addend.dataType === ValueDataType.Float) ?
+                ValueDataType.Float : ValueDataType.Integer;
 
             return new Value(type, res);
         }
@@ -353,8 +361,8 @@ export class Value<TValue = unknown> {
             return Value.Undefined;
         }
         const res = this.toNumber() - subtrahent.toNumber();
-        const type = (this.dataType === ValueDataType.Integer) && (subtrahent.dataType === ValueDataType.Integer) ?
-            ValueDataType.Integer : ValueDataType.Float;
+        const type = (this.dataType === ValueDataType.Float) || (subtrahent.dataType === ValueDataType.Float) ?
+            ValueDataType.Float : ValueDataType.Integer;
 
         return new Value(type, res);
     }
@@ -365,8 +373,8 @@ export class Value<TValue = unknown> {
             return Value.Undefined;
         }
         const res = this.toNumber() * factor.toNumber();
-        const type = (this.dataType === ValueDataType.Integer) && (factor.dataType === ValueDataType.Integer) ?
-            ValueDataType.Integer : ValueDataType.Float;
+        const type = (this.dataType === ValueDataType.Float) || (factor.dataType === ValueDataType.Float) ?
+            ValueDataType.Float : ValueDataType.Integer;
 
         return new Value(type, res);
     }
