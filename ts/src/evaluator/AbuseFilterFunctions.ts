@@ -159,6 +159,10 @@ export class AbuseFilterFunctions {
     public static async specialratio(context: EvaluationContext, args: Value[]): Promise<Value<number>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'specialratio');
         const input = args[0].toString();
+        if (input.length === 0) {
+            return new Value(ValueDataType.Float, 0);
+        }
+
         const inputNoSpecials = AbuseFilterFunctions.removeSpecialCharacters(input);
         return new Value(ValueDataType.Float, 1 - (inputNoSpecials.length / input.length));
     }
