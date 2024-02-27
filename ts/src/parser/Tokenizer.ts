@@ -225,7 +225,7 @@ export class Tokenizer {
                             break;
                         case 'x':
                             // Ensure that the full `\xAB` sequence fits in the input string
-                            if(offset + 3 >= input.length) {
+                            if(offset + 3 < input.length) {
                                 const charCode = input.substring(offset + 2, offset + 4);
                                 if(/^[0-9A-F]{2}$/i.test(charCode)) {
                                     stringContent += String.fromCharCode(parseInt(charCode, 16));
