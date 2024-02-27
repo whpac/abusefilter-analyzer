@@ -96,6 +96,8 @@ export class Value<TValue = unknown> {
                 return (this.value as Value[]).map(v => v.toString()).join('\n') + '\n';
             case ValueDataType.Boolean:
                 return this.value ? '1' : ''; // Like PHP's strval()...
+            case ValueDataType.Null:
+                return '';
         }
         return '' + this.value;
     }
