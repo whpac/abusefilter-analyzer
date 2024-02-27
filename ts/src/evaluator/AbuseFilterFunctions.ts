@@ -112,7 +112,7 @@ export class AbuseFilterFunctions {
     /** Converts the input to an integer */
     public static async int(context: EvaluationContext, args: Value[]): Promise<Value<number>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'int');
-        return new Value(ValueDataType.Integer, args[0].toNumber());
+        return new Value(ValueDataType.Integer, Math.floor(args[0].toNumber()));
     }
 
     /** Converts the input to a float */
@@ -175,10 +175,10 @@ export class AbuseFilterFunctions {
         return new Value(ValueDataType.String, AbuseFilterFunctions.removeRepeatingCharacters(args[0].toString()));
     }
 
-    /** Removes whitespace characters from the input, replacing their sequences with a single space */
+    /** Removes whitespace characters from the input */
     public static async rmwhitespace(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmwhitespace');
-        return new Value(ValueDataType.String, AbuseFilterFunctions.normalizeWhitespaces(args[0].toString()));
+        return new Value(ValueDataType.String, AbuseFilterFunctions.removeWhitespaces(args[0].toString()));
     }
 
     /**
@@ -293,7 +293,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'equals_to_any');
         const input = args[0];
         for (let i = 1; i < args.length; i++) {
-            if (input.isStrictlyEqualTo(args[i])) {
+            if (input.isStrictlyEqualTo(args[i]).isTruthy()) {
                 return Value.True;
             }
         }
@@ -379,8 +379,8 @@ export class AbuseFilterFunctions {
         return s.replace(/(.)\1+/ug, '$1');
     }
 
-    private static normalizeWhitespaces(s: string) {
-        return s.replace(/\s+/ug, ' ');
+    private static removeWhitespaces(s: string) {
+        return s.replace(/\s+/ug, '');
     }
 
     //! Utility functions for checking the argument count
