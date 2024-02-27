@@ -16,6 +16,9 @@ export class EvaluationContext {
      * @param variableName A variable name to look up
      */
     public getVariable(variableName: string): VariableValue {
+        // Variable names are case-insensitive in AbuseFilter
+        variableName = variableName.toLowerCase();
+
         // First, look in our collection and if found return the value
         const localValue = this.variables.get(variableName);
         if (localValue != undefined) return VariableValue.fromValue(localValue, variableName);
@@ -36,6 +39,9 @@ export class EvaluationContext {
      * @param newValue The new value of the variable
      */
     public setVariable(variableName: string, newValue: Value): void {
+        // Variable names are case-insensitive in AbuseFilter
+        variableName = variableName.toLowerCase();
+        
         this.variables.set(variableName, newValue);
     }
 
