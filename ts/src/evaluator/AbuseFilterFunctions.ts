@@ -188,15 +188,24 @@ export class AbuseFilterFunctions {
     public static async count(context: EvaluationContext, args: Value[]): Promise<Value<number>> {
         AbuseFilterFunctions.assertArgumentCount(args, [1, 2], 'count');
 
-        const input = args[0].toString();
+        const needle = args[0].toString();
         if (args.length === 1) {
-            return new Value(ValueDataType.Integer, input.split(',').length);
+            if (args[0].dataType === ValueDataType.Array) {
+                return new Value(ValueDataType.Integer, args[0].toArray().length);
+            }
+
+            return new Value(ValueDataType.Integer, needle.split(',').length);
         }
 
-        const substring = args[1].toString();
+        if (needle.length === 0) {
+            return new Value(ValueDataType.Integer, 0);
+        }
+
+        const haystack = args[1].toString();
         let count = 0;
-        let index = -1;
-        while ((index = input.indexOf(substring, index + 1)) !== -1) {
+        let index = 0;
+        while ((index = haystack.indexOf(needle, index)) !== -1) {
+            index += needle.length; // So that "aa" is contained once in "aaa"
             count++;
         }
         return new Value(ValueDataType.Integer, count);
@@ -260,7 +269,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'contains_any');
         const input = args[0];
         for (let i = 1; i < args.length; i++) {
-            if (input.contains(args[i])) {
+            if (input.contains(args[i]).isTruthy()) {
                 return Value.True;
             }
         }
@@ -272,7 +281,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'contains_all');
         const input = args[0];
         for (let i = 1; i < args.length; i++) {
-            if (!input.contains(args[i])) {
+            if (!input.contains(args[i]).isTruthy()) {
                 return Value.False;
             }
         }
