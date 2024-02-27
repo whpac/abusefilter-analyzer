@@ -321,13 +321,21 @@ export class AbuseFilterFunctions {
 
     /** Returns the position of the first occurrence of the pattern in the input string */
     public static async strpos(context: EvaluationContext, args: Value[]): Promise<Value<number>> {
-        AbuseFilterFunctions.assertArgumentCount(args, 2, 'strpos');
+        AbuseFilterFunctions.assertArgumentCount(args, [2, 3], 'strpos');
         const input = args[0].toString();
         const pattern = args[1].toString();
         let offset = 0;
         if (args.length === 3) {
             offset = args[2].toNumber();
         }
+
+        if (pattern.length === 0) {
+            return new Value(ValueDataType.Integer, -1);
+        }
+        if (offset >= input.length) {
+            return new Value(ValueDataType.Integer, -1);
+        }
+
         const index = input.indexOf(pattern, offset);
         return new Value(ValueDataType.Integer, index);
     }
