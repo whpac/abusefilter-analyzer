@@ -1,6 +1,7 @@
 import { EvaluationContext } from './EvaluationContext.js';
 import { Value } from './Value.js';
 import { ValueDataType } from './ValueDataType.js';
+import { IPUtils } from './utils/IPUtils.js';
 
 /*
 Functions:
@@ -257,15 +258,27 @@ export class AbuseFilterFunctions {
     /** Checks if the IP address is in the specified range */
     public static async ip_in_range(context: EvaluationContext, args: Value[]): Promise<Value<boolean>> {
         AbuseFilterFunctions.assertArgumentCount(args, 2, 'ip_in_range');
-        throw new Error('Not implemented');
-        // TODO
+        return AbuseFilterFunctions.ip_in_ranges(context, args);
     }
 
     /** Checks if the IP address is in any of the specified ranges */
     public static async ip_in_ranges(context: EvaluationContext, args: Value[]): Promise<Value<boolean>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ip_in_ranges');
-        throw new Error('Not implemented');
-        // TODO
+
+        // We want to silence errors from mismatched IP versions being compared
+        // and treat such a case as an ordinary "not in range"
+        const ip = args[0].toString();
+        for (let i = 1; i < args.length; i++) {
+            try {
+                const range = args[i].toString();
+                if (IPUtils.isInRange(ip, range)) {
+                    return Value.True;
+                }
+            } catch (e) {
+                // Ignore, go to the next range
+            }
+        }
+        return Value.False;
     }
 
     /** Checks if the first string contains any of the subsequent ones */
