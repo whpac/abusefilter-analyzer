@@ -391,8 +391,28 @@ export class AbuseFilterFunctions {
     /** Sanitizes the input string */
     public static async sanitize(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'sanitize');
-        throw new Error('Not implemented');
-        // TODO
+
+        const input = args[0].toString();
+
+        // Replicate PHP html_entity_decode() behavior
+        const sanitized = input.replace(/&(#\d+|#x[0-9a-f]+|quot|amp|lt|gt);/gi, function(match, charCodeRaw) {
+            switch (charCodeRaw) {
+                case 'quot': return '"';
+                case 'amp': return '&';
+                case 'lt': return '<';
+                case 'gt': return '>';
+            }
+
+            let charCode;
+            if (charCodeRaw.startsWith('#x')) {
+                charCode = parseInt(charCodeRaw.slice(2), 16);
+            } else {
+                charCode = parseInt(charCodeRaw.slice(1), 10);
+            }
+            return String.fromCharCode(charCode);
+        });
+        
+        return new Value(ValueDataType.String, sanitized);
     }
 
     //! Utility functions for other functions
