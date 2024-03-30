@@ -181,6 +181,7 @@ export class PcreParser {
                     default:
                         if (c === '^' || c === '$') {
                             group.addToken(new PcreAnchor(c));
+                            break;
                         }
 
                         if (['*', '+', '?'].includes(c)) {

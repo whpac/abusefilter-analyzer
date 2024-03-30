@@ -95,6 +95,19 @@ describe('PcreParser tests', () => {
             assert.equal(group.tokens[3].toEcmaRegexString(), '\\)');
             assert.equal(group.tokens[3].getOriginalString(), ')');
         });
+
+        it('should parse begin and end assertions', () => {
+            const parser = new PcreParser('^a$');
+            const group = parser.parse();
+    
+            assert.equal(group.tokens.length, 3);
+            assert.equal(group.tokens[0].toEcmaRegexString(), '^');
+            assert.equal(group.tokens[0].getOriginalString(), '^');
+            assert.equal(group.tokens[1].toEcmaRegexString(), 'a');
+            assert.equal(group.tokens[1].getOriginalString(), 'a');
+            assert.equal(group.tokens[2].toEcmaRegexString(), '$');
+            assert.equal(group.tokens[2].getOriginalString(), '$');
+        });
     });
 
     describe('Groups', () => {
