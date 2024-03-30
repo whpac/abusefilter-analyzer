@@ -1,6 +1,7 @@
 import { Token } from '../parser/Token.js';
 import { TokenType } from '../parser/TokenType.js';
 import { ValueDataType } from './ValueDataType.js';
+import { RegexUtils } from './utils/regex/RegexUtils.js';
 
 /**
  * A class representing a value in the evaluation tree.
@@ -506,7 +507,7 @@ export class Value<TValue = unknown> {
     /** Checks if this value is matched by the regex pattern */
     public testRegex(pattern: Value, caseInsensitive: boolean = false): Value<boolean> {
         const subject = this.toString();
-        const patternRegex = new RegExp(pattern.toString(), caseInsensitive ? 'iu' : 'u');
+        const patternRegex = RegexUtils.toEcmaRegex(pattern.toString(), { i: caseInsensitive, u: true });
         return new Value(ValueDataType.Boolean, patternRegex.test(subject));
     }
 

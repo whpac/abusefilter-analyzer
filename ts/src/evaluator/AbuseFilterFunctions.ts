@@ -2,42 +2,7 @@ import { EvaluationContext } from './EvaluationContext.js';
 import { Value } from './Value.js';
 import { ValueDataType } from './ValueDataType.js';
 import { IPUtils } from './utils/IPUtils.js';
-
-/*
-Functions:
-lcase
-ucase
-length
-string
-int
-float
-bool
-norm
-ccnorm
-ccnorm_contains_any
-ccnorm_contains_all
-specialratio
-rmspecials
-rmdoubles
-rmwhitespace
-count
-rcount
-get_matches
-ip_in_range
-ip_in_ranges
-contains_any
-contains_all
-equals_to_any
-substr
-strlen -> length
-strpos
-str_replace
-str_replace_regexp
-rescape
-set
-set_var -> set
-sanitize
-*/
+import { RegexUtils } from './utils/regex/RegexUtils.js';
 
 export class AbuseFilterFunctions {
 
@@ -228,9 +193,8 @@ export class AbuseFilterFunctions {
             return new Value(ValueDataType.Integer, input.split(',').length);
         }
 
-        // TODO: JavaScript doesn't support (?i) in the beginning of regex
         const pattern = args[1].toString();
-        const regex = new RegExp(pattern, 'g');
+        const regex = RegexUtils.toEcmaRegex(pattern, { g: true, u: true });
         const matches = input.match(regex);
         return new Value(ValueDataType.Integer, matches?.length ?? 0);
     }
@@ -244,7 +208,7 @@ export class AbuseFilterFunctions {
 
         const input = args[0].toString();
         const pattern = args[1].toString();
-        const regex = new RegExp(pattern, 'g');
+        const regex = RegexUtils.toEcmaRegex(pattern, { g: true, u: true });
         const matches = input.match(regex);
 
         // Now we need to convert the array of strings to an array of Values
@@ -368,7 +332,7 @@ export class AbuseFilterFunctions {
         const input = args[0].toString();
         const pattern = args[1].toString();
         const replacement = args[2].toString();
-        const regex = new RegExp(pattern, 'g');
+        const regex = RegexUtils.toEcmaRegex(pattern, { g: true, u: true });
         return new Value(ValueDataType.String, input.replace(regex, replacement));
     }
 
