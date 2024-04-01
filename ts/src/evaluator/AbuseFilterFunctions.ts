@@ -188,12 +188,12 @@ export class AbuseFilterFunctions {
     public static async rcount(context: EvaluationContext, args: Value[]): Promise<Value<number>> {
         AbuseFilterFunctions.assertArgumentCount(args, [1, 2], 'rcount');
 
-        const input = args[0].toString();
+        const pattern = args[0].toString();
         if (args.length === 1) {
-            return new Value(ValueDataType.Integer, input.split(',').length);
+            return new Value(ValueDataType.Integer, pattern.split(',').length);
         }
 
-        const pattern = args[1].toString();
+        const input = args[1].toString();
         const regex = RegexUtils.toEcmaRegex(pattern, { g: true, u: true });
         const matches = input.match(regex);
         return new Value(ValueDataType.Integer, matches?.length ?? 0);
@@ -206,16 +206,19 @@ export class AbuseFilterFunctions {
     public static async get_matches(context: EvaluationContext, args: Value[]): Promise<Value<Value[]>> {
         AbuseFilterFunctions.assertArgumentCount(args, 2, 'get_matches');
 
-        const input = args[0].toString();
-        const pattern = args[1].toString();
-        const regex = RegexUtils.toEcmaRegex(pattern, { g: true, u: true });
-        const matches = input.match(regex);
+        const pattern = args[0].toString();
+        const input = args[1].toString();
+        const regex = RegexUtils.parse(pattern);
+        const nativeRegex = RegexUtils.toEcmaRegex(regex, { u: true });
+        let matches: RegExpMatchArray | undefined[] | null = input.match(nativeRegex);
+
+        matches ??= Array(1 + regex.countContainedCapturingGroups()).fill(undefined);
 
         // Now we need to convert the array of strings to an array of Values
         // However, if a group did not match, it will be `undefined` in the array and we replace it into false
-        const matchesValues = matches?.map(m =>
+        const matchesValues = matches.map(m =>
             m !== undefined ? new Value(ValueDataType.String, m) : Value.False
-        ) ?? [ Value.False ];
+        );
         return new Value(ValueDataType.Array, matchesValues);
     }
 
