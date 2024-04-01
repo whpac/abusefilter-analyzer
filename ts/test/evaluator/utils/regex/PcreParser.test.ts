@@ -182,6 +182,41 @@ describe('PcreParser tests', () => {
             assert.equal(group.toEcmaRegexString(), '(?<=a)');
             assert.equal(group.getOriginalString(), '(?<=a)');
         });
+
+        it('should count capturing groups properly', () => {
+            const parser = new PcreParser('(a)(?:b)(?:(c))');
+            const group = parser.parse();
+    
+            assert.equal(group.countContainedCapturingGroups(), 2);
+        });
+
+        it('should count capturing groups properly with nested groups', () => {
+            const parser = new PcreParser('(a(b)(c))');
+            const group = parser.parse();
+    
+            assert.equal(group.countContainedCapturingGroups(), 3);
+        });
+
+        it('should count capturing groups properly with named groups', () => {
+            const parser = new PcreParser('(a(?<name>b)(c))');
+            const group = parser.parse();
+    
+            assert.equal(group.countContainedCapturingGroups(), 3);
+        });
+
+        it('should count capturing groups properly with lookbehind assertions', () => {
+            const parser = new PcreParser('(a(?<=b)c)');
+            const group = parser.parse();
+    
+            assert.equal(group.countContainedCapturingGroups(), 1);
+        });
+
+        it('should count capturing groups properly with alternative', () => {
+            const parser = new PcreParser('a(b|(c))');
+            const group = parser.parse();
+    
+            assert.equal(group.countContainedCapturingGroups(), 2);
+        });
     });
 
     describe('Quantifiers', () => {

@@ -449,7 +449,7 @@ const getDefaultEmulateOptions: () => EmulateOptions = () => (
     { multiline: false, ignoreCase: false, inAssertion: false, inCharacterClass: false }
 );
 
-class PcreGroup implements PcreToken {
+export class PcreGroup implements PcreToken {
     public isRoot: boolean = false;
 
     public isCapturing: boolean = true;

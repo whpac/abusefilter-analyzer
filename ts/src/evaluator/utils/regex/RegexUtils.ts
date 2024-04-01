@@ -1,4 +1,4 @@
-import { PcreParser } from './PcreParser.js';
+import { PcreGroup, PcreParser } from './PcreParser.js';
 
 /**
  * Utility class for PCRE regex compatibility
@@ -15,11 +15,20 @@ export class RegexUtils {
     }
 
     /**
+     * Parses a PCRE regex string into an object
+     * @param str PCRE-compliant regex string
+     */
+    public static parse(str: string): PcreGroup {
+        const parser = new PcreParser(str);
+        return parser.parse();
+    }
+
+    /**
      * Converts a PCRE reges string into an ECMA regex object
      * @param str PCRE-compliant regex string
      * @param flags Default regex flags to use if none are provided
      */
-    public static toEcmaRegex(str: string, flags: Partial<RegexFlags>): RegExp {
+    public static toEcmaRegex(regex: string | PcreGroup, flags: Partial<RegexFlags>): RegExp {
         const defaultFlags: RegexFlags = {
             d: false,
             g: false,
@@ -32,8 +41,7 @@ export class RegexUtils {
         };
         const effectiveFlags: RegexFlags = Object.assign(defaultFlags, flags);
 
-        const parser = new PcreParser(str);
-        const rootGroup = parser.parse();
+        const rootGroup = typeof regex === 'string' ? this.parse(regex) : regex;
 
         // Extract flags from the root group to apply them to the RegExp object
         for (const option of rootGroup.options) {
@@ -55,8 +63,6 @@ export class RegexUtils {
         }
 
         const ecmaRegexString = rootGroup.toEcmaRegexString();
-        console.log('`' + ecmaRegexString + '`');
-        console.log(flagString);
         return new RegExp(ecmaRegexString, flagString);
     }
 }
