@@ -1,3 +1,4 @@
+import { ITreeNode } from '../../model/ITreeNode.js';
 import { TreeNodeType } from '../TreeNodeType.js';
 
 /**
@@ -5,7 +6,7 @@ import { TreeNodeType } from '../TreeNodeType.js';
  * 
  * Based on https://phabricator.wikimedia.org/diffusion/EABF/browse/master/includes/Parser/AFPTreeNode.php
  */
-export abstract class TreeNode {
+export abstract class TreeNode implements ITreeNode {
 
     /** Type of this node */
     public readonly type: TreeNodeType;
@@ -19,10 +20,10 @@ export abstract class TreeNode {
      * Parameters for the node. For atoms it's a single Token, while for other nodes
      * it's an array of other TreeNodes.
      */
-    public readonly children: TreeNode[];
+    public readonly children: ITreeNode[];
 
 
-    public constructor(type: TreeNodeType, position: number, children: TreeNode[] = []) {
+    public constructor(type: TreeNodeType, position: number, children: ITreeNode[] = []) {
         this.type = type;
         this.position = position;
         this.children = children;
@@ -38,6 +39,11 @@ export abstract class TreeNode {
     protected toDebugStringInner(): string[] {
         let lines = [ this.type.toString() ];
         for (const subnode of this.children) {
+            if(!(subnode instanceof TreeNode)) {
+                lines.push('  ' + subnode.toString());
+                continue;
+            }
+
             // Align sublines to the right
             const sublines = subnode.toDebugStringInner().map(
                 (line: string) => '  ' + line
