@@ -5,12 +5,13 @@ import { EvaluatedTreeNode } from '../../src/evaluator/EvaluatedTreeNode.js';
 import { NodeEvaluator } from '../../src/evaluator/NodeEvaluator.js';
 import { EvaluationContext } from '../../src/evaluator/EvaluationContext.js';
 import { ValueDataType } from '../../src/evaluator/ValueDataType.js';
+import { TreeNodeFactory } from '../../src/parser/nodes/TreeNodeFactory.js';
 
 describe('Evaluator tests', () => {
     describe('AND operator', () => {
         it('should evaluate true & true as true', async () => {
             const tokens = (new Tokenizer()).tokenize('true & true');
-            const rootNode = (new Parser()).parse(tokens)!;
+            const rootNode = (new Parser(new TreeNodeFactory())).parse(tokens)!;
             const evaluatedRootNode = new EvaluatedTreeNode(rootNode);
             await evaluatedRootNode.evaluate(new EvaluationContext(), new NodeEvaluator());
 
@@ -24,7 +25,7 @@ describe('Evaluator tests', () => {
 
         it('should evaluate false & true as false', async () => {
             const tokens = (new Tokenizer()).tokenize('false & true');
-            const rootNode = (new Parser()).parse(tokens)!;
+            const rootNode = (new Parser(new TreeNodeFactory())).parse(tokens)!;
             const evaluatedRootNode = new EvaluatedTreeNode(rootNode);
             await evaluatedRootNode.evaluate(new EvaluationContext(), new NodeEvaluator());
 
@@ -38,7 +39,7 @@ describe('Evaluator tests', () => {
 
         it('should evaluate false & false as false', async () => {
             const tokens = (new Tokenizer()).tokenize('false & false');
-            const rootNode = (new Parser()).parse(tokens)!;
+            const rootNode = (new Parser(new TreeNodeFactory())).parse(tokens)!;
             const evaluatedRootNode = new EvaluatedTreeNode(rootNode);
             await evaluatedRootNode.evaluate(new EvaluationContext(), new NodeEvaluator());
 
@@ -52,7 +53,7 @@ describe('Evaluator tests', () => {
 
         it('should evaluate 0 & true as 0', async () => {
             const tokens = (new Tokenizer()).tokenize('0 & true');
-            const rootNode = (new Parser()).parse(tokens)!;
+            const rootNode = (new Parser(new TreeNodeFactory())).parse(tokens)!;
             const evaluatedRootNode = new EvaluatedTreeNode(rootNode);
             await evaluatedRootNode.evaluate(new EvaluationContext(), new NodeEvaluator());
 
@@ -66,7 +67,7 @@ describe('Evaluator tests', () => {
 
         it('should evaluate true & 0 as false', async () => {
             const tokens = (new Tokenizer()).tokenize('true & 0');
-            const rootNode = (new Parser()).parse(tokens)!;
+            const rootNode = (new Parser(new TreeNodeFactory())).parse(tokens)!;
             const evaluatedRootNode = new EvaluatedTreeNode(rootNode);
             await evaluatedRootNode.evaluate(new EvaluationContext(), new NodeEvaluator());
 

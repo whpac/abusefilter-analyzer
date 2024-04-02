@@ -6,6 +6,7 @@ import { EvaluatedTreeNode } from '../src/evaluator/EvaluatedTreeNode.js';
 import { EvaluationContext } from '../src/evaluator/EvaluationContext.js';
 import { NodeEvaluator } from '../src/evaluator/NodeEvaluator.js';
 import { assert } from 'chai';
+import { TreeNodeFactory } from '../src/parser/nodes/TreeNodeFactory.js';
 
 describe('Expressions from .t files', () => {
     // Read files with .t extension from the /parserTests folder
@@ -19,7 +20,7 @@ describe('Expressions from .t files', () => {
                 try {
                     const content = fs.readFileSync(path.join(testFolder, file), 'utf8');
                     const tokenizer = new Tokenizer();
-                    const parser = new Parser();
+                    const parser = new Parser(new TreeNodeFactory());
                     const tokens = tokenizer.tokenize(content);
                     const rootNode = parser.parse(tokens)!;
                     const evaluatedRootNode = new EvaluatedTreeNode(rootNode);
