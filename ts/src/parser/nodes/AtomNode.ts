@@ -1,6 +1,6 @@
 import { Token } from '../Token.js';
 import { TreeNode } from './TreeNode.js';
-import { TreeNodeType } from '../TreeNodeType.js';
+import { TreeNodeType } from '../../model/TreeNodeType.js';
 
 /**
  * A node representing nullary operator, that is an atom.

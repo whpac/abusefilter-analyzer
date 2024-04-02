@@ -1,6 +1,6 @@
 import { ITreeNode } from '../../model/ITreeNode.js';
 import { Token } from '../Token.js';
-import { TreeNodeType } from '../TreeNodeType.js';
+import { TreeNodeType } from '../../model/TreeNodeType.js';
 import { AtomNode } from './AtomNode.js';
 import { OperatorNode } from './OperatorNode.js';
 

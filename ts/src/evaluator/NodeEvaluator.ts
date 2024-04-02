@@ -1,4 +1,4 @@
-import { TreeNodeType } from '../parser/TreeNodeType.js';
+import { TreeNodeType } from '../model/TreeNodeType.js';
 import { OperatorNode } from '../parser/nodes/OperatorNode.js';
 import { EvaluatedTreeNode } from './EvaluatedTreeNode.js';
 import { EvaluationContext } from './EvaluationContext.js';

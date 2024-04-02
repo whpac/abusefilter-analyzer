@@ -1,5 +1,5 @@
 import { TreeNode } from './TreeNode.js';
-import { TreeNodeType } from '../TreeNodeType.js';
+import { TreeNodeType } from '../../model/TreeNodeType.js';
 import { ITreeNode } from '../../model/ITreeNode.js';
 
 /**

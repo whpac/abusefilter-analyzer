@@ -1,5 +1,5 @@
 import { TreeNode } from '../parser/nodes/TreeNode.js';
-import { TreeNodeType } from '../parser/TreeNodeType.js';
+import { TreeNodeType } from '../model/TreeNodeType.js';
 import { AtomNode } from '../parser/nodes/AtomNode.js';
 import { Value } from './Value.js';
 import { NodeEvaluator } from './NodeEvaluator.js';

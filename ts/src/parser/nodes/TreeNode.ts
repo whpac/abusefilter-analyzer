@@ -1,5 +1,5 @@
 import { ITreeNode } from '../../model/ITreeNode.js';
-import { TreeNodeType } from '../TreeNodeType.js';
+import { TreeNodeType } from '../../model/TreeNodeType.js';
 
 /**
  * Represents a single node in the parser tree. It chan contain other nodes or simple values.

@@ -1,7 +1,7 @@
 import { ParserException } from './ParserException.js';
 import { Token } from './Token.js';
 import { TokenType } from './TokenType.js';
-import { TreeNodeType } from './TreeNodeType.js';
+import { TreeNodeType } from '../model/TreeNodeType.js';
 import { NodeEvaluator } from '../evaluator/NodeEvaluator.js';
 import { INodeFactory } from './nodes/INodeFactory.js';
 import { ITreeNode } from '../model/ITreeNode.js';
