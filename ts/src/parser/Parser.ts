@@ -29,10 +29,16 @@ export class Parser {
      * @param tokens The tokens to parse.
      * @returns The parsed expression tree.
      */
-    public parse(tokens: Token[]): TreeNode | null {
+    public parse(tokens: Token[]): TreeNode {
         this.tokens = tokens;
+        const tree = this.doLevelEntry();
 
-        return this.doLevelEntry();
+        if (tree === null) {
+            // When the filter is empty, return a null token instead of no tree at all.
+            // AbuseFilter evaluates empty tree to null, so this is a valid representation.
+            return new AtomNode(new Token(TokenType.Keyword, 'null', 0, 0));
+        }
+        return tree;
     }
 
     /**
