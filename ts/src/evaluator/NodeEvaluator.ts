@@ -1,5 +1,4 @@
 import { TreeNodeType } from '../model/TreeNodeType.js';
-import { OperatorNode } from '../parser/nodes/OperatorNode.js';
 import { EvaluatedTreeNode } from './EvaluatedTreeNode.js';
 import { EvaluationContext } from './EvaluationContext.js';
 import { Value } from './Value.js';
@@ -23,8 +22,8 @@ export class NodeEvaluator {
         }
 
         // The only node that can't be evaluated using a standard greedy execution is a conditional node
-        const operatorNode = treeNode.node as OperatorNode;
-        if (operatorNode.type == TreeNodeType.Conditional) {
+        const nodeType = treeNode.node.type;
+        if (nodeType == TreeNodeType.Conditional) {
             return this.evaluateConditionalOperatorLazily(treeNode.children, context);
         }
 
@@ -37,9 +36,6 @@ export class NodeEvaluator {
 
         const values = treeNode.children.map((child) => child.value);
 
-        const nodeType = operatorNode.type;
-        const operation = operatorNode.operation;
-
         switch (nodeType) {
             case TreeNodeType.Semicolon:
                 return this.calculateSemicolonResult(values);
@@ -49,26 +45,39 @@ export class NodeEvaluator {
                 return this.calculateIndexAssignmentResult(values);
             case TreeNodeType.ArrayAppend:
                 return this.calculateArrayAppendResult(values);
-            case TreeNodeType.Logic:
-                return this.calculateLogicResult(values, operation);
-            case TreeNodeType.Compare:
-                return this.calculateCompareResult(values, operation);
-            case TreeNodeType.ArithmeticAdditive:
-                return this.calculateArithmeticAdditiveResult(values, operation);
-            case TreeNodeType.ArithmeticMultiplicative:
-                return this.calculateArithmeticMultiplicativeResult(values, operation);
+            case TreeNodeType.LogicAnd:
+            case TreeNodeType.LogicOr:
+            case TreeNodeType.LogicXor:
+                return this.calculateLogicResult(values, nodeType);
+            case TreeNodeType.CompareEqual:
+            case TreeNodeType.CompareNotEqual:
+            case TreeNodeType.CompareStrictEqual:
+            case TreeNodeType.CompareStrictNotEqual:
+            case TreeNodeType.CompareLess:
+            case TreeNodeType.CompareLessEqual:
+            case TreeNodeType.CompareGreater:
+            case TreeNodeType.CompareGreaterEqual:
+                return this.calculateCompareResult(values, nodeType);
+            case TreeNodeType.ArithmeticAdd:
+            case TreeNodeType.ArithmeticSubtract:
+                return this.calculateArithmeticAdditiveResult(values, nodeType);
+            case TreeNodeType.ArithmeticMultiply:
+            case TreeNodeType.ArithmeticDivide:
+            case TreeNodeType.ArithmeticModulo:
+                return this.calculateArithmeticMultiplicativeResult(values, nodeType);
             case TreeNodeType.Exponentiation:
                 return this.calculateExponentiationResult(values);
             case TreeNodeType.BooleanNegation:
                 return this.calculateBooleanNegationResult(values);
             case TreeNodeType.KeywordOperator:
-                return this.calculateKeywordOperatorResult(values, operation);
-            case TreeNodeType.ArithmeticUnary:
-                return this.calculateArithmeticUnaryResult(values, operation);
+                return this.calculateKeywordOperatorResult(values);
+            case TreeNodeType.ArithmeticUnaryPlus:
+            case TreeNodeType.ArithmeticUnaryMinus:
+                return this.calculateArithmeticUnaryResult(values, nodeType);
             case TreeNodeType.ArrayIndexing:
                 return this.calculateArrayIndexingResult(values);
             case TreeNodeType.FunctionCall:
-                return await this.calculateFunctionCallResult(context, operation, values);
+                return await this.calculateFunctionCallResult(context, values);
             case TreeNodeType.ArrayDefinition:
                 return this.calculateArrayDefinitionResult(values);
         }
@@ -89,15 +98,12 @@ export class NodeEvaluator {
      * @param context The evaluation context
      */
     public async evaluateNodeLazily(treeNode: EvaluatedTreeNode, context: EvaluationContext): Promise<Value> {
-        if (treeNode.node.type == TreeNodeType.Logic) {
-            const operatorNode = treeNode.node as OperatorNode;
-            if (operatorNode.operation == '&') {
-                return this.evaluateLogicalOperatorLazily(treeNode.children, context, true);
-            }
-            else if (operatorNode.operation == '|') {
-                return this.evaluateLogicalOperatorLazily(treeNode.children, context, false);
-            }
+        if (treeNode.node.type == TreeNodeType.LogicAnd) {
+            return this.evaluateLogicalOperatorLazily(treeNode.children, context, true);
+        } else if (treeNode.node.type == TreeNodeType.LogicOr) {
+            return this.evaluateLogicalOperatorLazily(treeNode.children, context, false);
         }
+
         return this.evaluateNodeGreedily(treeNode, context);
     }
 
@@ -206,71 +212,69 @@ export class NodeEvaluator {
 
     // Conditional operator cannot be evaluated greedily
 
-    protected calculateLogicResult(values: Value[], operation: string): Value {
+    protected calculateLogicResult(values: Value[], operation: TreeNodeType): Value {
         switch (operation) {
-            case '&':
+            case TreeNodeType.LogicAnd:
                 return Value.and(values);
-            case '|':
+            case TreeNodeType.LogicOr:
                 return Value.or(values);
-            case '^':
+            case TreeNodeType.LogicXor:
                 return Value.xor(values);
             default:
                 throw new Error(`Unknown logical operation: ${operation}`);
         }
     }
 
-    protected calculateCompareResult(values: Value[], operation: string): Value {
+    protected calculateCompareResult(values: Value[], operation: TreeNodeType): Value {
         const left = values[0];
         const right = values[1];
 
         switch (operation) {
-            // = and == are equivalent
-            case '=':
-            case '==':
+            case TreeNodeType.CompareEqual:
                 return left.isLooselyEqualTo(right);
-            case '!=':
+            case TreeNodeType.CompareNotEqual:
                 return left.isLooselyInequalTo(right);
-            case '===':
+            case TreeNodeType.CompareStrictEqual:
                 return left.isStrictlyEqualTo(right);
-            case '!==':
+            case TreeNodeType.CompareStrictNotEqual:
                 return left.isStrictlyInequalTo(right);
-            case '<':
+            case TreeNodeType.CompareLess:
                 return left.isLessThan(right);
-            case '<=':
+            case TreeNodeType.CompareLessEqual:
                 return left.isLessThanOrEqualTo(right);
-            case '>':
+            case TreeNodeType.CompareGreater:
                 return left.isGreaterThan(right);
-            case '>=':
+            case TreeNodeType.CompareGreaterEqual:
                 return left.isGreaterThanOrEqualTo(right);
             default:
                 throw new Error(`Unknown comparison operation: ${operation}`);
         }
     }
 
-    protected calculateArithmeticAdditiveResult(values: Value[], operation: string): Value {
+    protected calculateArithmeticAdditiveResult(values: Value[], operation: TreeNodeType): Value {
         const left = values[0];
         const right = values[1];
 
         switch (operation) {
-            case '+':
+            case TreeNodeType.ArithmeticAdd:
                 return left.add(right);
-            case '-':
+            case TreeNodeType.ArithmeticSubtract:
                 return left.subtract(right);
             default:
                 throw new Error(`Unknown arithmetic additive operation: ${operation}`);
         }
     }
 
-    protected calculateArithmeticMultiplicativeResult(values: Value[], operation: string): Value {
+    protected calculateArithmeticMultiplicativeResult(values: Value[], operation: TreeNodeType): Value {
         const left = values[0];
         const right = values[1];
 
         switch (operation) {
-            case '*':
+            case TreeNodeType.ArithmeticMultiply:
                 return left.multiply(right);
-            case '/':
+            case TreeNodeType.ArithmeticDivide:
                 return left.divide(right);
-            case '%':
+            case TreeNodeType.ArithmeticModulo:
                 return left.modulo(right);
             default:
                 throw new Error(`Unknown arithmetic multiplicative operation: ${operation}`);
@@ -289,7 +293,9 @@ export class NodeEvaluator {
         return operand.not();
     }
 
-    protected calculateKeywordOperatorResult(values: Value[], operation: string): Value {
+    protected calculateKeywordOperatorResult(values: Value[]): Value {
+        // Keyword is encoded as the first value
+        const operation = values.shift()?.toString();
         switch (operation) {
             case 'in':
                 return values[1].contains(values[0]);
@@ -307,13 +313,13 @@ export class NodeEvaluator {
         throw new Error(`Unrecognized keyword operator: ${operation}.`);
     }
 
-    protected calculateArithmeticUnaryResult(values: Value[], operation: string): Value {
+    protected calculateArithmeticUnaryResult(values: Value[], operation: TreeNodeType): Value {
         const operand = values[0];
 
         switch (operation) {
-            case '+':
+            case TreeNodeType.ArithmeticUnaryPlus:
                 return operand;
-            case '-':
+            case TreeNodeType.ArithmeticUnaryMinus:
                 return operand.negate();
             default:
                 throw new Error(`Unknown arithmetic unary operation: ${operation}`);
@@ -327,7 +333,9 @@ export class NodeEvaluator {
         return array.getElementAt(index);
     }
 
-    protected async calculateFunctionCallResult(context: EvaluationContext, func: string, values: Value[]): Promise<Value> {
+    protected async calculateFunctionCallResult(context: EvaluationContext, values: Value[]): Promise<Value> {
+        // Function name is encoded as the first value
+        const func = values.shift()?.toString() ?? '';
         return await context.getFunction(func)(context, values);
     }
 

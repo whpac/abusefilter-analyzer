@@ -12,11 +12,6 @@ export abstract class TreeNode implements ITreeNode {
     public readonly type: TreeNodeType;
 
     /**
-     * The position of the node in the source code, used for error reporting.
-     */
-    public readonly position: number;
-
-    /**
      * Parameters for the node. For atoms it's a single Token, while for other nodes
      * it's an array of other TreeNodes.
      */
@@ -25,7 +20,6 @@ export abstract class TreeNode implements ITreeNode {
 
     public constructor(type: TreeNodeType, position: number, children: ITreeNode[] = []) {
         this.type = type;
-        this.position = position;
         this.children = children;
     }
 

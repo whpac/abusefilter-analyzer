@@ -259,15 +259,21 @@ export class Parser {
     private doLevelBoolOps(): ITreeNode {
         let leftOperand = this.doLevelCompares();
         const ops = ['&', '|', '^'];
+        const operatorMapping = {
+            '&': TreeNodeType.LogicAnd,
+            '|': TreeNodeType.LogicOr,
+            '^': TreeNodeType.LogicXor,
+        };
+
+
         while(this.currentToken.is(TokenType.Operator, ops)) {
             const op = this.currentToken.value;
             const position = this.currentToken.startPosition;
             this.move();
-
             const rightOperand = this.doLevelCompares();
 
             leftOperand = this.nodeFactory.createOperatorNode(
-                TreeNodeType.Logic,
+                operatorMapping[op as keyof typeof operatorMapping],
                 position,
                 op,
                 [leftOperand, rightOperand],
@@ -284,6 +290,19 @@ export class Parser {
         // Only allow either a single operation, or a combination of a single equalityOps and a single
         // orderOps. This resembles what PHP does, and allows `a < b == c` while rejecting `a < b < c`
         let allowedOps = equalityOps.concat(orderOps);
+
+        const operatorMapping = {
+            '=': TreeNodeType.CompareEqual, // '=' is an alias for '==
+            '==': TreeNodeType.CompareEqual,
+            '===': TreeNodeType.CompareStrictEqual,
+            '!=': TreeNodeType.CompareNotEqual,
+            '!==': TreeNodeType.CompareStrictNotEqual,
+            '<': TreeNodeType.CompareLess,
+            '>': TreeNodeType.CompareGreater,
+            '<=': TreeNodeType.CompareLessEqual,
+            '>=': TreeNodeType.CompareGreaterEqual,
+        };
+
         while(this.currentToken.is(TokenType.Operator, allowedOps)) {
             const op = this.currentToken.value;
             allowedOps = equalityOps.includes(op) ? orderOps : equalityOps;
@@ -291,7 +310,7 @@ export class Parser {
             this.move();
             const rightOperand = this.doLevelSumRels();
             leftOperand = this.nodeFactory.createOperatorNode(
-                TreeNodeType.Compare,
+                operatorMapping[op as keyof typeof operatorMapping],
                 position,
                 op,
                 [leftOperand, rightOperand],
@@ -310,7 +329,7 @@ export class Parser {
             this.move();
             const rightOperand = this.doLevelMulRels();
             leftOperand = this.nodeFactory.createOperatorNode(
-                TreeNodeType.ArithmeticAdditive,
+                op == '+' ? TreeNodeType.ArithmeticAdd : TreeNodeType.ArithmeticSubtract,
                 position,
                 op,
                 [leftOperand, rightOperand],
@@ -323,13 +342,19 @@ export class Parser {
     private doLevelMulRels(): ITreeNode {
         let leftOperand = this.doLevelPow();
         const ops = ['*', '/', '%'];
+        const operatorMapping = {
+            '*': TreeNodeType.ArithmeticMultiply,
+            '/': TreeNodeType.ArithmeticDivide,
+            '%': TreeNodeType.ArithmeticModulo,
+        };
+
         while(this.currentToken.is(TokenType.Operator, ops)) {
             const op = this.currentToken.value;
             const position = this.currentToken.startPosition;
             this.move();
             const rightOperand = this.doLevelPow();
             leftOperand = this.nodeFactory.createOperatorNode(
-                TreeNodeType.ArithmeticMultiplicative,
+                operatorMapping[op as keyof typeof operatorMapping],
                 position,
                 op,
                 [leftOperand, rightOperand],
@@ -372,8 +397,7 @@ export class Parser {
             this.move();
             const rightOperand = this.doLevelUnarys();
 
-            return this.nodeFactory.createOperatorNode(
-                TreeNodeType.KeywordOperator,
+            return this.nodeFactory.createKeywordNode(
                 position,
                 keyword,
                 [leftOperand, rightOperand],
@@ -390,7 +414,12 @@ export class Parser {
             const position = this.currentToken.startPosition;
             this.move();
             const argument = this.doLevelArrayElements();
-            return this.nodeFactory.createOperatorNode(TreeNodeType.ArithmeticUnary, position, op, [argument]);
+            return this.nodeFactory.createOperatorNode(
+                op == '+' ? TreeNodeType.ArithmeticUnaryPlus : TreeNodeType.ArithmeticUnaryMinus,
+                position,
+                op,
+                [argument]
+            );
         }
         return this.doLevelArrayElements();
     }
@@ -459,7 +488,7 @@ export class Parser {
             }
             this.move();
 
-            return this.nodeFactory.createOperatorNode(TreeNodeType.FunctionCall, position, func, args);
+            return this.nodeFactory.createFunctionCallNode(position, func, args);
         }
 
         return this.doLevelAtom();

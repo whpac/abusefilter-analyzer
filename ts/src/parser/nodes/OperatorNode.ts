@@ -9,15 +9,7 @@ import { ITreeNode } from '../../model/ITreeNode.js';
  */
 export class OperatorNode extends TreeNode {
 
-    /**
-     * The operation this node represents. It can be a operator, function name, etc.
-     */
-    public readonly operation: string;
-
-
     public constructor(type: TreeNodeType, position: number, operation: string, children: ITreeNode[]) {
         super(type, position, children);
-
-        this.operation = operation;
     }
 }

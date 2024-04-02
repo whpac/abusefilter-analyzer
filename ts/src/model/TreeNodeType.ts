@@ -44,32 +44,44 @@ export enum TreeNodeType {
     Conditional = 'Conditional',
 
 
-    /**
-     * Represents a logic operator node. It's composed of three children:
-     * an operation (string), a left operand and a right operand (tree nodes).
+    /*
+    Represent a logic operator node. It's composed of three children:
+    an operation (string), a left operand and a right operand (tree nodes).
      */
-    Logic = 'Logic',
+    LogicAnd = 'LogicAnd',
+    LogicOr = 'LogicOr',
+    LogicXor = 'LogicXor',
 
 
-    /**
-     * Represents a comparison operator node. It's composed of three children:
-     * an operation (string), a left operand and a right operand (tree nodes).
+    /*
+    Represent a comparison operator node. It's composed of three children:
+    an operation (string), a left operand and a right operand (tree nodes).
      */
-    Compare = 'Compare',
+    CompareEqual = 'CompareEqual',
+    CompareNotEqual = 'CompareNotEqual',
+    CompareStrictEqual = 'CompareStrictEqual',
+    CompareStrictNotEqual = 'CompareStrictNotEqual',
+    CompareLess = 'CompareLess',
+    CompareLessEqual = 'CompareLessEqual',
+    CompareGreater = 'CompareGreater',
+    CompareGreaterEqual = 'CompareGreaterEqual',
 
 
-    /**
-     * Represents an addition or subtraction operator node. It's composed of three children:
-     * an operation (string), a left operand and a right operand (tree nodes).
+    /*
+    Represent an addition or subtraction operator node. It's composed of three children:
+    an operation (string), a left operand and a right operand (tree nodes).
      */
-    ArithmeticAdditive = 'ArithmeticAdditive',
+    ArithmeticAdd = 'ArithmeticAdd',
+    ArithmeticSubtract = 'ArithmeticSubtract',
 
 
-    /**
-     * Represents a multiplication, division or modulo operator node. It's composed of three children:
-     * an operation (string), a left operand and a right operand (tree nodes).
+    /*
+    Represent a multiplication, division or modulo operator node. It's composed of three children:
+    an operation (string), a left operand and a right operand (tree nodes).
      */
-    ArithmeticMultiplicative = 'ArithmeticMultiplicative',
+    ArithmeticMultiply = 'ArithmeticMultiply',
+    ArithmeticDivide = 'ArithmeticDivide',
+    ArithmeticModulo = 'ArithmeticModulo',
 
 
     /**
@@ -90,14 +102,15 @@ export enum TreeNodeType {
      * Represents a keyword binary operator node. It's composed of three children:
      * an operation (string), a left operand and a right operand (tree nodes).
      */
-    KeywordOperator = 'KeywordOperator',
+    KeywordOperator = 'KeywordOperator', //TODO: Split into separate types
 
 
-    /**
-     * Represents an arithmetic unary operator node. It's composed of two children:
-     * an operation (string) and an operand (tree node).
+    /*
+    Represent an arithmetic unary operator node. It's composed of two children:
+    an operation (string) and an operand (tree node).
      */
-    ArithmeticUnary = 'ArithmeticUnary',
+    ArithmeticUnaryPlus = 'ArithmeticUnaryPlus',
+    ArithmeticUnaryMinus = 'ArithmeticUnaryMinus',
 
 
     /**

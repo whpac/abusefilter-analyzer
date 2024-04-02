@@ -6,9 +6,6 @@ import { TreeNodeType } from './TreeNodeType.js';
  * depend on the values of their children.
  */
 export interface ITreeNode {
-    
-    /** Returns a position of this node in the source code. Can be used for error reporting. */
-    get position(): number;
 
     /** Type of this node. */
     get type(): TreeNodeType;
