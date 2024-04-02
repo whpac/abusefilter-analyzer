@@ -448,9 +448,6 @@ export class Parser {
                     const thisArg = this.doLevelSemicolon();
                     if(thisArg !== null) {
                         args.push(thisArg);
-                    } else if(!this.functionIsVariadic(func)) {
-                        // TODO: Figure out if we need this condition
-                        this.throwUnexpectedToken(this.currentToken);
                     }
                 } while(this.currentToken.is(TokenType.Comma));
             } else {
@@ -523,22 +520,6 @@ export class Parser {
 
         this.move();
         return result;
-    }
-
-    /**
-     * Checks if the given function is variadic.
-     * @param fname Function name
-     */
-    private functionIsVariadic(fname: string): boolean {
-        return true;
-        /*
-        // TODO
-        if ( !array_key_exists( fname, FilterEvaluator::FUNC_ARG_COUNT ) ) {
-            // @codeCoverageIgnoreStart
-            throw new InvalidArgumentException( "Function fname is not valid" );
-            // @codeCoverageIgnoreEnd
-        }
-        return FilterEvaluator::FUNC_ARG_COUNT[fname][1] === INF;*/
     }
 
     /**
