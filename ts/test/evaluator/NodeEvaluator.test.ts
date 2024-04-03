@@ -3,7 +3,7 @@ import { Tokenizer } from '../../src/parser/Tokenizer.js';
 import { Parser } from '../../src/parser/Parser.js';
 import { NodeEvaluator } from '../../src/evaluator/NodeEvaluator.js';
 import { EvaluationContext } from '../../src/evaluator/EvaluationContext.js';
-import { ValueDataType } from '../../src/model/ValueDataType.js';
+import { ValueDataType } from '../../src/model/value/ValueDataType.js';
 import { EvaluableNodeFactory } from '../../src/evaluator/nodes/EvaluableNodeFactory.js';
 
 describe('Evaluator tests', () => {

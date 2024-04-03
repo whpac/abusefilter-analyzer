@@ -1,4 +1,4 @@
-import { IToken } from './IToken.js';
+import { IToken } from '../tokens/IToken.js';
 import { ITreeNode } from './ITreeNode.js';
 import { TreeNodeType } from './TreeNodeType.js';
 

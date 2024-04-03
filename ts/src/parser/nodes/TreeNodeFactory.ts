@@ -1,7 +1,7 @@
-import { ITreeNode } from '../../model/ITreeNode.js';
+import { ITreeNode } from '../../model/nodes/ITreeNode.js';
 import { Token } from '../Token.js';
-import { TreeNodeType } from '../../model/TreeNodeType.js';
-import { INodeFactory } from '../../model/INodeFactory.js';
+import { TreeNodeType } from '../../model/nodes/TreeNodeType.js';
+import { INodeFactory } from '../../model/nodes/INodeFactory.js';
 import { TreeNode } from './TreeNode.js';
 
 export class TreeNodeFactory implements INodeFactory {

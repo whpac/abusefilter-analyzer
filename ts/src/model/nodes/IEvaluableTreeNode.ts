@@ -1,6 +1,6 @@
-import { IEvaluationContext } from './IEvaluationContext.js';
+import { IEvaluationContext } from '../IEvaluationContext.js';
 import { ITreeNode } from './ITreeNode.js';
-import { IValue } from './IValue.js';
+import { IValue } from '../value/IValue.js';
 
 /**
  * Evaluable tree node is a type of tree node that can store the values produced by

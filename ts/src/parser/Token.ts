@@ -1,5 +1,5 @@
-import { IToken } from '../model/IToken.js';
-import { TokenType } from '../model/TokenType.js';
+import { IToken } from '../model/tokens/IToken.js';
+import { TokenType } from '../model/tokens/TokenType.js';
 
 /**
  * Represents a token found in the input sequence.

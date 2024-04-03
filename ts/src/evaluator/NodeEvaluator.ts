@@ -1,11 +1,11 @@
-import { TreeNodeType } from '../model/TreeNodeType.js';
+import { TreeNodeType } from '../model/nodes/TreeNodeType.js';
 import { Value } from './value/Value.js';
-import { ValueDataType } from '../model/ValueDataType.js';
+import { ValueDataType } from '../model/value/ValueDataType.js';
 import { VariableValue } from './value/VariableValue.js';
-import { IEvaluableTreeNode } from '../model/IEvaluableTreeNode.js';
-import { TokenType } from '../model/TokenType.js';
+import { IEvaluableTreeNode } from '../model/nodes/IEvaluableTreeNode.js';
+import { TokenType } from '../model/tokens/TokenType.js';
 import { IEvaluationContext } from '../model/IEvaluationContext.js';
-import { IValue } from '../model/IValue.js';
+import { IValue } from '../model/value/IValue.js';
 import { ValueCalculator } from './value/ValueCalculator.js';
 import { ValueStringOperations } from './value/ValueStringOperations.js';
 import { ValueComparer } from './value/ValueComparer.js';

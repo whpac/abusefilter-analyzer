@@ -1,8 +1,8 @@
-import { IEvaluableTreeNode, OnValueSetCallback } from '../../model/IEvaluableTreeNode.js';
+import { IEvaluableTreeNode, OnValueSetCallback } from '../../model/nodes/IEvaluableTreeNode.js';
 import { IEvaluationContext } from '../../model/IEvaluationContext.js';
-import { IToken } from '../../model/IToken.js';
-import { IValue } from '../../model/IValue.js';
-import { TreeNodeType } from '../../model/TreeNodeType.js';
+import { IToken } from '../../model/tokens/IToken.js';
+import { IValue } from '../../model/value/IValue.js';
+import { TreeNodeType } from '../../model/nodes/TreeNodeType.js';
 import { Value } from '../value/Value.js';
 
 export class EvaluableTreeNode implements IEvaluableTreeNode {

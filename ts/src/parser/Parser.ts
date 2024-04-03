@@ -1,9 +1,9 @@
 import { ParserException } from './ParserException.js';
 import { Token } from './Token.js';
-import { TokenType } from '../model/TokenType.js';
-import { INodeFactory } from '../model/INodeFactory.js';
-import { ITreeNode } from '../model/ITreeNode.js';
-import { TreeNodeType } from '../model/TreeNodeType.js';
+import { TokenType } from '../model/tokens/TokenType.js';
+import { INodeFactory } from '../model/nodes/INodeFactory.js';
+import { ITreeNode } from '../model/nodes/ITreeNode.js';
+import { TreeNodeType } from '../model/nodes/TreeNodeType.js';
 
 /**
  * A parser for the AbuseFilter syntax.

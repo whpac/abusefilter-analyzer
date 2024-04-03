@@ -1,5 +1,5 @@
 import { AbuseFilterFunction, IEvaluationContext } from '../model/IEvaluationContext.js';
-import { IValue } from '../model/IValue.js';
+import { IValue } from '../model/value/IValue.js';
 import { AbuseFilterFunctions } from './AbuseFilterFunctions.js';
 import { VariableValue } from './value/VariableValue.js';
 

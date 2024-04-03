@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { Tokenizer } from '../../src/parser/Tokenizer.js';
 import { Parser } from '../../src/parser/Parser.js';
-import { TreeNodeType } from '../../src/model/TreeNodeType.js';
+import { TreeNodeType } from '../../src/model/nodes/TreeNodeType.js';
 import { TreeNodeFactory } from '../../src/parser/nodes/TreeNodeFactory.js';
 
 describe('Parser tests', () => {

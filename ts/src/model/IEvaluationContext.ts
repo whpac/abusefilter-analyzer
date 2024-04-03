@@ -1,5 +1,5 @@
-import { IValue } from './IValue.js';
-import { IVariableValue } from './IVariableValue.js';
+import { IValue } from './value/IValue.js';
+import { IVariableValue } from './value/IVariableValue.js';
 
 export interface IEvaluationContext {
 

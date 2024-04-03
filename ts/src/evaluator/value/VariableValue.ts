@@ -1,7 +1,7 @@
 import { Value } from './Value.js';
-import { ValueDataType } from '../../model/ValueDataType.js';
-import { IVariableValue } from '../../model/IVariableValue.js';
-import { IValue } from '../../model/IValue.js';
+import { ValueDataType } from '../../model/value/ValueDataType.js';
+import { IVariableValue } from '../../model/value/IVariableValue.js';
+import { IValue } from '../../model/value/IValue.js';
 
 /**
  * Represents a variable value, that can be used as a l-value in assignments.

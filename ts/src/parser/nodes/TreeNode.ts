@@ -1,5 +1,5 @@
-import { ITreeNode } from '../../model/ITreeNode.js';
-import { TreeNodeType } from '../../model/TreeNodeType.js';
+import { ITreeNode } from '../../model/nodes/ITreeNode.js';
+import { TreeNodeType } from '../../model/nodes/TreeNodeType.js';
 import { Token } from '../Token.js';
 
 /**

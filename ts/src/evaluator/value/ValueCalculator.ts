@@ -1,5 +1,5 @@
-import { IValue } from '../../model/IValue.js';
-import { ValueDataType } from '../../model/ValueDataType.js';
+import { IValue } from '../../model/value/IValue.js';
+import { ValueDataType } from '../../model/value/ValueDataType.js';
 import { Value } from './Value.js';
 
 export class ValueCalculator {
