@@ -25,7 +25,7 @@ export class EvaluableTreeNode implements IEvaluableTreeNode {
     }
 
     public setValue(evaluationContext: IEvaluationContext, value: IValue): void {
-        this.valueByContext.set(evaluationContext, value);
+        this.valueByContext.set(evaluationContext.rootContext, value);
 
         for(const callback of this.onValueSetCallbacks) {
             callback(this, evaluationContext);
@@ -33,11 +33,11 @@ export class EvaluableTreeNode implements IEvaluableTreeNode {
     }
 
     public getValue(evaluationContext: IEvaluationContext): IValue {
-        return this.valueByContext.get(evaluationContext) ?? Value.Null;
+        return this.valueByContext.get(evaluationContext.rootContext) ?? Value.Null;
     }
 
     public hasValue(evaluationContext: IEvaluationContext): boolean {
-        return this.valueByContext.has(evaluationContext);
+        return this.valueByContext.has(evaluationContext.rootContext);
     }
 
     public getContextsWithValue(): IEvaluationContext[] {

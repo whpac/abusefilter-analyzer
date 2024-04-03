@@ -5,10 +5,25 @@ import { VariableValue } from './value/VariableValue.js';
 
 export class EvaluationContext implements IEvaluationContext {
     /** The parent context, used for looking up variable values, will not be changed by this context. */
-    protected parentContext: EvaluationContext | null = null;
+    protected readonly parentContext: EvaluationContext | null = null;
 
     /** Here our variables will be stored. */
-    protected variables: Map<string, IValue> = new Map();
+    protected readonly variables: Map<string, IValue> = new Map();
+
+    public readonly rootContext: IEvaluationContext;
+
+    /**
+     * Creates a new evaluation context.
+     * @param parentContext The parent context, if any. If not provided, this context will be the root context.
+     */
+    public constructor(parentContext: EvaluationContext | null = null) {
+        if (parentContext !== null) {
+            this.parentContext = parentContext;
+            this.rootContext = parentContext.rootContext;
+        } else {
+            this.rootContext = this;
+        }
+    }
 
     public getVariable(variableName: string): VariableValue {
         // Variable names are case-insensitive in AbuseFilter
@@ -45,8 +60,7 @@ export class EvaluationContext implements IEvaluationContext {
     }
 
     public createChildContext(): EvaluationContext {
-        const childContext = new EvaluationContext();
-        childContext.parentContext = this;
+        const childContext = new EvaluationContext(this);
         return childContext;
     }
 }

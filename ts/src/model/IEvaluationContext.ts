@@ -4,6 +4,13 @@ import { IVariableValue } from './value/IVariableValue.js';
 export interface IEvaluationContext {
 
     /**
+     * Returns the root context of this context. The root context is the one
+     * that doesn't have a parent and is the topmost context in the hierarchy.
+     * For the root context, this method should be equal to `this`.
+     */
+    get rootContext(): IEvaluationContext;
+
+    /**
      * Returns the value of a variable. If the variable is not found in this context,
      * it will look up in its parent.
      * If the variable is not found in the parent, it will throw an error.
