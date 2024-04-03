@@ -4,6 +4,8 @@ import { IPUtils } from './utils/IPUtils.js';
 import { RegexUtils } from './utils/regex/RegexUtils.js';
 import { AbuseFilterFunction, IEvaluationContext } from '../model/IEvaluationContext.js';
 import { IValue } from '../model/IValue.js';
+import { ValueStringOperations } from './value/ValueStringOperations.js';
+import { ValueComparer } from './value/ValueComparer.js';
 
 export class AbuseFilterFunctions {
 
@@ -71,27 +73,27 @@ export class AbuseFilterFunctions {
     }
 
     /** Converts the input to a string */
-    public static async string(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
+    public static async string(context: IEvaluationContext, args: IValue[]): Promise<IValue<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'string');
-        return new Value(ValueDataType.String, args[0].toString());
+        return args[0].castToString();
     }
 
     /** Converts the input to an integer */
-    public static async int(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
+    public static async int(context: IEvaluationContext, args: IValue[]): Promise<IValue<number>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'int');
-        return new Value(ValueDataType.Integer, Math.floor(args[0].toNumber()));
+        return args[0].castToInt();
     }
 
     /** Converts the input to a float */
-    public static async float(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
+    public static async float(context: IEvaluationContext, args: IValue[]): Promise<IValue<number>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'float');
-        return new Value(ValueDataType.Float, args[0].toNumber());
+        return args[0].castToFloat();
     }
 
     /** Converts the input to a boolean */
-    public static async bool(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
+    public static async bool(context: IEvaluationContext, args: IValue[]): Promise<IValue<boolean>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'bool');
-        return args[0].asBoolean();
+        return args[0].castToBoolean();
     }
 
     /** Normalizes the input string using multiple AbuseFilter functions */
@@ -254,7 +256,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'contains_any');
         const input = args[0];
         for (let i = 1; i < args.length; i++) {
-            if (input.contains(args[i]).isTruthy()) {
+            if (ValueStringOperations.contains(input, args[i]).isTruthy()) {
                 return Value.True;
             }
         }
@@ -266,7 +268,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'contains_all');
         const input = args[0];
         for (let i = 1; i < args.length; i++) {
-            if (!input.contains(args[i]).isTruthy()) {
+            if (!ValueStringOperations.contains(input, args[i]).isTruthy()) {
                 return Value.False;
             }
         }
@@ -278,7 +280,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'equals_to_any');
         const input = args[0];
         for (let i = 1; i < args.length; i++) {
-            if (input.isStrictlyEqualTo(args[i]).isTruthy()) {
+            if (ValueComparer.isStrictlyEqualTo(input, args[i]).isTruthy()) {
                 return Value.True;
             }
         }

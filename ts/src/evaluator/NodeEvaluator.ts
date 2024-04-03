@@ -1,10 +1,14 @@
 import { TreeNodeType } from '../model/TreeNodeType.js';
-import { EvaluationContext } from './EvaluationContext.js';
 import { Value } from './Value.js';
 import { ValueDataType } from '../model/ValueDataType.js';
 import { VariableValue } from './VariableValue.js';
 import { IEvaluableTreeNode } from '../model/IEvaluableTreeNode.js';
 import { TokenType } from '../model/TokenType.js';
+import { IEvaluationContext } from '../model/IEvaluationContext.js';
+import { IValue } from '../model/IValue.js';
+import { ValueCalculator } from './value/ValueCalculator.js';
+import { ValueStringOperations } from './value/ValueStringOperations.js';
+import { ValueComparer } from './value/ValueComparer.js';
 
 export class NodeEvaluator {
 
@@ -13,7 +17,7 @@ export class NodeEvaluator {
      * @param treeNode The tree node to be evaluated
      * @param evaluationContext The context of evaluation, containing all the variables and functions
      */
-    public async evaluateNode(treeNode: IEvaluableTreeNode, evaluationContext: EvaluationContext): Promise<Value> {
+    public async evaluateNode(treeNode: IEvaluableTreeNode, evaluationContext: IEvaluationContext): Promise<IValue> {
         let value;
 
         // Atoms store value literals and variable reads
@@ -46,7 +50,7 @@ export class NodeEvaluator {
      * @param treeNode The tree node to be evaluated
      * @param context The evaluation context
      */
-    protected async evaluateNodeLazily(treeNode: IEvaluableTreeNode, context: EvaluationContext): Promise<Value> {
+    protected async evaluateNodeLazily(treeNode: IEvaluableTreeNode, context: IEvaluationContext): Promise<IValue> {
         if (treeNode.identity.value == '&') {
             return this.evaluateLogicalOperatorLazily(treeNode.children, context, true);
         } else if (treeNode.identity.value == '|') {
@@ -61,7 +65,7 @@ export class NodeEvaluator {
      * @param treeNode The tree node to be evaluated
      * @param context The evaluation context
      */
-    protected async evaluateNodeGreedily(treeNode: IEvaluableTreeNode, context: EvaluationContext): Promise<Value> {
+    protected async evaluateNodeGreedily(treeNode: IEvaluableTreeNode, context: IEvaluationContext): Promise<IValue> {
         if (treeNode.type == TreeNodeType.Atom) {
             throw new Error('Cannot evaluate an atom node greedily. Use EvaluatedTreeNode.evaluate instead.');
         }
@@ -111,7 +115,7 @@ export class NodeEvaluator {
      * @param neutralElement A neutral element of the logical operation (true for AND, false for OR)
      * @returns A promise representing the result of the logical operation
      */
-    protected async evaluateLogicalOperatorLazily(operands: readonly IEvaluableTreeNode[], context: EvaluationContext, neutralElement: boolean): Promise<Value> {
+    protected async evaluateLogicalOperatorLazily(operands: readonly IEvaluableTreeNode[], context: IEvaluationContext, neutralElement: boolean): Promise<IValue> {
         return new Promise((resolve, reject) => {
             const lastOperand = operands[operands.length - 1];
 
@@ -124,7 +128,7 @@ export class NodeEvaluator {
                         // eg. (0 & true) == 0 but (true & 0) == false
                         // eg. (1 | false) == 1 but (false | 1) == true
                         if (operand == lastOperand) {
-                            if(!wasResolved) resolve(value.asBoolean());
+                            if(!wasResolved) resolve(value.castToBoolean());
                             wasResolved = true;
                         } else if (value.isTruthy() !== neutralElement) {
                             // Resolve the whole node, but still keep evaluating other operands
@@ -150,7 +154,7 @@ export class NodeEvaluator {
         });
     }
 
-    protected async evaluateConditionalOperatorLazily(operands: readonly IEvaluableTreeNode[], context: EvaluationContext): Promise<Value> {
+    protected async evaluateConditionalOperatorLazily(operands: readonly IEvaluableTreeNode[], context: IEvaluationContext): Promise<IValue> {
         const condition = operands[0];
         const ifTrue = operands[1];
         const ifFalse = (operands.length > 2) ? operands[2] : null;
@@ -173,7 +177,7 @@ export class NodeEvaluator {
         }
     }
 
-    protected calculateOperatorNodeResult(operator: string, values: Value[]): Value {
+    protected calculateOperatorNodeResult(operator: string, values: IValue[]): IValue {
         const left = values[0];
         const right = values[1];
 
@@ -181,63 +185,67 @@ export class NodeEvaluator {
             case ';':
                 return values[values.length - 1];
             case '&':
-                return Value.and(values);
+                return ValueCalculator.and(values);
             case '|':
-                return Value.or(values);
+                return ValueCalculator.or(values);
             case '^':
-                return Value.xor(values);
+                return ValueCalculator.xor(values);
+            case '!':
+                return ValueCalculator.not(left);
             case '=':
             case '==':
-                return left.isLooselyEqualTo(right);
+                return ValueComparer.isLooselyEqualTo(left, right);
             case '!=':
-                return left.isLooselyInequalTo(right);
+                return ValueComparer.isLooselyInequalTo(left, right);
             case '===':
-                return left.isStrictlyEqualTo(right);
+                return ValueComparer.isStrictlyEqualTo(left, right);
             case '!==':
-                return left.isStrictlyInequalTo(right);
+                return ValueComparer.isStrictlyInequalTo(left, right);
             case '<':
-                return left.isLessThan(right);
+                return ValueComparer.isLessThan(left, right);
             case '<=':
-                return left.isLessThanOrEqualTo(right);
+                return ValueComparer.isLessThanOrEqualTo(left, right);
             case '>':
-                return left.isGreaterThan(right);
+                return ValueComparer.isGreaterThan(left, right);
             case '>=':
-                return left.isGreaterThanOrEqualTo(right);
+                return ValueComparer.isGreaterThanOrEqualTo(left, right);
             case '+':
                 // Plus can be unary or binary
-                return (right !== undefined) ? left.add(right) : left;
+                return (right !== undefined) ?
+                    ValueCalculator.add(left, right) :
+                    left;
             case '-':
                 // Minus can be unary or binary
-                return (right !== undefined) ? left.subtract(right) : left.negate();
+                return (right !== undefined) ?
+                    ValueCalculator.subtract(left, right) :
+                    ValueCalculator.negate(left);
             case '*':
-                return left.multiply(right);
+                return ValueCalculator.multiply(left, right);
             case '/':
-                return left.divide(right);
+                return ValueCalculator.divide(left, right);
             case '%':
-                return left.modulo(right);
+                return ValueCalculator.modulo(left, right);
             case '**':
-                return left.pow(right);
-            case '!':
-                return left.not();
+                return ValueCalculator.pow(left, right);
             case 'in':
-                return right.contains(left);
+                return ValueStringOperations.contains(right, left);
             case 'contains':
-                return left.contains(right);
+                return ValueStringOperations.contains(left, right);
             case 'like':
             case 'matches':
-                return left.testGlob(right);
+                return ValueStringOperations.testGlob(left, right);
             case 'irlike':
-                return left.testRegex(right, true);
+                return ValueStringOperations.testRegex(left, right, true);
             case 'rlike':
             case 'regex':
-                return left.testRegex(right);
+                return ValueStringOperations.testRegex(left, right);
         }
 
         // If we got here, the operator is unknown
         throw new Error(`Unrecognized operator: ${operator}`);
     }
 
-    protected calculateAssignmentResult(context: EvaluationContext, values: Value[]): Value {
+    protected calculateAssignmentResult(context: IEvaluationContext, values: IValue[]): IValue {
         const variable = values[0];
         const newValue = values[1];
 
@@ -249,7 +257,7 @@ export class NodeEvaluator {
         return newValue;
     }
 
-    protected calculateIndexAssignmentResult(values: Value[]): Value {
+    protected calculateIndexAssignmentResult(values: IValue[]): IValue {
         const array = values[0];
         const newValue = values[1];
         if (values.length == 2) {
@@ -261,18 +269,18 @@ export class NodeEvaluator {
         return newValue;
     }
 
-    protected calculateArrayIndexingResult(values: Value[]): Value {
+    protected calculateArrayIndexingResult(values: IValue[]): IValue {
         const array = values[0];
         const index = values[1];
 
         return array.getElementAt(index);
     }
 
-    protected async calculateFunctionCallResult(context: EvaluationContext, func: string, values: Value[]): Promise<Value> {
+    protected async calculateFunctionCallResult(context: IEvaluationContext, func: string, values: IValue[]): Promise<IValue> {
         return await context.getFunction(func)(context, values);
     }
 
-    protected calculateArrayDefinitionResult(values: Value[]): Value {
+    protected calculateArrayDefinitionResult(values: IValue[]): Value {
         return new Value(ValueDataType.Array, values);
     }
 }

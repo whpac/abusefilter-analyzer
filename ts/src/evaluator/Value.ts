@@ -1,6 +1,5 @@
 import { TokenType } from '../model/TokenType.js';
 import { ValueDataType } from '../model/ValueDataType.js';
-import { RegexUtils } from './utils/regex/RegexUtils.js';
 import { IToken } from '../model/IToken.js';
 import { IValue } from '../model/IValue.js';
 
@@ -86,9 +85,34 @@ export class Value<TValue = unknown> implements IValue<TValue> {
         return false;
     }
 
-    /** Checks if the value is truthy */
+    // ! Casting methods
+
+    /**
+     * Checks if the value is truthy
+     * @see https://www.php.net/manual/en/language.types.boolean.php#language.types.boolean.casting
+     */
     public isTruthy(): boolean {
-        return this.asBoolean().value;
+        if (this.dataType === ValueDataType.Boolean) {
+            return this.value as boolean;
+        }
+
+        if (this.dataType === ValueDataType.Integer || this.dataType === ValueDataType.Float) {
+            return (this.value !== 0);
+        }
+
+        if (this.dataType === ValueDataType.String) {
+            return (this.value !== '0' || this.value === '');
+        }
+
+        if (this.dataType === ValueDataType.Array) {
+            return (this.value as unknown[]).length !== 0;
+        }
+
+        if (this.dataType === ValueDataType.Null || this.dataType === ValueDataType.Undefined) {
+            return false;
+        }
+
+        return true;
     }
 
     /** Converts the value to string */
@@ -132,37 +156,38 @@ export class Value<TValue = unknown> implements IValue<TValue> {
     /**
      * Converts the value to boolean, i.e. returns true if the value
      * is truthy and false otherwise
-     * @see https://www.php.net/manual/en/language.types.boolean.php#language.types.boolean.casting
      */
-    public asBoolean(): Value<boolean> {
-        if (this.dataType === ValueDataType.Boolean) {
-            return this as Value<boolean>;
-        }
-
-        if (this.dataType === ValueDataType.Integer || this.dataType === ValueDataType.Float) {
-            return (this.value !== 0) ? Value.True : Value.False;
-        }
-
-        if (this.dataType === ValueDataType.String) {
-            return (this.value !== '0' || this.value === '') ? Value.True : Value.False;
-        }
-
-        if (this.dataType === ValueDataType.Array) {
-            return (this.value as unknown[]).length !== 0 ? Value.True : Value.False;
-        }
-
-        if (this.dataType === ValueDataType.Null || this.dataType === ValueDataType.Undefined) {
-            return Value.False;
-        }
-
-        return Value.True;
+    public castToBoolean(): Value<boolean> {
+        return new Value(ValueDataType.Boolean, this.isTruthy());
     }
+
+    /** Converts the value to integer */
+    public castToInt(): Value<number> {
+        return new Value(ValueDataType.Integer, Math.floor(this.toNumber()));
+    }
+
+    /** Converts the value to float */
+    public castToFloat(): Value<number> {
+        return new Value(ValueDataType.Float, this.toNumber());
+    }
+
+    /** Converts the value to string */
+    public castToString(): Value<string> {
+        return new Value(ValueDataType.String, this.toString());
+    }
+
+    /** Converts the value to array */
+    public castToArray(): Value<unknown[]> {
+        return new Value(ValueDataType.Array, this.toArray());
+    }
+
+    // ! Array operators
 
     /**
      * Returns a value stored at a given index of the array. The array is 0-indexed.
      * @param index The index of the element to retrieve
      */
-    public getElementAt(index: number | Value): Value {
+    public getElementAt(index: number | IValue): IValue {
         if (this.dataType !== ValueDataType.Array) {
             throw new Error('Cannot index a non-array value');
         }
@@ -171,7 +196,7 @@ export class Value<TValue = unknown> implements IValue<TValue> {
             index = index.toNumber();
         }
 
-        const array = this.value as Value[];
+        const array = this.value as IValue[];
         if (index < 0 || index >= array.length) {
             throw new Error('Index out of bounds');
         }
@@ -182,7 +207,7 @@ export class Value<TValue = unknown> implements IValue<TValue> {
      * Stores a given value at the given index of the array. The array is 0-indexed.
      * @param index The index where to store the value
      */
-    public setElementAt(index: number | Value, value: Value): void {
+    public setElementAt(index: number | IValue, value: IValue): void {
         if (this.dataType !== ValueDataType.Array) {
             throw new Error('Cannot index a non-array value');
         }
@@ -191,7 +216,7 @@ export class Value<TValue = unknown> implements IValue<TValue> {
             index = index.toNumber();
         }
 
-        const array = this.value as Value[];
+        const array = this.value as IValue[];
         if (index < 0 || index >= array.length) {
             throw new Error('Index out of bounds');
         }
@@ -202,339 +227,10 @@ export class Value<TValue = unknown> implements IValue<TValue> {
      * Appends a value to the array.
      * @param value The value to be appended to the array
      */
-    public appendElement(value: Value): void {
+    public appendElement(value: IValue): void {
         if (this.dataType !== ValueDataType.Array) {
             throw new Error('Cannot append to a non-array value');
         }
-        (this.value as Value[]).push(value);
+        (this.value as IValue[]).push(value);
     }
-
-    // ! Equality operators
-
-    /**
-     * Checks if the value is strictly equal to the other.
-     * Strict equality requires the data types and values to be
-     * exactly the same.
-     * @param other The other value to check
-     */
-    public isStrictlyEqualTo(other: Value): Value<boolean> {
-        return new Value(ValueDataType.Boolean, this.isEqualTo(other, true));
-    }
-
-    /**
-     * Checks if the value is strictly inequal to the other.
-     * @param other The other value to check
-     */
-    public isStrictlyInequalTo(other: Value): Value<boolean> {
-        return new Value(ValueDataType.Boolean, !this.isEqualTo(other, true));
-    }
-
-    /**
-     * Checks if the value is loosely equal to the other.
-     * Loose equality allows for different data types to be equal
-     * @param other The other value to check
-     */
-    public isLooselyEqualTo(other: Value): Value<boolean> {
-        return new Value(ValueDataType.Boolean, this.isEqualTo(other, false));
-    }
-
-    /**
-     * Checks if the value is loosely inequal to the other.
-     * @param other The other value to check
-     */
-    public isLooselyInequalTo(other: Value): Value<boolean> {
-        return new Value(ValueDataType.Boolean, !this.isEqualTo(other, false));
-    }
-
-    /**
-     * Checks if the value is equal to the other.
-     * @param other The other value to check.
-     * @param strict Pass true for strict equality check.
-     */
-    protected isEqualTo(other: Value, strict = false): boolean {
-        if (this.dataType === ValueDataType.Undefined || other.dataType === ValueDataType.Undefined) {
-            // First, ensure we don't have any undefineds
-            throw new Error('Undefined values cannot be compared. This should have been handled earlier.');
-
-        } else if (this.dataType !== ValueDataType.Array && other.dataType !== ValueDataType.Array) {
-            // Scalar types are simply compared by value
-            const typesMatch = this.dataType === other.dataType || !strict;
-            return typesMatch && this.toString() === other.toString();
-
-        } else if (this.dataType === ValueDataType.Array && other.dataType === ValueDataType.Array) {
-            // Arrays are compared elementwise
-            const data1 = this.value as Value[];
-            const data2 = other.value as Value[];
-            if (data1.length !== data2.length) {
-                return false;
-            }
-
-            for (let i = 0; i < data1.length; i++) {
-                if (!data1[i].isEqualTo(data2[i], strict)) {
-                    return false;
-                }
-            }
-            return true;
-
-        } else {
-            // Trying to compare an array to something else
-            if (strict) {
-                return false;
-            }
-            if (this.dataType === ValueDataType.Array && (this.value as Value[]).length === 0) {
-                return (other.dataType === ValueDataType.Boolean && !other.isTruthy()) ||
-                    other.dataType === ValueDataType.Null;
-            } else if (other.dataType === ValueDataType.Array && (other.value as Value[]).length === 0) {
-                return (this.dataType === ValueDataType.Boolean && !this.isTruthy()) ||
-                    this.dataType === ValueDataType.Null;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    // ! Comparison operators
-    public isLessThan(other: Value): Value<boolean> {
-        return new Value(ValueDataType.Boolean, this.compareTo(other) == ComparisonResult.LessThan);
-    }
-
-    public isLessThanOrEqualTo(other: Value): Value<boolean> {
-        return new Value(ValueDataType.Boolean, this.compareTo(other) != ComparisonResult.GreaterThan);
-    }
-
-    public isGreaterThan(other: Value): Value<boolean> {
-        return new Value(ValueDataType.Boolean, this.compareTo(other) == ComparisonResult.GreaterThan);
-    }
-
-    public isGreaterThanOrEqualTo(other: Value): Value<boolean> {
-        return new Value(ValueDataType.Boolean, this.compareTo(other) != ComparisonResult.LessThan);
-    }
-
-    /** Performs a numerical or textual comparison of the values. */
-    protected compareTo(other: Value): ComparisonResult {
-        const value1 = this.toString();
-        const value2 = other.toString();
-
-        // See https://www.php.net/manual/en/language.types.numeric-strings.php
-        const isNumeric = (value: string) => /^\s*[+-]?(\d+\.?\d*|\.\d+)(E[+-]?\d+)?\s*$/i.test(value);
-
-        // If both are numeric, compare numerically,
-        // otherwise compare as strings
-        if(isNumeric(value1) && isNumeric(value2)) {
-            const number1 = parseFloat(value1);
-            const number2 = parseFloat(value2);
-            if (number1 < number2) {
-                return ComparisonResult.LessThan;
-            } else if (number1 > number2) {
-                return ComparisonResult.GreaterThan;
-            } else {
-                return ComparisonResult.Equal;
-            }
-        } else {
-            if (value1 < value2) {
-                return ComparisonResult.LessThan;
-            } else if (value1 > value2) {
-                return ComparisonResult.GreaterThan;
-            } else {
-                return ComparisonResult.Equal;
-            }
-        }
-    }
-
-    // ! Arithmetic operators
-    /** Performs an addition or concatenation */
-    public add(addend: Value): Value {
-        if (this.dataType === ValueDataType.Undefined || addend.dataType === ValueDataType.Undefined) {
-            return Value.Undefined;
-        } else if (this.dataType === ValueDataType.String || addend.dataType === ValueDataType.String) {
-            return new Value(ValueDataType.String, this.toString() + addend.toString());
-        } else if (this.dataType === ValueDataType.Array && addend.dataType === ValueDataType.Array) {
-            return new Value(ValueDataType.Array, this.toArray().concat(addend.toArray()));
-        } else {
-            const res = this.toNumber() + addend.toNumber();
-            const type = (this.dataType === ValueDataType.Float) || (addend.dataType === ValueDataType.Float) ?
-                ValueDataType.Float : ValueDataType.Integer;
-
-            return new Value(type, res);
-        }
-    }
-
-    /** Subtracts the other value from this one */
-    public subtract(subtrahent: Value): Value {
-        if (this.dataType === ValueDataType.Undefined || subtrahent.dataType === ValueDataType.Undefined) {
-            return Value.Undefined;
-        }
-        const res = this.toNumber() - subtrahent.toNumber();
-        const type = (this.dataType === ValueDataType.Float) || (subtrahent.dataType === ValueDataType.Float) ?
-            ValueDataType.Float : ValueDataType.Integer;
-
-        return new Value(type, res);
-    }
-
-    /** Multiplies this value by the other */
-    public multiply(factor: Value): Value {
-        if (this.dataType === ValueDataType.Undefined || factor.dataType === ValueDataType.Undefined) {
-            return Value.Undefined;
-        }
-        const res = this.toNumber() * factor.toNumber();
-        const type = (this.dataType === ValueDataType.Float) || (factor.dataType === ValueDataType.Float) ?
-            ValueDataType.Float : ValueDataType.Integer;
-
-        return new Value(type, res);
-    }
-
-    /** Divides the value by the specified divisor. Throws an error if the divisor is zero. */
-    public divide(divisor: Value): Value {
-        if (divisor.dataType === ValueDataType.Undefined) {
-            return Value.Undefined;
-        }
-
-        if (divisor.toNumber() === 0) {
-            throw new Error('dividebyzero');
-        }
-
-        if (this.dataType === ValueDataType.Undefined) {
-            return Value.Undefined;
-        }
-
-        const res = this.toNumber() / divisor.toNumber();
-        const isOperandFloat = (this.dataType === ValueDataType.Float) || (divisor.dataType === ValueDataType.Float);
-        const type = isOperandFloat || (res % 1 !== 0) ? ValueDataType.Float : ValueDataType.Integer;
-
-        return new Value(type, res);
-    }
-
-    /** Computes a remainder of the division of this value by the other. */
-    public modulo(divisor: Value): Value {
-        if (divisor.dataType === ValueDataType.Undefined) {
-            return Value.Undefined;
-        }
-
-        if (divisor.toNumber() === 0) {
-            throw new Error('dividebyzero');
-        }
-
-        if (this.dataType === ValueDataType.Undefined) {
-            return Value.Undefined;
-        }
-
-        // AbuseFilter converts operands to int for modulo
-        const res = Math.floor(this.toNumber()) % Math.floor(divisor.toNumber());
-
-        return new Value(ValueDataType.Integer, res);
-    }
-
-    /** Returns the result of raising this value to the given power */
-    public pow(exponent: Value): Value {
-        if (this.dataType === ValueDataType.Undefined || exponent.dataType === ValueDataType.Undefined) {
-            return Value.Undefined;
-        }
-
-        const res = Math.pow(this.toNumber(), exponent.toNumber());
-        const isOperandFloat = (this.dataType === ValueDataType.Float) || (exponent.dataType === ValueDataType.Float);
-        const type = isOperandFloat || (res % 1 !== 0) ? ValueDataType.Float : ValueDataType.Integer;
-
-        return new Value(type, res);
-    }
-
-    /** Returns an arithmetic negation of the value */
-    public negate(): Value {
-        if (this.dataType === ValueDataType.Undefined) {
-            return Value.Undefined;
-        }
-
-        const res = -this.toNumber();
-        const type = (res % 1 === 0) ? ValueDataType.Integer : ValueDataType.Float;
-
-        return new Value(type, res);
-    }
-
-
-    // ! Logical operators
-
-    /** Performs a logical conjunction of the values. The result is always a boolean. */
-    public static and(operands: Value[]): Value<boolean> {
-        for (const operand of operands) {
-            if (!operand.isTruthy()) {
-                return Value.False;
-            }
-        }
-        return Value.True;
-    }
-
-    /** Performs a logical alternative of the values. The result is always a boolean. */
-    public static or(operands: Value[]): Value<boolean> {
-        for (const operand of operands) {
-            if (operand.isTruthy()) {
-                return Value.True;
-            }
-        }
-        return Value.False;
-    }
-
-    /** Performs a logical exclusive alternative of the values. The result is always a boolean. */
-    public static xor(operands: Value[]): Value<boolean> {
-        let trueCount = 0;
-        for (const operand of operands) {
-            if (operand.isTruthy()) {
-                trueCount++;
-            }
-        }
-        return (trueCount % 2 === 1) ? Value.True : Value.False;
-    }
-
-    /** Returns a boolean negation of the value */
-    public not(): Value {
-        if (this.dataType === ValueDataType.Undefined) {
-            return Value.Undefined;
-        }
-
-        return this.isTruthy() ? Value.False : Value.True;
-    }
-
-    //! String operators
-    /** Checks if this value contains the needle (both are converted to string first) */
-    public contains(needle: Value): Value<boolean> {
-        const thisString = this.toString();
-        const needleString = needle.toString();
-
-        if (thisString === '' || needleString === '') {
-            return Value.False;
-        }
-
-        return new Value(ValueDataType.Boolean, thisString.includes(needleString));
-    }
-
-    /** Checks if this value is matched by the regex pattern */
-    public testRegex(pattern: Value, caseInsensitive: boolean = false): Value<boolean> {
-        const subject = this.toString();
-        const patternRegex = RegexUtils.toEcmaRegex(pattern.toString(), { i: caseInsensitive, u: true });
-        return new Value(ValueDataType.Boolean, patternRegex.test(subject));
-    }
-
-    /** Checks if this value is matched by the glob pattern */
-    public testGlob(pattern: Value): Value<boolean> {
-        const subject = this.toString();
-        let globPattern = pattern.toString();
-
-        // First, escape the pattern according to Regex rules
-        // See: https://stackoverflow.com/a/9310752/8127198
-        globPattern = globPattern.replace(/[[\]{}()*+?.,\\/^$|#\s]/g, '\\$&');
-
-        // Then substitute the glob wildcards with regex sequences
-        globPattern = globPattern.replace(/\\\*/g, '.*')
-            .replace(/\\\?/g, '.')
-            .replace(/\\\[/g, '[')
-            .replace(/\\\[!/g, '[^')
-            .replace(/\\\]/g, ']');
-
-        const patternRegex = new RegExp(globPattern, 'u');
-        return new Value(ValueDataType.Boolean, patternRegex.test(subject));
-    }
-}
-
-enum ComparisonResult {
-    LessThan = -1,
-    Equal = 0,
-    GreaterThan = 1
 }
