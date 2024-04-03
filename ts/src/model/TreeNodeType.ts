@@ -15,8 +15,8 @@ export enum TreeNodeType {
     Assignment = 'Assignment',
 
     /**
-     * Represents an assignment to an array element node. It's composed of three children:
-     * a variable, an index and a value (tree nodes).
+     * Represents an assignment to an array element node. It's composed of three subnodes:
+     * a variable, a value and optionally an index (without index it's appending to array).
      */
     IndexAssignment = 'IndexAssignment',
 

@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { Tokenizer } from '../../src/parser/Tokenizer.js';
-import { TokenType } from '../../src/parser/TokenType.js';
+import { TokenType } from '../../src/model/TokenType.js';
 
 describe('Tokenizer tests', () => {
     describe('String tokenization', () => {

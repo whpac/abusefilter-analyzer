@@ -1,12 +1,12 @@
+import { ITreeNode } from './model/ITreeNode.js';
 import { Parser } from './parser/Parser.js';
 import { Token } from './parser/Token.js';
 import { Tokenizer } from './parser/Tokenizer.js';
-import { TreeNode } from './parser/nodes/TreeNode.js';
 import { TreeNodeFactory } from './parser/nodes/TreeNodeFactory.js';
 
 export class AbuseFilter {
     protected readonly filterTokens: Token[];
-    protected readonly filterTree: TreeNode;
+    protected readonly filterTree: ITreeNode;
 
     public constructor(filterText: string) {
         const tokenizer: Tokenizer = new Tokenizer();

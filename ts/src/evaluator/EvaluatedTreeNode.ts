@@ -3,7 +3,7 @@ import { TreeNodeType } from '../model/TreeNodeType.js';
 import { Value } from './Value.js';
 import { NodeEvaluator } from './NodeEvaluator.js';
 import { EvaluationContext } from './EvaluationContext.js';
-import { TokenType } from '../parser/TokenType.js';
+import { TokenType } from '../model/TokenType.js';
 import { ValueDataType } from './ValueDataType.js';
 
 export class EvaluatedTreeNode {

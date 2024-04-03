@@ -9,16 +9,10 @@ import { Token } from '../Token.js';
  */
 export class TreeNode implements ITreeNode {
 
-    /** Type of this node */
     public readonly type: TreeNodeType;
 
-    /** Token that decides on the exact node semantics, e.g. operator, identifier etc. */
     public readonly identity: Token;
 
-    /**
-     * Parameters for the node. For atoms it's a single Token, while for other nodes
-     * it's an array of other TreeNodes.
-     */
     public readonly children: ITreeNode[];
 
 

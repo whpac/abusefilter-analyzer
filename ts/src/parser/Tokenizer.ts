@@ -1,5 +1,5 @@
 import { Token } from './Token.js';
-import { TokenType } from './TokenType.js';
+import { TokenType } from '../model/TokenType.js';
 
 /**
  * Essential class for AbuseFilter rule preparation before actual parsing.

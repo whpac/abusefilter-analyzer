@@ -1,5 +1,5 @@
 import { Token } from '../parser/Token.js';
-import { TokenType } from '../parser/TokenType.js';
+import { TokenType } from '../model/TokenType.js';
 import { ValueDataType } from './ValueDataType.js';
 import { RegexUtils } from './utils/regex/RegexUtils.js';
 

@@ -1,9 +1,10 @@
-import { TokenType } from './TokenType.js';
+import { IToken } from '../model/IToken.js';
+import { TokenType } from '../model/TokenType.js';
 
 /**
  * Represents a token found in the input sequence.
  */
-export class Token {
+export class Token implements IToken {
     /** A value for EndOfStream tokens. */
     public static readonly EOF = '';
 
