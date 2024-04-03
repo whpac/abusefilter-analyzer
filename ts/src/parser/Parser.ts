@@ -14,7 +14,7 @@ export class Parser<TNode extends ITreeNode = ITreeNode> {
     private nodeFactory: INodeFactory<TNode>;
 
     /** Stores the sequence of tokens that the parser is currently processing. */
-    private tokens: Token[] = [];
+    private tokens: readonly Token[] = [];
 
     /** The current token */
     private currentToken: Token = new Token(TokenType.EndOfStream, Token.EOF, 0, 0);
@@ -33,7 +33,7 @@ export class Parser<TNode extends ITreeNode = ITreeNode> {
      * @param tokens The tokens to parse.
      * @returns The parsed expression tree.
      */
-    public parse(tokens: Token[]): TNode {
+    public parse(tokens: readonly Token[]): TNode {
         this.tokens = tokens;
         const tree = this.doLevelEntry();
 
