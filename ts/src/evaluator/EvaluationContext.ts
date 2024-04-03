@@ -44,12 +44,6 @@ export class EvaluationContext implements IEvaluationContext {
         throw new Error(`Function ${functionName} not found`);
     }
 
-    /**
-     * Creates a child context that can't change data stored in its parent.
-     * Used for speculative execution not to leak its results to the rest of
-     * the code.
-     * @returns A new child context
-     */
     public createChildContext(): EvaluationContext {
         const childContext = new EvaluationContext();
         childContext.parentContext = this;

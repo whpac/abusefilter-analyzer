@@ -27,6 +27,13 @@ export interface IEvaluationContext {
      * @param functionName A function name to look up
      */
     getFunction(functionName: string): AbuseFilterFunction<unknown>;
+
+    /**
+     * Creates a child context that can't change data stored in its parent.
+     * Used for speculative execution not to leak its results to the rest of
+     * the code.
+     */
+    createChildContext(): IEvaluationContext;
 }
 
 export type AbuseFilterFunction<T> = (context: IEvaluationContext, args: IValue[]) => Promise<IValue<T>>;
