@@ -1,6 +1,7 @@
 import { Value } from './Value.js';
 import { ValueDataType } from '../model/ValueDataType.js';
 import { IVariableValue } from '../model/IVariableValue.js';
+import { IValue } from '../model/IValue.js';
 
 /**
  * Represents a variable value, that can be used as a l-value in assignments.
@@ -26,7 +27,7 @@ export class VariableValue<TValue = unknown> extends Value<TValue> implements IV
      * @param value The variable value
      * @param variableName The variable name
      */
-    public static fromValue<T>(value: Value<T>, variableName: string): VariableValue<T> {
+    public static fromValue<T>(value: IValue<T>, variableName: string): VariableValue<T> {
         return new VariableValue(variableName, value.dataType, value.value);
     }
 

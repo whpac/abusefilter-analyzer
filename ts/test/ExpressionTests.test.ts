@@ -2,11 +2,11 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { Parser } from '../src/parser/Parser.js';
 import { Tokenizer } from '../src/parser/Tokenizer.js';
-import { EvaluatedTreeNode } from '../src/evaluator/EvaluatedTreeNode.js';
 import { EvaluationContext } from '../src/evaluator/EvaluationContext.js';
 import { NodeEvaluator } from '../src/evaluator/NodeEvaluator.js';
 import { assert } from 'chai';
-import { TreeNodeFactory } from '../src/parser/nodes/TreeNodeFactory.js';
+import { EvaluableNodeFactory } from '../src/evaluator/EvaluableNodeFactory.js';
+import { IEvaluableTreeNode } from '../src/model/IEvaluableTreeNode.js';
 
 describe('Expressions from .t files', () => {
     // Read files with .t extension from the /parserTests folder
@@ -20,14 +20,16 @@ describe('Expressions from .t files', () => {
                 try {
                     const content = fs.readFileSync(path.join(testFolder, file), 'utf8');
                     const tokenizer = new Tokenizer();
-                    const parser = new Parser(new TreeNodeFactory());
+                    const parser = new Parser(new EvaluableNodeFactory());
                     const tokens = tokenizer.tokenize(content);
-                    const rootNode = parser.parse(tokens)!;
-                    const evaluatedRootNode = new EvaluatedTreeNode(rootNode);
-                    await evaluatedRootNode.evaluate(new EvaluationContext(), new NodeEvaluator());
+                    const rootNode = parser.parse(tokens) as IEvaluableTreeNode;
+                    const evaluator = new NodeEvaluator();
+                    const context = new EvaluationContext();
+                    const value = await evaluator.evaluateNode(rootNode, context);
     
-                    assert.isTrue(evaluatedRootNode.wasEvaluated);
-                    assert.isTrue(evaluatedRootNode.value.isTruthy());
+                    assert.isTrue(rootNode.hasValue(context));
+                    assert.isTrue(rootNode.getValue(context) === value);
+                    assert.isTrue(value.isTruthy());
                 } catch(e) {
                     console.error((e as Error).toString());
                     throw e;

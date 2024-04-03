@@ -1,25 +1,74 @@
 import { TreeNodeType } from '../model/TreeNodeType.js';
-import { EvaluatedTreeNode } from './EvaluatedTreeNode.js';
 import { EvaluationContext } from './EvaluationContext.js';
 import { Value } from './Value.js';
 import { ValueDataType } from '../model/ValueDataType.js';
 import { VariableValue } from './VariableValue.js';
+import { IEvaluableTreeNode } from '../model/IEvaluableTreeNode.js';
+import { TokenType } from '../model/TokenType.js';
 
 export class NodeEvaluator {
+
+    /**
+     * Evaluates the node and all its children if needed.
+     * @param treeNode The tree node to be evaluated
+     * @param evaluationContext The context of evaluation, containing all the variables and functions
+     */
+    public async evaluateNode(treeNode: IEvaluableTreeNode, evaluationContext: EvaluationContext): Promise<Value> {
+        let value;
+
+        // Atoms store value literals and variable reads
+        if (treeNode.type === TreeNodeType.Atom) {
+            const identity = treeNode.identity;
+            if (identity.type === TokenType.Identifier) {
+                // Get variable value
+                value = evaluationContext.getVariable(identity.value);
+            } else {
+                // Else, convert the literal into a value
+                value = Value.fromTokenLiteral(identity);
+            }
+        } else {
+            // Evaluate this node
+            value = await this.evaluateNodeLazily(treeNode, evaluationContext);
+        }
+
+        treeNode.setValue(evaluationContext, value);
+        return value;
+    }
+
+    /**
+     * For logical AND and OR operators evaluates only as many operands as needed
+     * (others will be evaluated in a speculative mode). For other operators,
+     * it's equivalent to `evaluateNodeGreedily`.
+     * 
+     * The resulting promise is resolved as soon as the result is known, however the
+     * execution of remaining nodes in continued in a speculative mode.
+     * 
+     * @param treeNode The tree node to be evaluated
+     * @param context The evaluation context
+     */
+    protected async evaluateNodeLazily(treeNode: IEvaluableTreeNode, context: EvaluationContext): Promise<Value> {
+        if (treeNode.identity.value == '&') {
+            return this.evaluateLogicalOperatorLazily(treeNode.children, context, true);
+        } else if (treeNode.identity.value == '|') {
+            return this.evaluateLogicalOperatorLazily(treeNode.children, context, false);
+        }
+
+        return this.evaluateNodeGreedily(treeNode, context);
+    }
 
     /**
      * Evaluates all the subnodes first and then calculates the node value. This is not for AtomNodes.
      * @param treeNode The tree node to be evaluated
      * @param context The evaluation context
      */
-    public async evaluateNodeGreedily(treeNode: EvaluatedTreeNode, context: EvaluationContext): Promise<Value> {
-        if (treeNode.node.type == TreeNodeType.Atom) {
+    protected async evaluateNodeGreedily(treeNode: IEvaluableTreeNode, context: EvaluationContext): Promise<Value> {
+        if (treeNode.type == TreeNodeType.Atom) {
             throw new Error('Cannot evaluate an atom node greedily. Use EvaluatedTreeNode.evaluate instead.');
         }
 
         // The only node that can't be evaluated using a standard greedy execution is a conditional node
-        const nodeType = treeNode.node.type;
-        const tokenValue = treeNode.node.identity.value;
+        const nodeType = treeNode.type;
+        const tokenValue = treeNode.identity.value;
         if (nodeType == TreeNodeType.Operator && ['?', 'if'].includes(tokenValue)) {
             return this.evaluateConditionalOperatorLazily(treeNode.children, context);
         }
@@ -27,11 +76,11 @@ export class NodeEvaluator {
         // This is a greedy evaluation so we can calculate all the children first
         // and then the parent value. The order of evaluation is important (eg. because of variables)
         // but all nodes will use the same context, as there's no speculative execution here.
+        const values = [];
         for (const child of treeNode.children) {
-            await child.evaluate(context, this);
+            const value = await this.evaluateNode(child, context);
+            values.push(value);
         }
-
-        const values = treeNode.children.map((child) => child.value);
 
         switch (nodeType) {
             case TreeNodeType.Operator:
@@ -53,27 +102,6 @@ export class NodeEvaluator {
     }
 
     /**
-     * For logical AND and OR operators evaluates only as many operands as needed
-     * (others will be evaluated in a speculative mode). For other operators,
-     * it's equivalent to `evaluateNodeGreedily`.
-     * 
-     * The resulting promise is resolved as soon as the result is known, however the
-     * execution of remaining nodes in continued in a speculative mode.
-     * 
-     * @param treeNode The tree node to be evaluated
-     * @param context The evaluation context
-     */
-    public async evaluateNodeLazily(treeNode: EvaluatedTreeNode, context: EvaluationContext): Promise<Value> {
-        if (treeNode.node.identity.value == '&') {
-            return this.evaluateLogicalOperatorLazily(treeNode.children, context, true);
-        } else if (treeNode.node.identity.value == '|') {
-            return this.evaluateLogicalOperatorLazily(treeNode.children, context, false);
-        }
-
-        return this.evaluateNodeGreedily(treeNode, context);
-    }
-
-    /**
      * Evaluates a tree node corresponding to a logical AND or OR operator.
      * The evaluation is done lazily, so that only as many operands are evaluated as needed.
      * However, the rest of them is still evaluated in a speculative mode.
@@ -83,7 +111,7 @@ export class NodeEvaluator {
      * @param neutralElement A neutral element of the logical operation (true for AND, false for OR)
      * @returns A promise representing the result of the logical operation
      */
-    protected async evaluateLogicalOperatorLazily(operands: EvaluatedTreeNode[], context: EvaluationContext, neutralElement: boolean): Promise<Value> {
+    protected async evaluateLogicalOperatorLazily(operands: readonly IEvaluableTreeNode[], context: EvaluationContext, neutralElement: boolean): Promise<Value> {
         return new Promise((resolve, reject) => {
             const lastOperand = operands[operands.length - 1];
 
@@ -91,9 +119,7 @@ export class NodeEvaluator {
             let lastIterationPromise = Promise.resolve();
             for (const operand of operands) {
                 lastIterationPromise = lastIterationPromise.then(() => 
-                    operand.evaluate(context, this).then(() => {
-                        const value = operand.value;
-    
+                    this.evaluateNode(operand, context).then((value) => {
                         // The non-neutral operand value is returned as-is if it's not last
                         // eg. (0 & true) == 0 but (true & 0) == false
                         // eg. (1 | false) == 1 but (false | 1) == true
@@ -124,23 +150,26 @@ export class NodeEvaluator {
         });
     }
 
-    protected async evaluateConditionalOperatorLazily(operands: EvaluatedTreeNode[], context: EvaluationContext): Promise<Value> {
+    protected async evaluateConditionalOperatorLazily(operands: readonly IEvaluableTreeNode[], context: EvaluationContext): Promise<Value> {
         const condition = operands[0];
         const ifTrue = operands[1];
-        const ifFalse = operands[2] ?? null;
+        const ifFalse = (operands.length > 2) ? operands[2] : null;
 
-        await condition.evaluate(context, this);
+        const conditionValue = await this.evaluateNode(condition, context);
         const childContext = context.createChildContext();
 
         // Evaluate both branches, but one in a speculative mode
-        if (condition.value.isTruthy()) {
-            ifFalse?.evaluate(childContext, this);
-            await ifTrue.evaluate(context, this);
-            return ifTrue.value;
+        if (conditionValue.isTruthy()) {
+            if (ifFalse !== null) {
+                this.evaluateNode(ifFalse, childContext);
+            }
+            return await this.evaluateNode(ifTrue, context);
         } else {
-            ifTrue.evaluate(childContext, this);
-            await ifFalse?.evaluate(context, this);
-            return ifFalse?.value ?? Value.Null;
+            this.evaluateNode(ifTrue, childContext);
+            if (ifFalse === null) {
+                return Value.Null;
+            }
+            return await this.evaluateNode(ifFalse, context);
         }
     }
 
