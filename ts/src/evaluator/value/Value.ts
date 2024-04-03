@@ -1,7 +1,7 @@
-import { TokenType } from '../model/TokenType.js';
-import { ValueDataType } from '../model/ValueDataType.js';
-import { IToken } from '../model/IToken.js';
-import { IValue } from '../model/IValue.js';
+import { TokenType } from '../../model/TokenType.js';
+import { ValueDataType } from '../../model/ValueDataType.js';
+import { IToken } from '../../model/IToken.js';
+import { IValue } from '../../model/IValue.js';
 
 /**
  * A class representing a value in the evaluation tree.

@@ -1,7 +1,7 @@
 import { AbuseFilterFunction, IEvaluationContext } from '../model/IEvaluationContext.js';
 import { IValue } from '../model/IValue.js';
 import { AbuseFilterFunctions } from './AbuseFilterFunctions.js';
-import { VariableValue } from './VariableValue.js';
+import { VariableValue } from './value/VariableValue.js';
 
 export class EvaluationContext implements IEvaluationContext {
     /** The parent context, used for looking up variable values, will not be changed by this context. */

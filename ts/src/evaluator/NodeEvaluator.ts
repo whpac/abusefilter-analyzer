@@ -1,7 +1,7 @@
 import { TreeNodeType } from '../model/TreeNodeType.js';
-import { Value } from './Value.js';
+import { Value } from './value/Value.js';
 import { ValueDataType } from '../model/ValueDataType.js';
-import { VariableValue } from './VariableValue.js';
+import { VariableValue } from './value/VariableValue.js';
 import { IEvaluableTreeNode } from '../model/IEvaluableTreeNode.js';
 import { TokenType } from '../model/TokenType.js';
 import { IEvaluationContext } from '../model/IEvaluationContext.js';

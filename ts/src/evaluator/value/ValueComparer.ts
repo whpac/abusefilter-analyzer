@@ -1,6 +1,6 @@
 import { IValue } from '../../model/IValue.js';
 import { ValueDataType } from '../../model/ValueDataType.js';
-import { Value } from '../Value.js';
+import { Value } from './Value.js';
 
 export class ValueComparer {
 

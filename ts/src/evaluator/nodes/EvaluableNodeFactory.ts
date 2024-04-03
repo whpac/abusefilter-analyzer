@@ -1,8 +1,8 @@
-import { TreeNodeType } from '../model/TreeNodeType.js';
-import { INodeFactory } from '../model/INodeFactory.js';
+import { TreeNodeType } from '../../model/TreeNodeType.js';
+import { INodeFactory } from '../../model/INodeFactory.js';
 import { EvaluableTreeNode } from './EvaluableTreeNode.js';
-import { IEvaluableTreeNode } from '../model/IEvaluableTreeNode.js';
-import { IToken } from '../model/IToken.js';
+import { IEvaluableTreeNode } from '../../model/IEvaluableTreeNode.js';
+import { IToken } from '../../model/IToken.js';
 
 export class EvaluableNodeFactory implements INodeFactory<IEvaluableTreeNode> {
 

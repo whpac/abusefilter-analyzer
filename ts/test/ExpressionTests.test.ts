@@ -5,7 +5,7 @@ import { Tokenizer } from '../src/parser/Tokenizer.js';
 import { EvaluationContext } from '../src/evaluator/EvaluationContext.js';
 import { NodeEvaluator } from '../src/evaluator/NodeEvaluator.js';
 import { assert } from 'chai';
-import { EvaluableNodeFactory } from '../src/evaluator/EvaluableNodeFactory.js';
+import { EvaluableNodeFactory } from '../src/evaluator/nodes/EvaluableNodeFactory.js';
 
 describe('Expressions from .t files', () => {
     // Read files with .t extension from the /parserTests folder

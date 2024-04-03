@@ -1,4 +1,4 @@
-import { EvaluableNodeFactory } from './evaluator/EvaluableNodeFactory.js';
+import { EvaluableNodeFactory } from './evaluator/nodes/EvaluableNodeFactory.js';
 import { IEvaluableTreeNode } from './model/IEvaluableTreeNode.js';
 import { Parser } from './parser/Parser.js';
 import { Token } from './parser/Token.js';
