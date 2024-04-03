@@ -13,7 +13,7 @@ export class TreeNode implements ITreeNode {
 
     public readonly identity: Token;
 
-    public readonly children: ITreeNode[];
+    public readonly children: readonly ITreeNode[];
 
 
     public constructor(type: TreeNodeType, identity: Token, children: ITreeNode[] = []) {

@@ -15,5 +15,5 @@ export interface ITreeNode {
     get identity(): IToken;
 
     /** Subnodes of this node. */
-    get children(): ITreeNode[];
+    get children(): readonly ITreeNode[];
 }
