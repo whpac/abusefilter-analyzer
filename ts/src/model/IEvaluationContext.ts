@@ -1,4 +1,3 @@
-import { AbuseFilterFunction } from '../evaluator/AbuseFilterFunctions.js';
 import { IValue } from './IValue.js';
 import { IVariableValue } from './IVariableValue.js';
 
@@ -29,3 +28,5 @@ export interface IEvaluationContext {
      */
     getFunction(functionName: string): AbuseFilterFunction<unknown>;
 }
+
+export type AbuseFilterFunction<T> = (context: IEvaluationContext, args: IValue[]) => Promise<IValue<T>>;

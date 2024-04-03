@@ -1,6 +1,6 @@
-import { IEvaluationContext } from '../model/IEvaluationContext.js';
+import { AbuseFilterFunction, IEvaluationContext } from '../model/IEvaluationContext.js';
 import { IValue } from '../model/IValue.js';
-import { AbuseFilterFunction, AbuseFilterFunctions } from './AbuseFilterFunctions.js';
+import { AbuseFilterFunctions } from './AbuseFilterFunctions.js';
 import { VariableValue } from './VariableValue.js';
 
 export class EvaluationContext implements IEvaluationContext {

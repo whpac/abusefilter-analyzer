@@ -1,8 +1,9 @@
-import { EvaluationContext } from './EvaluationContext.js';
 import { Value } from './Value.js';
 import { ValueDataType } from '../model/ValueDataType.js';
 import { IPUtils } from './utils/IPUtils.js';
 import { RegexUtils } from './utils/regex/RegexUtils.js';
+import { AbuseFilterFunction, IEvaluationContext } from '../model/IEvaluationContext.js';
+import { IValue } from '../model/IValue.js';
 
 export class AbuseFilterFunctions {
 
@@ -48,19 +49,19 @@ export class AbuseFilterFunctions {
     }
 
     /** Converts the input text to the lowercase */
-    public static async lcase(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
+    public static async lcase(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'lcase');
         return new Value(ValueDataType.String, args[0].toString().toLowerCase());
     }
 
     /** Converts the input text to the uppercase */
-    public static async ucase(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
+    public static async ucase(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'ucase');
         return new Value(ValueDataType.String, args[0].toString().toUpperCase());
     }
 
     /** Returns the length of the input text or number of elements in an array */
-    public static async lengthFunc(context: EvaluationContext, args: Value[]): Promise<Value<number>> {
+    public static async lengthFunc(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'length');
         const input = args[0];
         if (input.dataType === ValueDataType.Array) {
@@ -70,59 +71,59 @@ export class AbuseFilterFunctions {
     }
 
     /** Converts the input to a string */
-    public static async string(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
+    public static async string(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'string');
         return new Value(ValueDataType.String, args[0].toString());
     }
 
     /** Converts the input to an integer */
-    public static async int(context: EvaluationContext, args: Value[]): Promise<Value<number>> {
+    public static async int(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'int');
         return new Value(ValueDataType.Integer, Math.floor(args[0].toNumber()));
     }
 
     /** Converts the input to a float */
-    public static async float(context: EvaluationContext, args: Value[]): Promise<Value<number>> {
+    public static async float(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'float');
         return new Value(ValueDataType.Float, args[0].toNumber());
     }
 
     /** Converts the input to a boolean */
-    public static async bool(context: EvaluationContext, args: Value[]): Promise<Value<boolean>> {
+    public static async bool(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'bool');
         return args[0].asBoolean();
     }
 
     /** Normalizes the input string using multiple AbuseFilter functions */
-    public static async norm(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
+    public static async norm(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'norm');
         throw new Error('Not implemented');
         // TODO: requires ccnorm
     }
 
     /** Normalizes the input string, replacing confusible characters by a class representant */
-    public static async ccnorm(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
+    public static async ccnorm(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'ccnorm');
         throw new Error('Not implemented');
         // TODO: requires ccnorm
     }
 
     /** Checks if the first string contains any of the subsequent ones. All arguments are cc-normalized */
-    public static async ccnorm_contains_any(context: EvaluationContext, args: Value[]): Promise<Value<boolean>> {
+    public static async ccnorm_contains_any(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ccnorm_contains_any');
         throw new Error('Not implemented');
         // TODO: requires ccnorm
     }
 
     /** Checks if the first string contains all of the subsequent ones. All arguments are cc-normalized */
-    public static async ccnorm_contains_all(context: EvaluationContext, args: Value[]): Promise<Value<boolean>> {
+    public static async ccnorm_contains_all(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ccnorm_contains_all');
         throw new Error('Not implemented');
         // TODO: requires ccnorm
     }
 
     /** Returns the number of non-alphanumeric characters divided by the total number of characters in the argument */
-    public static async specialratio(context: EvaluationContext, args: Value[]): Promise<Value<number>> {
+    public static async specialratio(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'specialratio');
         const input = args[0].toString();
         if (input.length === 0) {
@@ -134,19 +135,19 @@ export class AbuseFilterFunctions {
     }
 
     /** Removes all non-alphanumeric characters from the input */
-    public static async rmspecials(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
+    public static async rmspecials(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmspecials');
         return new Value(ValueDataType.String, AbuseFilterFunctions.removeSpecialCharacters(args[0].toString()));
     }
 
     /** Removes repeating characters from the input */
-    public static async rmdoubles(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
+    public static async rmdoubles(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmdoubles');
         return new Value(ValueDataType.String, AbuseFilterFunctions.removeRepeatingCharacters(args[0].toString()));
     }
 
     /** Removes whitespace characters from the input */
-    public static async rmwhitespace(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
+    public static async rmwhitespace(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmwhitespace');
         return new Value(ValueDataType.String, AbuseFilterFunctions.removeWhitespaces(args[0].toString()));
     }
@@ -155,7 +156,7 @@ export class AbuseFilterFunctions {
      * Returns the number of occurrences of the second string in the first one.
      * If a single argument is given, it's split by commas and the number of elements is returned
      */
-    public static async count(context: EvaluationContext, args: Value[]): Promise<Value<number>> {
+    public static async count(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
         AbuseFilterFunctions.assertArgumentCount(args, [1, 2], 'count');
 
         const needle = args[0].toString();
@@ -185,7 +186,7 @@ export class AbuseFilterFunctions {
      * Returns the number of occurrences of the pattern in the first string.
      * If a single argument is given, it's split by commas and the number of elements is returned
      */
-    public static async rcount(context: EvaluationContext, args: Value[]): Promise<Value<number>> {
+    public static async rcount(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
         AbuseFilterFunctions.assertArgumentCount(args, [1, 2], 'rcount');
 
         const pattern = args[0].toString();
@@ -203,7 +204,7 @@ export class AbuseFilterFunctions {
      * Returns an array of all matches of the pattern in the input string.
      * If the pattern is not found, an empty array is returned.
      */
-    public static async get_matches(context: EvaluationContext, args: Value[]): Promise<Value<Value[]>> {
+    public static async get_matches(context: IEvaluationContext, args: IValue[]): Promise<Value<Value[]>> {
         AbuseFilterFunctions.assertArgumentCount(args, 2, 'get_matches');
 
         const pattern = args[0].toString();
@@ -223,13 +224,13 @@ export class AbuseFilterFunctions {
     }
 
     /** Checks if the IP address is in the specified range */
-    public static async ip_in_range(context: EvaluationContext, args: Value[]): Promise<Value<boolean>> {
+    public static async ip_in_range(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
         AbuseFilterFunctions.assertArgumentCount(args, 2, 'ip_in_range');
         return AbuseFilterFunctions.ip_in_ranges(context, args);
     }
 
     /** Checks if the IP address is in any of the specified ranges */
-    public static async ip_in_ranges(context: EvaluationContext, args: Value[]): Promise<Value<boolean>> {
+    public static async ip_in_ranges(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ip_in_ranges');
 
         // We want to silence errors from mismatched IP versions being compared
@@ -249,7 +250,7 @@ export class AbuseFilterFunctions {
     }
 
     /** Checks if the first string contains any of the subsequent ones */
-    public static async contains_any(context: EvaluationContext, args: Value[]): Promise<Value<boolean>> {
+    public static async contains_any(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'contains_any');
         const input = args[0];
         for (let i = 1; i < args.length; i++) {
@@ -261,7 +262,7 @@ export class AbuseFilterFunctions {
     }
 
     /** Checks if the first string contains all of the subsequent ones */
-    public static async contains_all(context: EvaluationContext, args: Value[]): Promise<Value<boolean>> {
+    public static async contains_all(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'contains_all');
         const input = args[0];
         for (let i = 1; i < args.length; i++) {
@@ -273,7 +274,7 @@ export class AbuseFilterFunctions {
     }
 
     /** Checks if the first element is equal to any of the subsequent ones */
-    public static async equals_to_any(context: EvaluationContext, args: Value[]): Promise<Value<boolean>> {
+    public static async equals_to_any(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'equals_to_any');
         const input = args[0];
         for (let i = 1; i < args.length; i++) {
@@ -285,7 +286,7 @@ export class AbuseFilterFunctions {
     }
 
     /** Returns a substring of the input string */
-    public static async substr(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
+    public static async substr(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, 3], 'substr');
         const input = args[0].toString();
         const start = args[1].toNumber();
@@ -300,7 +301,7 @@ export class AbuseFilterFunctions {
     }
 
     /** Returns the position of the first occurrence of the pattern in the input string */
-    public static async strpos(context: EvaluationContext, args: Value[]): Promise<Value<number>> {
+    public static async strpos(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, 3], 'strpos');
         const input = args[0].toString();
         const pattern = args[1].toString();
@@ -321,7 +322,7 @@ export class AbuseFilterFunctions {
     }
 
     /** Replaces all occurrences of the pattern in the input string with the replacement */
-    public static async str_replace(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
+    public static async str_replace(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 3, 'str_replace');
         const input = args[0].toString();
         const pattern = args[1].toString();
@@ -330,7 +331,7 @@ export class AbuseFilterFunctions {
     }
 
     /** Replaces all occurrences of the regex pattern in the input string with the replacement */
-    public static async str_replace_regexp(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
+    public static async str_replace_regexp(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 3, 'str_replace_regexp');
         const input = args[0].toString();
         const pattern = args[1].toString();
@@ -340,14 +341,14 @@ export class AbuseFilterFunctions {
     }
 
     /** Escapes the special characters in the input string */
-    public static async rescape(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
+    public static async rescape(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rescape');
         return new Value(ValueDataType.String, args[0].toString().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
         // TODO: extract into regex utils
     }
 
     /** Sets the variable in the context */
-    public static async set(context: EvaluationContext, args: Value[]): Promise<Value> {
+    public static async set(context: IEvaluationContext, args: IValue[]): Promise<IValue> {
         AbuseFilterFunctions.assertArgumentCount(args, 2, 'set');
         const variableName = args[0].toString();
         const value = args[1];
@@ -356,7 +357,7 @@ export class AbuseFilterFunctions {
     }
 
     /** Sanitizes the input string */
-    public static async sanitize(context: EvaluationContext, args: Value[]): Promise<Value<string>> {
+    public static async sanitize(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'sanitize');
 
         const input = args[0].toString();
@@ -402,7 +403,7 @@ export class AbuseFilterFunctions {
      * @param expectedCount An expected number of arguments, either a single number or a range [min, max]
      * @param functionName The function name, used for error messages
      */
-    private static assertArgumentCount(args: Value[], expectedCount: number | [number, number], functionName: string): void {
+    private static assertArgumentCount(args: unknown[], expectedCount: number | [number, number], functionName: string): void {
         const providedCount = args.length;
         if (typeof expectedCount === 'number') {
             expectedCount = [expectedCount, expectedCount];
@@ -413,5 +414,3 @@ export class AbuseFilterFunctions {
         }
     }
 }
-
-export type AbuseFilterFunction<T> = (context: EvaluationContext, args: Value[]) => Promise<Value<T>>;
