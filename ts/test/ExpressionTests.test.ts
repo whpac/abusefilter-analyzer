@@ -6,7 +6,6 @@ import { EvaluationContext } from '../src/evaluator/EvaluationContext.js';
 import { NodeEvaluator } from '../src/evaluator/NodeEvaluator.js';
 import { assert } from 'chai';
 import { EvaluableNodeFactory } from '../src/evaluator/EvaluableNodeFactory.js';
-import { IEvaluableTreeNode } from '../src/model/IEvaluableTreeNode.js';
 
 describe('Expressions from .t files', () => {
     // Read files with .t extension from the /parserTests folder
@@ -22,7 +21,7 @@ describe('Expressions from .t files', () => {
                     const tokenizer = new Tokenizer();
                     const parser = new Parser(new EvaluableNodeFactory());
                     const tokens = tokenizer.tokenize(content);
-                    const rootNode = parser.parse(tokens) as IEvaluableTreeNode;
+                    const rootNode = parser.parse(tokens);
                     const evaluator = new NodeEvaluator();
                     const context = new EvaluationContext();
                     const value = await evaluator.evaluateNode(rootNode, context);

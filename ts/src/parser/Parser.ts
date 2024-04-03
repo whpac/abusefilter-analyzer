@@ -10,8 +10,8 @@ import { TreeNodeType } from '../model/TreeNodeType.js';
  * 
  * Based on https://phabricator.wikimedia.org/diffusion/EABF/browse/master/includes/Parser/AFPTreeParser.php
  */
-export class Parser {
-    private nodeFactory: INodeFactory;
+export class Parser<TNode extends ITreeNode = ITreeNode> {
+    private nodeFactory: INodeFactory<TNode>;
 
     /** Stores the sequence of tokens that the parser is currently processing. */
     private tokens: Token[] = [];
@@ -23,7 +23,7 @@ export class Parser {
     private mPos: number = -1; // -1 so that the first call to move() sets it to 0
     // TODO: It'd be better to use some Queue<Token> like structure to avoid using mPos and mCur
 
-    public constructor(nodeFactory: INodeFactory) {
+    public constructor(nodeFactory: INodeFactory<TNode>) {
         this.nodeFactory = nodeFactory;
     }
 
@@ -33,7 +33,7 @@ export class Parser {
      * @param tokens The tokens to parse.
      * @returns The parsed expression tree.
      */
-    public parse(tokens: Token[]): ITreeNode {
+    public parse(tokens: Token[]): TNode {
         this.tokens = tokens;
         const tree = this.doLevelEntry();
 
@@ -88,7 +88,7 @@ export class Parser {
      * Handles unexpected characters after the expression.
      * @returns Null only if no statements
      */
-    private doLevelEntry(): ITreeNode | null {
+    private doLevelEntry(): TNode | null {
         const result = this.doLevelSemicolon();
 
         // At the top level, the filter consists of a single expression.
@@ -104,8 +104,8 @@ export class Parser {
     }
 
     /** Handles the semicolon operator. */
-    private doLevelSemicolon(): ITreeNode | null {
-        const statements: ITreeNode[] = [];
+    private doLevelSemicolon(): TNode | null {
+        const statements: TNode[] = [];
         let token: Token;
 
         do {
@@ -141,7 +141,7 @@ export class Parser {
     }
 
     /** Handles variable assignment. */
-    private doLevelSet(): ITreeNode {
+    private doLevelSet(): TNode {
         if(this.currentToken.type === TokenType.Identifier) {
             const variableNode = this.nodeFactory.createNode(TreeNodeType.Atom, this.currentToken, []);
 
@@ -163,7 +163,7 @@ export class Parser {
                 this.move();
 
                 // Parse index offset.
-                let index: ITreeNode | 'append' | null = 'append';
+                let index: TNode | 'append' | null = 'append';
                 if(!(this.currentToken.is(TokenType.SquareBracket, ']'))) {
                     this.setState(initialState);
                     this.move();
@@ -197,7 +197,7 @@ export class Parser {
     }
 
     /** Handles ternary operator and if-then-else-end. */
-    private doLevelConditions(): ITreeNode {
+    private doLevelConditions(): TNode {
         if(this.currentToken.is(TokenType.Keyword, 'if')) {
             const token = this.currentToken;
             this.move();
@@ -245,7 +245,7 @@ export class Parser {
     }
 
     /** Handles logic operators. */
-    private doLevelBoolOps(): ITreeNode {
+    private doLevelBoolOps(): TNode {
         let leftOperand = this.doLevelCompares();
         const ops = ['&', '|', '^'];
 
@@ -260,7 +260,7 @@ export class Parser {
     }
 
     /** Handles comparison operators. */
-    private doLevelCompares(): ITreeNode {
+    private doLevelCompares(): TNode {
         let leftOperand = this.doLevelSumRels();
         const equalityOps = ['==', '===', '!=', '!==', '='];
         const orderOps = ['<', '>', '<=', '>='];
@@ -280,7 +280,7 @@ export class Parser {
     }
 
     /** Handle addition and subtraction. */
-    private doLevelSumRels(): ITreeNode {
+    private doLevelSumRels(): TNode {
         let leftOperand = this.doLevelMulRels();
         const ops = ['+', '-'];
         while(this.currentToken.is(TokenType.Operator, ops)) {
@@ -293,7 +293,7 @@ export class Parser {
     }
 
     /** Handles multiplication and division. */
-    private doLevelMulRels(): ITreeNode {
+    private doLevelMulRels(): TNode {
         let leftOperand = this.doLevelPow();
         const ops = ['*', '/', '%'];
 
@@ -307,7 +307,7 @@ export class Parser {
     }
 
     /** Handles exponentiation. */
-    private doLevelPow(): ITreeNode {
+    private doLevelPow(): TNode {
         let base = this.doLevelBoolInvert();
         while(this.currentToken.is(TokenType.Operator, '**')) {
             const token = this.currentToken;
@@ -319,7 +319,7 @@ export class Parser {
     }
 
     /** Handles boolean inversion. */
-    private doLevelBoolInvert(): ITreeNode {
+    private doLevelBoolInvert(): TNode {
         if(this.currentToken.is(TokenType.Operator, '!')) {
             const token = this.currentToken;
             this.move();
@@ -331,7 +331,7 @@ export class Parser {
     }
 
     /** Handles keyword operators. */
-    private doLevelKeywordOperators(): ITreeNode {
+    private doLevelKeywordOperators(): TNode {
         const leftOperand = this.doLevelUnarys();
         const token = this.currentToken;
         const availableKeywords = ['in', 'like', 'contains', 'matches', 'rlike', 'irlike', 'regex'];
@@ -347,7 +347,7 @@ export class Parser {
     }
 
     /** Handles unary operators. */
-    private doLevelUnarys(): ITreeNode {
+    private doLevelUnarys(): TNode {
         if(this.currentToken.is(TokenType.Operator, ['+', '-'])) {
             const token = this.currentToken;
             this.move();
@@ -358,7 +358,7 @@ export class Parser {
     }
 
     /** Handles accessing an array element by an offset. */
-    private doLevelArrayElements(): ITreeNode {
+    private doLevelArrayElements(): TNode {
         let array = this.doLevelParenthesis();
         while(this.currentToken.is(TokenType.SquareBracket, '[')) {
             const token = this.currentToken;
@@ -375,14 +375,14 @@ export class Parser {
     }
 
     /** Handles parenthesis. */
-    private doLevelParenthesis(): ITreeNode {
+    private doLevelParenthesis(): TNode {
         if(this.currentToken.is(TokenType.Parenthesis, '(')) {
             const next = this.getNextToken();
             if(next.is(TokenType.Parenthesis, ')')) {
                 // Empty parentheses are never allowed
                 this.throwUnexpectedToken(this.currentToken);
             }
-            const result = this.doLevelSemicolon() as ITreeNode; // TODO: result could be null, but the original parser acts this way
+            const result = this.doLevelSemicolon()!; // TODO: result could be null, but the original parser acts this way
 
             if(!this.currentToken.is(TokenType.Parenthesis, ')')) {
                 this.throwExpectedNotFound( this.currentToken, ')');
@@ -396,13 +396,13 @@ export class Parser {
     }
 
     /** Handles function calls. */
-    private doLevelFunction(): ITreeNode {
+    private doLevelFunction(): TNode {
         let next = this.getNextToken();
         if(this.currentToken.type === TokenType.Identifier && next.is(TokenType.Parenthesis, '(')) {
             const token = this.currentToken;
             this.move();
 
-            const args: ITreeNode[] = [];
+            const args: TNode[] = [];
             next = this.getNextToken();
             if(!next.is(TokenType.Parenthesis, ')')) {
                 do {
@@ -427,9 +427,9 @@ export class Parser {
     }
 
     /** Handle literals. */
-    private doLevelAtom(): ITreeNode {
+    private doLevelAtom(): TNode {
         const tok = this.currentToken.value;
-        let result: ITreeNode;
+        let result: TNode;
         switch(this.currentToken.type) {
             case TokenType.Identifier:
             case TokenType.StringLiteral:
