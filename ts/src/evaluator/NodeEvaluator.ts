@@ -2,7 +2,7 @@ import { TreeNodeType } from '../model/TreeNodeType.js';
 import { EvaluatedTreeNode } from './EvaluatedTreeNode.js';
 import { EvaluationContext } from './EvaluationContext.js';
 import { Value } from './Value.js';
-import { ValueDataType } from './ValueDataType.js';
+import { ValueDataType } from '../model/ValueDataType.js';
 import { VariableValue } from './VariableValue.js';
 
 export class NodeEvaluator {

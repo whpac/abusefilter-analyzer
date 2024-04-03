@@ -4,7 +4,7 @@ import { Parser } from '../../src/parser/Parser.js';
 import { EvaluatedTreeNode } from '../../src/evaluator/EvaluatedTreeNode.js';
 import { NodeEvaluator } from '../../src/evaluator/NodeEvaluator.js';
 import { EvaluationContext } from '../../src/evaluator/EvaluationContext.js';
-import { ValueDataType } from '../../src/evaluator/ValueDataType.js';
+import { ValueDataType } from '../../src/model/ValueDataType.js';
 import { TreeNodeFactory } from '../../src/parser/nodes/TreeNodeFactory.js';
 
 describe('Evaluator tests', () => {

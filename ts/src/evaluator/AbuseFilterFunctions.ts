@@ -1,6 +1,6 @@
 import { EvaluationContext } from './EvaluationContext.js';
 import { Value } from './Value.js';
-import { ValueDataType } from './ValueDataType.js';
+import { ValueDataType } from '../model/ValueDataType.js';
 import { IPUtils } from './utils/IPUtils.js';
 import { RegexUtils } from './utils/regex/RegexUtils.js';
 

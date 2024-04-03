@@ -1,10 +1,11 @@
 import { Value } from './Value.js';
-import { ValueDataType } from './ValueDataType.js';
+import { ValueDataType } from '../model/ValueDataType.js';
+import { IVariableValue } from '../model/IVariableValue.js';
 
 /**
  * Represents a variable value, that can be used as a l-value in assignments.
  */
-export class VariableValue<TValue = unknown> extends Value<TValue> {
+export class VariableValue<TValue = unknown> extends Value<TValue> implements IVariableValue<TValue> {
 
     public readonly name: string;
 

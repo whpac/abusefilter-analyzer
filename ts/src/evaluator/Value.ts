@@ -1,14 +1,15 @@
-import { Token } from '../parser/Token.js';
 import { TokenType } from '../model/TokenType.js';
-import { ValueDataType } from './ValueDataType.js';
+import { ValueDataType } from '../model/ValueDataType.js';
 import { RegexUtils } from './utils/regex/RegexUtils.js';
+import { IToken } from '../model/IToken.js';
+import { IValue } from '../model/IValue.js';
 
 /**
  * A class representing a value in the evaluation tree.
  * 
  * It has a value-type semantics and therefore is immutable.
  */
-export class Value<TValue = unknown> {
+export class Value<TValue = unknown> implements IValue<TValue> {
     /** The stored data type */
     public readonly dataType: ValueDataType;
 
@@ -38,7 +39,7 @@ export class Value<TValue = unknown> {
     }
 
     /** Creates a new Value from a token literal */
-    public static fromTokenLiteral(token: Token): Value {
+    public static fromTokenLiteral(token: IToken): Value {
         switch (token.type) {
             case TokenType.StringLiteral:
                 return new Value(ValueDataType.String, token.value);
