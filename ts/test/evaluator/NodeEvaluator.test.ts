@@ -13,14 +13,15 @@ describe('Evaluator tests', () => {
             const rootNode = (new Parser(new EvaluableNodeFactory())).parse(tokens);
             const evaluator = new NodeEvaluator();
             const context = new EvaluationContext();
-            await evaluator.evaluateNode(rootNode, context);
+            const value = await evaluator.evaluateNode(rootNode, context);
 
             assert.isTrue(rootNode.hasValue(context));
 
-            const value = rootNode.getValue(context);
+            const nodeValue = rootNode.getValue(context);
 
-            assert.equal(value.dataType, ValueDataType.Boolean);
-            assert.equal(value.value, true);
+            assert.equal(nodeValue.dataType, ValueDataType.Boolean);
+            assert.equal(nodeValue.value, true);
+            assert.equal(value, nodeValue);
         });
 
         it('should evaluate false & true as false', async () => {
@@ -28,14 +29,15 @@ describe('Evaluator tests', () => {
             const rootNode = (new Parser(new EvaluableNodeFactory())).parse(tokens);
             const evaluator = new NodeEvaluator();
             const context = new EvaluationContext();
-            await evaluator.evaluateNode(rootNode, context);
+            const value = await evaluator.evaluateNode(rootNode, context);
 
             assert.isTrue(rootNode.hasValue(context));
 
-            const value = rootNode.getValue(context);
+            const nodeValue = rootNode.getValue(context);
 
-            assert.equal(value.dataType, ValueDataType.Boolean);
-            assert.equal(value.value, false);
+            assert.equal(nodeValue.dataType, ValueDataType.Boolean);
+            assert.equal(nodeValue.value, false);
+            assert.equal(value, nodeValue);
         });
 
         it('should evaluate false & false as false', async () => {
@@ -43,14 +45,15 @@ describe('Evaluator tests', () => {
             const rootNode = (new Parser(new EvaluableNodeFactory())).parse(tokens);
             const evaluator = new NodeEvaluator();
             const context = new EvaluationContext();
-            await evaluator.evaluateNode(rootNode, context);
+            const value = await evaluator.evaluateNode(rootNode, context);
 
             assert.isTrue(rootNode.hasValue(context));
 
-            const value = rootNode.getValue(context);
+            const nodeValue = rootNode.getValue(context);
 
-            assert.equal(value.dataType, ValueDataType.Boolean);
-            assert.equal(value.value, false);
+            assert.equal(nodeValue.dataType, ValueDataType.Boolean);
+            assert.equal(nodeValue.value, false);
+            assert.equal(value, nodeValue);
         });
 
         it('should evaluate 0 & true as 0', async () => {
@@ -58,14 +61,15 @@ describe('Evaluator tests', () => {
             const rootNode = (new Parser(new EvaluableNodeFactory())).parse(tokens);
             const evaluator = new NodeEvaluator();
             const context = new EvaluationContext();
-            await evaluator.evaluateNode(rootNode, context);
+            const value = await evaluator.evaluateNode(rootNode, context);
 
             assert.isTrue(rootNode.hasValue(context));
 
-            const value = rootNode.getValue(context);
+            const nodeValue = rootNode.getValue(context);
 
-            assert.equal(value.dataType, ValueDataType.Integer);
-            assert.equal(value.value, 0);
+            assert.equal(nodeValue.dataType, ValueDataType.Integer);
+            assert.equal(nodeValue.value, 0);
+            assert.equal(value, nodeValue);
         });
 
         it('should evaluate true & 0 as false', async () => {
@@ -73,14 +77,15 @@ describe('Evaluator tests', () => {
             const rootNode = (new Parser(new EvaluableNodeFactory())).parse(tokens);
             const evaluator = new NodeEvaluator();
             const context = new EvaluationContext();
-            await evaluator.evaluateNode(rootNode, context);
+            const value = await evaluator.evaluateNode(rootNode, context);
 
             assert.isTrue(rootNode.hasValue(context));
 
-            const value = rootNode.getValue(context);
+            const nodeValue = rootNode.getValue(context);
 
-            assert.equal(value.dataType, ValueDataType.Boolean);
-            assert.equal(value.value, false);
+            assert.equal(nodeValue.dataType, ValueDataType.Boolean);
+            assert.equal(nodeValue.value, false);
+            assert.equal(value, nodeValue);
         });
     });
 });
