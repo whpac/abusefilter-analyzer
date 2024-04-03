@@ -1,28 +1,36 @@
 import { ITreeNode } from '../../model/ITreeNode.js';
 import { Token } from '../Token.js';
 import { TreeNodeType } from '../../model/TreeNodeType.js';
-import { AtomNode } from './AtomNode.js';
 import { INodeFactory } from './INodeFactory.js';
-import { OperatorNode } from './OperatorNode.js';
-import { TokenType } from '../TokenType.js';
+import { TreeNode } from './TreeNode.js';
 
 export class TreeNodeFactory implements INodeFactory {
 
     public createAtomNode(token: Token): ITreeNode {
-        return new AtomNode(token);
+        return new TreeNode(TreeNodeType.Atom, token, []);
     }
 
-    public createOperatorNode(type: TreeNodeType, position: number, operation: string, children: ITreeNode[]): ITreeNode {
-        return new OperatorNode(type, position, operation, children);
+    public createOperatorNode(identity: Token, children: ITreeNode[]): ITreeNode {
+        return new TreeNode(TreeNodeType.Operator, identity, children);
     }
 
-    public createKeywordNode(position: number, keyword: string, children: ITreeNode[]): ITreeNode {
-        children.unshift(this.createAtomNode(new Token(TokenType.StringLiteral, keyword, position, keyword.length)));
-        return new OperatorNode(TreeNodeType.KeywordOperator, position, keyword, children);
+    public createFunctionCallNode(identity: Token, args: ITreeNode[]): ITreeNode {
+        return new TreeNode(TreeNodeType.FunctionCall, identity, args);
     }
 
-    public createFunctionCallNode(position: number, functionName: string, args: ITreeNode[]): ITreeNode {
-        args.unshift(this.createAtomNode(new Token(TokenType.StringLiteral, functionName, position, functionName.length)));
-        return new OperatorNode(TreeNodeType.FunctionCall, position, functionName, args);
+    public createAssignmentNode(identity: Token, children: ITreeNode[]): ITreeNode {
+        return new TreeNode(TreeNodeType.Assignment, identity, children);
+    }
+
+    public createArrayAssignmentNode(identity: Token, children: ITreeNode[]): ITreeNode {
+        return new TreeNode(TreeNodeType.IndexAssignment, identity, children);
+    }
+
+    public createArrayDefinitionNode(identity: Token, children: ITreeNode[]): ITreeNode {
+        return new TreeNode(TreeNodeType.ArrayDefinition, identity, children);
+    }
+
+    public createArrayIndexingNode(identity: Token, children: ITreeNode[]): ITreeNode {
+        return new TreeNode(TreeNodeType.ArrayIndexing, identity, children);
     }
 }

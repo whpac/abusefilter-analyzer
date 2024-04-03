@@ -1,8 +1,6 @@
 import { ParserException } from './ParserException.js';
 import { Token } from './Token.js';
 import { TokenType } from './TokenType.js';
-import { TreeNodeType } from '../model/TreeNodeType.js';
-import { NodeEvaluator } from '../evaluator/NodeEvaluator.js';
 import { INodeFactory } from './nodes/INodeFactory.js';
 import { ITreeNode } from '../model/ITreeNode.js';
 
@@ -107,11 +105,13 @@ export class Parser {
     /** Handles the semicolon operator. */
     private doLevelSemicolon(): ITreeNode | null {
         const statements: ITreeNode[] = [];
-        let position = 0;
+        let token: Token;
 
         do {
+            // At the first iteration it can be garbage but the variable is used only
+            // if there are at least two statements. It's guaranteed to be set correctly then.
+            token = this.currentToken;
             this.move();
-            position = this.currentToken.startPosition;
 
             if(
                 this.currentToken.type === TokenType.EndOfStream ||
@@ -125,9 +125,8 @@ export class Parser {
             if(this.currentToken.type === TokenType.StatementSeparator) {
                 continue;
             }
-
+            
             statements.push(this.doLevelSet());
-            position = this.currentToken.startPosition;
         } while(this.currentToken.type === TokenType.StatementSeparator);
 
         // Flatten the tree if possible.
@@ -136,7 +135,7 @@ export class Parser {
         } else if(statements.length === 1) {
             return statements[0];
         } else {
-            return this.nodeFactory.createOperatorNode(TreeNodeType.Semicolon, position, ';', statements);
+            return this.nodeFactory.createOperatorNode(token, statements);
         }
     }
 
@@ -152,13 +151,11 @@ export class Parser {
             this.move();
 
             if(this.currentToken.is(TokenType.Operator, ':=')) {
-                const position = this.currentToken.startPosition;
+                const token = this.currentToken;
                 this.move();
                 const value = this.doLevelSet();
 
-                return this.nodeFactory.createOperatorNode(
-                    TreeNodeType.Assignment, position, ':=', [variableNode, value]
-                );
+                return this.nodeFactory.createAssignmentNode(token, [variableNode, value]);
             }
 
             if(this.currentToken.is(TokenType.SquareBracket, '[')) {
@@ -177,24 +174,20 @@ export class Parser {
 
                 this.move();
                 if(this.currentToken.is(TokenType.Operator, ':=')) {
-                    const position = this.currentToken.startPosition;
+                    const token = this.currentToken;
                     this.move();
                     const value = this.doLevelSet();
 
                     if(index === 'append') {
-                        return this.nodeFactory.createOperatorNode(
-                            TreeNodeType.ArrayAppend, position, '[] :=', [variableNode, value]
-                        );
+                        return this.nodeFactory.createArrayAssignmentNode(token, [variableNode, value]);
                     } else {
                         // TODO: index could be null, but the original parser acts this way
-                        return this.nodeFactory.createOperatorNode(
-                            TreeNodeType.IndexAssignment, position, '[_] :=', [variableNode, index!, value]
-                        );
+                        return this.nodeFactory.createArrayAssignmentNode(token, [variableNode, value, index!]);
                     }
                 }
             }
 
-            // If we reached this point, we did not find an assignment.  Roll back
+            // If we reached this point, we did not find an assignment. Roll back
             // and assume this was just a literal.
             this.setState(initialState);
         }
@@ -205,7 +198,7 @@ export class Parser {
     /** Handles ternary operator and if-then-else-end. */
     private doLevelConditions(): ITreeNode {
         if(this.currentToken.is(TokenType.Keyword, 'if')) {
-            const position = this.currentToken.startPosition;
+            const token = this.currentToken;
             this.move();
             const condition = this.doLevelBoolOps();
 
@@ -229,12 +222,12 @@ export class Parser {
             }
             this.move();
 
-            return this.nodeFactory.createOperatorNode(TreeNodeType.Conditional, position, '?:', args);
+            return this.nodeFactory.createOperatorNode(token, args);
         }
 
         const condition = this.doLevelBoolOps();
         if(this.currentToken.is(TokenType.Operator, '?')) {
-            const position = this.currentToken.startPosition;
+            const token = this.currentToken;
             this.move();
 
             const valueIfTrue = this.doLevelConditions();
@@ -244,12 +237,7 @@ export class Parser {
             this.move();
 
             const valueIfFalse = this.doLevelConditions();
-            return this.nodeFactory.createOperatorNode(
-                TreeNodeType.Conditional,
-                position,
-                '?:',
-                [condition, valueIfTrue, valueIfFalse],
-            );
+            return this.nodeFactory.createOperatorNode(token, [condition, valueIfTrue, valueIfFalse]);
         }
 
         return condition;
@@ -259,25 +247,13 @@ export class Parser {
     private doLevelBoolOps(): ITreeNode {
         let leftOperand = this.doLevelCompares();
         const ops = ['&', '|', '^'];
-        const operatorMapping = {
-            '&': TreeNodeType.LogicAnd,
-            '|': TreeNodeType.LogicOr,
-            '^': TreeNodeType.LogicXor,
-        };
-
 
         while(this.currentToken.is(TokenType.Operator, ops)) {
-            const op = this.currentToken.value;
-            const position = this.currentToken.startPosition;
+            const token = this.currentToken;
             this.move();
             const rightOperand = this.doLevelCompares();
 
-            leftOperand = this.nodeFactory.createOperatorNode(
-                operatorMapping[op as keyof typeof operatorMapping],
-                position,
-                op,
-                [leftOperand, rightOperand],
-            );
+            leftOperand = this.nodeFactory.createOperatorNode(token, [leftOperand, rightOperand]);
         }
         return leftOperand;
     }
@@ -291,30 +267,13 @@ export class Parser {
         // orderOps. This resembles what PHP does, and allows `a < b == c` while rejecting `a < b < c`
         let allowedOps = equalityOps.concat(orderOps);
 
-        const operatorMapping = {
-            '=': TreeNodeType.CompareEqual, // '=' is an alias for '==
-            '==': TreeNodeType.CompareEqual,
-            '===': TreeNodeType.CompareStrictEqual,
-            '!=': TreeNodeType.CompareNotEqual,
-            '!==': TreeNodeType.CompareStrictNotEqual,
-            '<': TreeNodeType.CompareLess,
-            '>': TreeNodeType.CompareGreater,
-            '<=': TreeNodeType.CompareLessEqual,
-            '>=': TreeNodeType.CompareGreaterEqual,
-        };
-
         while(this.currentToken.is(TokenType.Operator, allowedOps)) {
-            const op = this.currentToken.value;
-            allowedOps = equalityOps.includes(op) ? orderOps : equalityOps;
-            const position = this.currentToken.startPosition;
+            const token = this.currentToken;
+            allowedOps = equalityOps.includes(token.value) ? orderOps : equalityOps;
+
             this.move();
             const rightOperand = this.doLevelSumRels();
-            leftOperand = this.nodeFactory.createOperatorNode(
-                operatorMapping[op as keyof typeof operatorMapping],
-                position,
-                op,
-                [leftOperand, rightOperand],
-            );
+            leftOperand = this.nodeFactory.createOperatorNode(token, [leftOperand, rightOperand]);
         }
         return leftOperand;
     }
@@ -324,16 +283,10 @@ export class Parser {
         let leftOperand = this.doLevelMulRels();
         const ops = ['+', '-'];
         while(this.currentToken.is(TokenType.Operator, ops)) {
-            const op = this.currentToken.value;
-            const position = this.currentToken.startPosition;
+            const token = this.currentToken;
             this.move();
             const rightOperand = this.doLevelMulRels();
-            leftOperand = this.nodeFactory.createOperatorNode(
-                op == '+' ? TreeNodeType.ArithmeticAdd : TreeNodeType.ArithmeticSubtract,
-                position,
-                op,
-                [leftOperand, rightOperand],
-            );
+            leftOperand = this.nodeFactory.createOperatorNode(token, [leftOperand, rightOperand]);
         }
         return leftOperand;
     }
@@ -342,23 +295,12 @@ export class Parser {
     private doLevelMulRels(): ITreeNode {
         let leftOperand = this.doLevelPow();
         const ops = ['*', '/', '%'];
-        const operatorMapping = {
-            '*': TreeNodeType.ArithmeticMultiply,
-            '/': TreeNodeType.ArithmeticDivide,
-            '%': TreeNodeType.ArithmeticModulo,
-        };
 
         while(this.currentToken.is(TokenType.Operator, ops)) {
-            const op = this.currentToken.value;
-            const position = this.currentToken.startPosition;
+            const token = this.currentToken;
             this.move();
             const rightOperand = this.doLevelPow();
-            leftOperand = this.nodeFactory.createOperatorNode(
-                operatorMapping[op as keyof typeof operatorMapping],
-                position,
-                op,
-                [leftOperand, rightOperand],
-            );
+            leftOperand = this.nodeFactory.createOperatorNode(token, [leftOperand, rightOperand]);
         }
         return leftOperand;
     }
@@ -367,10 +309,10 @@ export class Parser {
     private doLevelPow(): ITreeNode {
         let base = this.doLevelBoolInvert();
         while(this.currentToken.is(TokenType.Operator, '**')) {
-            const position = this.currentToken.startPosition;
+            const token = this.currentToken;
             this.move();
             const exponent = this.doLevelBoolInvert();
-            base = this.nodeFactory.createOperatorNode(TreeNodeType.Exponentiation, position, '**', [base, exponent]);
+            base = this.nodeFactory.createOperatorNode(token, [base, exponent]);
         }
         return base;
     }
@@ -378,10 +320,10 @@ export class Parser {
     /** Handles boolean inversion. */
     private doLevelBoolInvert(): ITreeNode {
         if(this.currentToken.is(TokenType.Operator, '!')) {
-            const position = this.currentToken.startPosition;
+            const token = this.currentToken;
             this.move();
             const argument = this.doLevelKeywordOperators();
-            return this.nodeFactory.createOperatorNode(TreeNodeType.BooleanNegation, position, '!', [argument]);
+            return this.nodeFactory.createOperatorNode(token, [argument]);
         }
 
         return this.doLevelKeywordOperators();
@@ -390,18 +332,14 @@ export class Parser {
     /** Handles keyword operators. */
     private doLevelKeywordOperators(): ITreeNode {
         const leftOperand = this.doLevelUnarys();
-        const keyword = this.currentToken.value.toLowerCase();
-        const availableKeywords: string[] = NodeEvaluator.operatorKeywords;
+        const token = this.currentToken;
+        const availableKeywords = ['in', 'like', 'contains', 'matches', 'rlike', 'irlike', 'regex'];
+
         if(this.currentToken.is(TokenType.Keyword, availableKeywords)) {
-            const position = this.currentToken.startPosition;
             this.move();
             const rightOperand = this.doLevelUnarys();
 
-            return this.nodeFactory.createKeywordNode(
-                position,
-                keyword,
-                [leftOperand, rightOperand],
-            );
+            return this.nodeFactory.createOperatorNode(token, [leftOperand, rightOperand]);
         }
 
         return leftOperand;
@@ -409,17 +347,11 @@ export class Parser {
 
     /** Handles unary operators. */
     private doLevelUnarys(): ITreeNode {
-        const op = this.currentToken.value;
         if(this.currentToken.is(TokenType.Operator, ['+', '-'])) {
-            const position = this.currentToken.startPosition;
+            const token = this.currentToken;
             this.move();
             const argument = this.doLevelArrayElements();
-            return this.nodeFactory.createOperatorNode(
-                op == '+' ? TreeNodeType.ArithmeticUnaryPlus : TreeNodeType.ArithmeticUnaryMinus,
-                position,
-                op,
-                [argument]
-            );
+            return this.nodeFactory.createOperatorNode(token, [argument]);
         }
         return this.doLevelArrayElements();
     }
@@ -428,9 +360,9 @@ export class Parser {
     private doLevelArrayElements(): ITreeNode {
         let array = this.doLevelParenthesis();
         while(this.currentToken.is(TokenType.SquareBracket, '[')) {
-            const position = this.currentToken.startPosition;
+            const token = this.currentToken;
             const index = this.doLevelSemicolon()!; // TODO: index could be null, but the original parser acts this way
-            array = this.nodeFactory.createOperatorNode(TreeNodeType.ArrayIndexing, position, '[]', [array, index]);
+            array = this.nodeFactory.createArrayIndexingNode(token, [array, index]);
 
             if(!this.currentToken.is(TokenType.SquareBracket, ']')) {
                 this.throwExpectedNotFound(this.currentToken, ']');
@@ -466,8 +398,7 @@ export class Parser {
     private doLevelFunction(): ITreeNode {
         let next = this.getNextToken();
         if(this.currentToken.type === TokenType.Identifier && next.is(TokenType.Parenthesis, '(')) {
-            const func = this.currentToken.value;
-            const position = this.currentToken.startPosition;
+            const token = this.currentToken;
             this.move();
 
             const args: ITreeNode[] = [];
@@ -488,7 +419,7 @@ export class Parser {
             }
             this.move();
 
-            return this.nodeFactory.createFunctionCallNode(position, func, args);
+            return this.nodeFactory.createFunctionCallNode(token, args);
         }
 
         return this.doLevelAtom();
@@ -519,6 +450,7 @@ export class Parser {
 
             case TokenType.SquareBracket:
                 if(this.currentToken.value === '[') {
+                    const token = this.currentToken;
                     const array = [];
 
                     // eslint-disable-next-line no-constant-condition
@@ -538,7 +470,7 @@ export class Parser {
                         }
                     }
 
-                    result = this.nodeFactory.createOperatorNode(TreeNodeType.ArrayDefinition, this.currentToken.startPosition, '[]', array);
+                    result = this.nodeFactory.createArrayDefinitionNode(token, array);
                     break;
                 }
 

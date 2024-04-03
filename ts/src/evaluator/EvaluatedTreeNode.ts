@@ -1,6 +1,5 @@
 import { TreeNode } from '../parser/nodes/TreeNode.js';
 import { TreeNodeType } from '../model/TreeNodeType.js';
-import { AtomNode } from '../parser/nodes/AtomNode.js';
 import { Value } from './Value.js';
 import { NodeEvaluator } from './NodeEvaluator.js';
 import { EvaluationContext } from './EvaluationContext.js';
@@ -48,13 +47,13 @@ export class EvaluatedTreeNode {
 
         // Atoms store value literals and variable reads
         if (this.node.type === TreeNodeType.Atom) {
-            const atomNode = this.node as AtomNode;
-            if (atomNode.tokenType === TokenType.Identifier) {
+            const atomNode = this.node;
+            if (atomNode.identity.type === TokenType.Identifier) {
                 // Get variable value
-                this._value = evaluationContext.getVariable(atomNode.tokenValue);
+                this._value = evaluationContext.getVariable(atomNode.identity.value);
             } else {
                 // Else, convert the literal into a value
-                this._value = Value.fromTokenLiteral(atomNode.token);
+                this._value = Value.fromTokenLiteral(atomNode.identity);
             }
         } else {
             // Evaluate this node

@@ -1,3 +1,4 @@
+import { Token } from '../parser/Token.js';
 import { TreeNodeType } from './TreeNodeType.js';
 
 /**
@@ -9,6 +10,8 @@ export interface ITreeNode {
 
     /** Type of this node. */
     get type(): TreeNodeType;
+
+    get identity(): Token;
 
     /** Child nodes of this node. */
     get children(): ITreeNode[];

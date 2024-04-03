@@ -2,7 +2,6 @@ import { assert } from 'chai';
 import { Tokenizer } from '../../src/parser/Tokenizer.js';
 import { Parser } from '../../src/parser/Parser.js';
 import { TreeNodeType } from '../../src/model/TreeNodeType.js';
-import { AtomNode } from '../../src/parser/nodes/AtomNode.js';
 import { TreeNodeFactory } from '../../src/parser/nodes/TreeNodeFactory.js';
 
 describe('Parser tests', () => {
@@ -12,20 +11,19 @@ describe('Parser tests', () => {
             const rootNode = (new Parser(new TreeNodeFactory())).parse(tokens);
 
             assert.isNotNull(rootNode);
-            assert.equal(rootNode.type, TreeNodeType.CompareEqual);
+            assert.equal(rootNode.type, TreeNodeType.Operator);
+            assert.equal(rootNode.identity.value, '==');
 
             const rootNodeChildren = rootNode?.children;
             assert.isArray(rootNodeChildren);
 
-            const leftOperand = rootNodeChildren[0] as AtomNode;
-            assert.isTrue(leftOperand instanceof AtomNode);
+            const leftOperand = rootNodeChildren[0];
             assert.equal(leftOperand.type, TreeNodeType.Atom);
-            assert.equal(leftOperand.tokenValue, 'a');
+            assert.equal(leftOperand.identity.value, 'a');
 
-            const rightOperand = rootNodeChildren[1] as AtomNode;
-            assert.isTrue(rightOperand instanceof AtomNode);
+            const rightOperand = rootNodeChildren[1];
             assert.equal(rightOperand.type, TreeNodeType.Atom);
-            assert.equal(rightOperand.tokenValue, 'b');
+            assert.equal(rightOperand.identity.value, 'b');
         });
 
         it('should properly apply operator precendence in arithmetics', () => {
@@ -33,7 +31,8 @@ describe('Parser tests', () => {
             const rootNode = (new Parser(new TreeNodeFactory())).parse(tokens);
 
             assert.isNotNull(rootNode);
-            assert.equal(rootNode.type, TreeNodeType.ArithmeticAdd);
+            assert.equal(rootNode.type, TreeNodeType.Operator);
+            assert.equal(rootNode.identity.value, '+');
         });
 
         it('should properly apply parentheses', () => {
@@ -41,7 +40,8 @@ describe('Parser tests', () => {
             const rootNode = (new Parser(new TreeNodeFactory())).parse(tokens);
 
             assert.isNotNull(rootNode);
-            assert.equal(rootNode.type, TreeNodeType.ArithmeticMultiply);
+            assert.equal(rootNode.type, TreeNodeType.Operator);
+            assert.equal(rootNode.identity.value, '*');
         });
     });
 });

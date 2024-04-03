@@ -1,15 +1,19 @@
 import { ITreeNode } from '../../model/ITreeNode.js';
 import { TreeNodeType } from '../../model/TreeNodeType.js';
+import { Token } from '../Token.js';
 
 /**
  * Represents a single node in the parser tree. It chan contain other nodes or simple values.
  * 
  * Based on https://phabricator.wikimedia.org/diffusion/EABF/browse/master/includes/Parser/AFPTreeNode.php
  */
-export abstract class TreeNode implements ITreeNode {
+export class TreeNode implements ITreeNode {
 
     /** Type of this node */
     public readonly type: TreeNodeType;
+
+    /** Token that decides on the exact node semantics, e.g. operator, identifier etc. */
+    public readonly identity: Token;
 
     /**
      * Parameters for the node. For atoms it's a single Token, while for other nodes
@@ -18,8 +22,9 @@ export abstract class TreeNode implements ITreeNode {
     public readonly children: ITreeNode[];
 
 
-    public constructor(type: TreeNodeType, position: number, children: ITreeNode[] = []) {
+    public constructor(type: TreeNodeType, identity: Token, children: ITreeNode[] = []) {
         this.type = type;
+        this.identity = identity;
         this.children = children;
     }
 
@@ -31,7 +36,7 @@ export abstract class TreeNode implements ITreeNode {
     }
 
     protected toDebugStringInner(): string[] {
-        let lines = [ this.type.toString() ];
+        let lines = [ `${this.type.toString()}(${this.identity.type} ${this.identity.value})` ];
         for (const subnode of this.children) {
             if(!(subnode instanceof TreeNode)) {
                 lines.push('  ' + subnode.toString());

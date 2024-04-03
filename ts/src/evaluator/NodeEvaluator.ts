@@ -6,11 +6,7 @@ import { ValueDataType } from './ValueDataType.js';
 import { VariableValue } from './VariableValue.js';
 
 export class NodeEvaluator {
-    /** An array of keywords that are supported as operators */
-    public static readonly operatorKeywords = [
-        'in', 'like', 'contains', 'matches', 'rlike', 'irlike', 'regex',
-    ];
-    
+
     /**
      * Evaluates all the subnodes first and then calculates the node value. This is not for AtomNodes.
      * @param treeNode The tree node to be evaluated
@@ -23,7 +19,8 @@ export class NodeEvaluator {
 
         // The only node that can't be evaluated using a standard greedy execution is a conditional node
         const nodeType = treeNode.node.type;
-        if (nodeType == TreeNodeType.Conditional) {
+        const tokenValue = treeNode.node.identity.value;
+        if (nodeType == TreeNodeType.Operator && ['?', 'if'].includes(tokenValue)) {
             return this.evaluateConditionalOperatorLazily(treeNode.children, context);
         }
 
@@ -37,47 +34,16 @@ export class NodeEvaluator {
         const values = treeNode.children.map((child) => child.value);
 
         switch (nodeType) {
-            case TreeNodeType.Semicolon:
-                return this.calculateSemicolonResult(values);
+            case TreeNodeType.Operator:
+                return this.calculateOperatorNodeResult(tokenValue, values);
             case TreeNodeType.Assignment:
                 return this.calculateAssignmentResult(context, values);
             case TreeNodeType.IndexAssignment:
                 return this.calculateIndexAssignmentResult(values);
-            case TreeNodeType.ArrayAppend:
-                return this.calculateArrayAppendResult(values);
-            case TreeNodeType.LogicAnd:
-            case TreeNodeType.LogicOr:
-            case TreeNodeType.LogicXor:
-                return this.calculateLogicResult(values, nodeType);
-            case TreeNodeType.CompareEqual:
-            case TreeNodeType.CompareNotEqual:
-            case TreeNodeType.CompareStrictEqual:
-            case TreeNodeType.CompareStrictNotEqual:
-            case TreeNodeType.CompareLess:
-            case TreeNodeType.CompareLessEqual:
-            case TreeNodeType.CompareGreater:
-            case TreeNodeType.CompareGreaterEqual:
-                return this.calculateCompareResult(values, nodeType);
-            case TreeNodeType.ArithmeticAdd:
-            case TreeNodeType.ArithmeticSubtract:
-                return this.calculateArithmeticAdditiveResult(values, nodeType);
-            case TreeNodeType.ArithmeticMultiply:
-            case TreeNodeType.ArithmeticDivide:
-            case TreeNodeType.ArithmeticModulo:
-                return this.calculateArithmeticMultiplicativeResult(values, nodeType);
-            case TreeNodeType.Exponentiation:
-                return this.calculateExponentiationResult(values);
-            case TreeNodeType.BooleanNegation:
-                return this.calculateBooleanNegationResult(values);
-            case TreeNodeType.KeywordOperator:
-                return this.calculateKeywordOperatorResult(values);
-            case TreeNodeType.ArithmeticUnaryPlus:
-            case TreeNodeType.ArithmeticUnaryMinus:
-                return this.calculateArithmeticUnaryResult(values, nodeType);
             case TreeNodeType.ArrayIndexing:
                 return this.calculateArrayIndexingResult(values);
             case TreeNodeType.FunctionCall:
-                return await this.calculateFunctionCallResult(context, values);
+                return await this.calculateFunctionCallResult(context, tokenValue, values);
             case TreeNodeType.ArrayDefinition:
                 return this.calculateArrayDefinitionResult(values);
         }
@@ -98,9 +64,9 @@ export class NodeEvaluator {
      * @param context The evaluation context
      */
     public async evaluateNodeLazily(treeNode: EvaluatedTreeNode, context: EvaluationContext): Promise<Value> {
-        if (treeNode.node.type == TreeNodeType.LogicAnd) {
+        if (treeNode.node.identity.value == '&') {
             return this.evaluateLogicalOperatorLazily(treeNode.children, context, true);
-        } else if (treeNode.node.type == TreeNodeType.LogicOr) {
+        } else if (treeNode.node.identity.value == '|') {
             return this.evaluateLogicalOperatorLazily(treeNode.children, context, false);
         }
 
@@ -178,9 +144,68 @@ export class NodeEvaluator {
         }
     }
 
-    protected calculateSemicolonResult(values: Value[]): Value {
-        const lastValue = values[values.length - 1];
-        return lastValue;
+    protected calculateOperatorNodeResult(operator: string, values: Value[]): Value {
+        const left = values[0];
+        const right = values[1];
+
+        switch (operator) {
+            case ';':
+                return values[values.length - 1];
+            case '&':
+                return Value.and(values);
+            case '|':
+                return Value.or(values);
+            case '^':
+                return Value.xor(values);
+            case '=':
+            case '==':
+                return left.isLooselyEqualTo(right);
+            case '!=':
+                return left.isLooselyInequalTo(right);
+            case '===':
+                return left.isStrictlyEqualTo(right);
+            case '!==':
+                return left.isStrictlyInequalTo(right);
+            case '<':
+                return left.isLessThan(right);
+            case '<=':
+                return left.isLessThanOrEqualTo(right);
+            case '>':
+                return left.isGreaterThan(right);
+            case '>=':
+                return left.isGreaterThanOrEqualTo(right);
+            case '+':
+                // Plus can be unary or binary
+                return (right !== undefined) ? left.add(right) : left;
+            case '-':
+                // Minus can be unary or binary
+                return (right !== undefined) ? left.subtract(right) : left.negate();
+            case '*':
+                return left.multiply(right);
+            case '/':
+                return left.divide(right);
+            case '%':
+                return left.modulo(right);
+            case '**':
+                return left.pow(right);
+            case '!':
+                return left.not();
+            case 'in':
+                return right.contains(left);
+            case 'contains':
+                return left.contains(right);
+            case 'like':
+            case 'matches':
+                return left.testGlob(right);
+            case 'irlike':
+                return left.testRegex(right, true);
+            case 'rlike':
+            case 'regex':
+                return left.testRegex(right);
+        }
+
+        // If we got here, the operator is unknown
+        throw new Error(`Unrecognized operator: ${operator}`);
     }
 
     protected calculateAssignmentResult(context: EvaluationContext, values: Value[]): Value {
@@ -197,133 +222,14 @@ export class NodeEvaluator {
 
     protected calculateIndexAssignmentResult(values: Value[]): Value {
         const array = values[0];
-        const index = values[1];
-        const newValue = values[2];
-        array.setElementAt(index, newValue);
-        return newValue;
-    }
-
-    protected calculateArrayAppendResult(values: Value[]): Value {
-        const array = values[0];
         const newValue = values[1];
-        array.appendElement(newValue);
+        if (values.length == 2) {
+            array.appendElement(newValue);
+        } else {
+            const index = values[2];
+            array.setElementAt(index, newValue);
+        }
         return newValue;
-    }
-
-    // Conditional operator cannot be evaluated greedily
-
-    protected calculateLogicResult(values: Value[], operation: TreeNodeType): Value {
-        switch (operation) {
-            case TreeNodeType.LogicAnd:
-                return Value.and(values);
-            case TreeNodeType.LogicOr:
-                return Value.or(values);
-            case TreeNodeType.LogicXor:
-                return Value.xor(values);
-            default:
-                throw new Error(`Unknown logical operation: ${operation}`);
-        }
-    }
-
-    protected calculateCompareResult(values: Value[], operation: TreeNodeType): Value {
-        const left = values[0];
-        const right = values[1];
-
-        switch (operation) {
-            case TreeNodeType.CompareEqual:
-                return left.isLooselyEqualTo(right);
-            case TreeNodeType.CompareNotEqual:
-                return left.isLooselyInequalTo(right);
-            case TreeNodeType.CompareStrictEqual:
-                return left.isStrictlyEqualTo(right);
-            case TreeNodeType.CompareStrictNotEqual:
-                return left.isStrictlyInequalTo(right);
-            case TreeNodeType.CompareLess:
-                return left.isLessThan(right);
-            case TreeNodeType.CompareLessEqual:
-                return left.isLessThanOrEqualTo(right);
-            case TreeNodeType.CompareGreater:
-                return left.isGreaterThan(right);
-            case TreeNodeType.CompareGreaterEqual:
-                return left.isGreaterThanOrEqualTo(right);
-            default:
-                throw new Error(`Unknown comparison operation: ${operation}`);
-        }
-    }
-
-    protected calculateArithmeticAdditiveResult(values: Value[], operation: TreeNodeType): Value {
-        const left = values[0];
-        const right = values[1];
-
-        switch (operation) {
-            case TreeNodeType.ArithmeticAdd:
-                return left.add(right);
-            case TreeNodeType.ArithmeticSubtract:
-                return left.subtract(right);
-            default:
-                throw new Error(`Unknown arithmetic additive operation: ${operation}`);
-        }
-    }
-
-    protected calculateArithmeticMultiplicativeResult(values: Value[], operation: TreeNodeType): Value {
-        const left = values[0];
-        const right = values[1];
-
-        switch (operation) {
-            case TreeNodeType.ArithmeticMultiply:
-                return left.multiply(right);
-            case TreeNodeType.ArithmeticDivide:
-                return left.divide(right);
-            case TreeNodeType.ArithmeticModulo:
-                return left.modulo(right);
-            default:
-                throw new Error(`Unknown arithmetic multiplicative operation: ${operation}`);
-        }
-    }
-
-    protected calculateExponentiationResult(values: Value[]): Value {
-        const base = values[0];
-        const exponent = values[1];
-
-        return base.pow(exponent);
-    }
-
-    protected calculateBooleanNegationResult(values: Value[]): Value {
-        const operand = values[0];
-        return operand.not();
-    }
-
-    protected calculateKeywordOperatorResult(values: Value[]): Value {
-        // Keyword is encoded as the first value
-        const operation = values.shift()?.toString();
-        switch (operation) {
-            case 'in':
-                return values[1].contains(values[0]);
-            case 'contains':
-                return values[0].contains(values[1]);
-            case 'like':
-            case 'matches':
-                return values[0].testGlob(values[1]);
-            case 'irlike':
-                return values[0].testRegex(values[1], true);
-            case 'rlike':
-            case 'regex':
-                return values[0].testRegex(values[1]);
-        }
-        throw new Error(`Unrecognized keyword operator: ${operation}.`);
-    }
-
-    protected calculateArithmeticUnaryResult(values: Value[], operation: TreeNodeType): Value {
-        const operand = values[0];
-
-        switch (operation) {
-            case TreeNodeType.ArithmeticUnaryPlus:
-                return operand;
-            case TreeNodeType.ArithmeticUnaryMinus:
-                return operand.negate();
-            default:
-                throw new Error(`Unknown arithmetic unary operation: ${operation}`);
-        }
     }
 
     protected calculateArrayIndexingResult(values: Value[]): Value {
@@ -333,9 +239,7 @@ export class NodeEvaluator {
         return array.getElementAt(index);
     }
 
-    protected async calculateFunctionCallResult(context: EvaluationContext, values: Value[]): Promise<Value> {
-        // Function name is encoded as the first value
-        const func = values.shift()?.toString() ?? '';
+    protected async calculateFunctionCallResult(context: EvaluationContext, func: string, values: Value[]): Promise<Value> {
         return await context.getFunction(func)(context, values);
     }
 

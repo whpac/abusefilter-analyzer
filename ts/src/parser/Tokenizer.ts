@@ -164,11 +164,17 @@ export class Tokenizer {
         this.identifierRegex.lastIndex = startOffset;
         const identifierMatch = this.identifierRegex.exec(input);
         if(identifierMatch !== null) {
-            const identifier = identifierMatch[0];
+            let identifier = identifierMatch[0];
             const tokenLength = identifier.length;
 
             const isKeyword = Tokenizer.keywords.has(identifier);
             const tokenType = isKeyword ? TokenType.Keyword : TokenType.Identifier;
+
+            if (isKeyword) {
+                // Identifiers are case-insensitive so normalize them to lowercase
+                // We could also normalize the identifiers but it can make them unreadable
+                identifier = identifier.toLowerCase();
+            }
 
             return new Token(tokenType, identifier, startOffset, tokenLength);
         }
