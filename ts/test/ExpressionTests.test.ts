@@ -1,11 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { Parser } from '../src/parser/Parser.js';
-import { Tokenizer } from '../src/parser/Tokenizer.js';
-import { EvaluationContext } from '../src/evaluator/EvaluationContext.js';
-import { NodeEvaluator } from '../src/evaluator/NodeEvaluator.js';
 import { assert } from 'chai';
-import { EvaluableNodeFactory } from '../src/evaluator/nodes/EvaluableNodeFactory.js';
+import { AbuseFilter } from '../src/AbuseFilter.js';
 
 describe('Expressions from .t files', () => {
     // Read files with .t extension from the /parserTests folder
@@ -18,16 +14,9 @@ describe('Expressions from .t files', () => {
             it(file, async () => {
                 try {
                     const content = fs.readFileSync(path.join(testFolder, file), 'utf8');
-                    const tokenizer = new Tokenizer();
-                    const parser = new Parser(new EvaluableNodeFactory());
-                    const tokens = tokenizer.tokenize(content);
-                    const rootNode = parser.parse(tokens);
-                    const evaluator = new NodeEvaluator();
-                    const context = new EvaluationContext();
-                    const value = await evaluator.evaluateNode(rootNode, context);
-    
-                    assert.isTrue(rootNode.hasValue(context));
-                    assert.isTrue(rootNode.getValue(context) === value);
+                    const filter = new AbuseFilter(content);
+                    const value = await filter.evaluate();
+
                     assert.isTrue(value.isTruthy());
                 } catch(e) {
                     console.error((e as Error).toString());
