@@ -47,30 +47,4 @@ export class EvaluableTreeNode implements IEvaluableTreeNode {
     public addOnValueSetCallback(callback: OnValueSetCallback): void {
         this.onValueSetCallbacks.push(callback);
     }
-
-    /**
-     * Returns a string representation of the node and its children, suitable for debugging.
-     */
-    public toDebugString(): string {
-        return this.toDebugStringInner().join('\n');
-    }
-
-    protected toDebugStringInner(): string[] {
-        let lines = [ `${this.type.toString()}(${this.identity.type} ${this.identity.value})` ];
-        for (const subnode of this.children) {
-            if(!(subnode instanceof EvaluableTreeNode)) {
-                lines.push('  ' + subnode.toString());
-                continue;
-            }
-
-            // Align sublines to the right
-            const sublines = subnode.toDebugStringInner().map(
-                (line: string) => '  ' + line
-            );
-
-            lines = lines.concat(sublines);
-        }
-
-        return lines;
-    }
 }
