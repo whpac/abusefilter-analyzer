@@ -43,28 +43,13 @@ export class ValueFormatter {
         throw new Error('Unknown token type');
     }
 
-    public static formatLiteralArray(tokens: readonly IToken[]): HTMLElement {
-        const wrapper = this.makeWrapper('array');
-        wrapper.appendChild(document.createTextNode('['));
-
-        for (let i = 0; i < tokens.length; i++) {
-            if (i > 0) {
-                wrapper.appendChild(document.createTextNode(', '));
-            }
-            wrapper.appendChild(this.formatLiteral(tokens[i]));
-        }
-
-        wrapper.appendChild(document.createTextNode(']'));
-        return wrapper;
-    }
-
-    public static formatKeyword(value: string): HTMLElement {
+    private static formatKeyword(value: string): HTMLElement {
         const wrapper = this.makeWrapper('keyword');
         wrapper.textContent = value;
         return wrapper;
     }
 
-    public static formatStringLiteral(value: string): HTMLElement {
+    private static formatStringLiteral(value: string): HTMLElement {
         const wrapper = this.makeWrapper('string');
         const escapedValue = value
             .replace(/\\/g, '\\\\')
@@ -75,7 +60,7 @@ export class ValueFormatter {
         return wrapper;
     }
 
-    public static formatNumberLiteral(value: string): HTMLElement {
+    private static formatNumberLiteral(value: string): HTMLElement {
         const wrapper = this.makeWrapper('number');
         wrapper.textContent = value;
         return wrapper;
@@ -97,21 +82,6 @@ export class ValueFormatter {
                 wrapper.appendChild(document.createTextNode(', '));
             }
             wrapper.appendChild(this.formatValue(array[i]));
-        }
-
-        wrapper.appendChild(document.createTextNode(']'));
-        return wrapper;
-    }
-
-    public static wrapAsArray(elements: HTMLElement[]): HTMLElement {
-        const wrapper = this.makeWrapper('array');
-        wrapper.appendChild(document.createTextNode('['));
-
-        for (let i = 0; i < elements.length; i++) {
-            if (i > 0) {
-                wrapper.appendChild(document.createTextNode(', '));
-            }
-            wrapper.appendChild(elements[i]);
         }
 
         wrapper.appendChild(document.createTextNode(']'));
