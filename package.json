@@ -7,14 +7,17 @@
     "chai": "^5.0.3",
     "eslint": "^8.56.0",
     "mocha": "^10.2.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
   },
   "scripts": {
     "test": "mocha",
-    "build": "tsc"
+    "build": "tsc && webpack"
   },
   "type": "module",
   "dependencies": {
     "@types/node": "^20.11.19"
-  }
+  },
+  "private": true
 }
