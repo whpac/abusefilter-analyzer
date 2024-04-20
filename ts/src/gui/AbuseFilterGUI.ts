@@ -1,6 +1,7 @@
 import { AbuseFilter } from '../AbuseFilter.js';
 import { ITreeNode } from '../model/nodes/ITreeNode.js';
-import { TreeNodeView } from './syntaxTree/TreeNodeView.js';
+import { TreeView } from './treeViews/TreeView.js';
+import { ViewFactory } from './treeViews/ViewFactory.js';
 
 export class AbuseFilterGUI {
     private readonly rootElement: HTMLElement;
@@ -17,11 +18,9 @@ export class AbuseFilterGUI {
         if (rootNode instanceof AbuseFilter) {
             rootNode = rootNode.rootNode;
         }
-
-        const treeElement = document.createElement('ul');
-        this.rootElement.appendChild(treeElement);
         
-        const rootNodeView = new TreeNodeView(rootNode);
-        treeElement.appendChild(rootNodeView.render());
+        const viewFactory = new ViewFactory();
+        const rootNodeView = new TreeView(rootNode, viewFactory);
+        this.rootElement.appendChild(rootNodeView.render());
     }
 }

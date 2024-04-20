@@ -25,10 +25,13 @@ export class ValueFormatter {
         }
     }
 
-    public static formatLiteral(token: IToken): Node {
+    public static formatLiteral(token: IToken): HTMLElement {
         switch(token.type) {
-            case TokenType.Identifier:
-                return document.createTextNode(token.value);
+            case TokenType.Identifier: {
+                const wrapper = this.makeWrapper('identifier');
+                wrapper.textContent = token.value;
+                return wrapper;
+            }
             case TokenType.StringLiteral:
                 return ValueFormatter.formatStringLiteral(token.value);
             case TokenType.IntLiteral:
@@ -94,6 +97,21 @@ export class ValueFormatter {
                 wrapper.appendChild(document.createTextNode(', '));
             }
             wrapper.appendChild(this.formatValue(array[i]));
+        }
+
+        wrapper.appendChild(document.createTextNode(']'));
+        return wrapper;
+    }
+
+    public static wrapAsArray(elements: HTMLElement[]): HTMLElement {
+        const wrapper = this.makeWrapper('array');
+        wrapper.appendChild(document.createTextNode('['));
+
+        for (let i = 0; i < elements.length; i++) {
+            if (i > 0) {
+                wrapper.appendChild(document.createTextNode(', '));
+            }
+            wrapper.appendChild(elements[i]);
         }
 
         wrapper.appendChild(document.createTextNode(']'));
