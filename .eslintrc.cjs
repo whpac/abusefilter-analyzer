@@ -8,6 +8,7 @@ module.exports = {
         'plugin:@typescript-eslint/recommended'
     ],
     'ignorePatterns': [
+        'dist/',
         'js/',
     ],
     'overrides': [
