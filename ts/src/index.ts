@@ -1,7 +1,5 @@
 import { AbuseFilter } from './AbuseFilter.js';
-import { TreeNodeType } from './model/nodes/TreeNodeType.js';
-import { IValue } from './model/value/IValue.js';
-import { ValueDataType } from './model/value/ValueDataType.js';
+import { AbuseFilterGUI } from './gui/AbuseFilterGUI.js';
 
 // Sample code to evaluate an AbuseFilter from wptest1.t
 
@@ -17,32 +15,5 @@ added_lines_test := '';
 `;
 
 const filter = new AbuseFilter(filterText);
-filter.evaluate().then((value) => {
-    filter.walkTree((node, value, depth) => {
-        const indent = '  '.repeat(depth);
-        let nodeIdentity = `(${node.identity.type} ${node.identity.value})`;
-        switch (node.type) {
-            // Skip identity for certain node types when it's not useful
-            case TreeNodeType.Assignment:
-            case TreeNodeType.ArrayDefinition:
-                nodeIdentity = '';
-                break;
-            // Function names will always be identifiers
-            case TreeNodeType.FunctionCall:
-                nodeIdentity = `(${node.identity.value})`;
-                break;
-        }
-        console.log(`${indent}${node.type}${nodeIdentity} -> ${formatValue(value)}`);
-    });
-
-    console.log(`\nResult: ${formatValue(value)}`);
-});
-
-function formatValue(value: IValue): string {
-    const dataType = value.dataType;
-    if (dataType === ValueDataType.Undefined) {
-        return dataType;
-    }
-    const actualValue = value.value;
-    return `${dataType}(${actualValue})`;
-}
+const gui = new AbuseFilterGUI(document.getElementById('bodyContent') ?? document.body);
+gui.renderSyntaxTree(filter.rootNode);
