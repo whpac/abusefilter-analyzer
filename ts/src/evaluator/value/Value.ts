@@ -73,7 +73,7 @@ export class Value<TValue = unknown> implements IValue<TValue> {
             case ValueDataType.Array:
                 if (!Array.isArray(this.value)) return false;
                 for (const item of this.value) {
-                    if (!(item instanceof Value)) return false;
+                    if (!(item instanceof Value) || !item.isValid()) return false;
                 }
                 return true;
             case ValueDataType.Null:
@@ -146,7 +146,7 @@ export class Value<TValue = unknown> implements IValue<TValue> {
     }
 
     /** Converts the value to array */
-    public toArray(): unknown[] {
+    public toArray(): IValue[] {
         if (this.dataType === ValueDataType.Array) {
             return this.value as Value[];
         }

@@ -24,7 +24,7 @@ export interface IValue<TValue = unknown> {
 
     toString(): string;
 
-    toArray(): unknown[];
+    toArray(): IValue[];
 
     getElementAt(index: number | IValue): IValue;
 
