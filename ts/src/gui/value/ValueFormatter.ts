@@ -12,9 +12,11 @@ export class ValueFormatter {
     public static formatValue(value: IValue): HTMLElement {
         switch (value.dataType) {
             case ValueDataType.Undefined:
+                return this.formatKeyword('undefined');
             case ValueDataType.Null:
+                return this.formatKeyword('null');
             case ValueDataType.Boolean:
-                return this.formatKeyword(value.toString());
+                return this.formatKeyword(value.isTruthy() ? 'true' : 'false');
             case ValueDataType.Integer:
             case ValueDataType.Float:
                 return this.formatNumberLiteral(value.toString());

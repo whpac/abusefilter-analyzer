@@ -1,5 +1,4 @@
 import { BlockNodeView } from './BlockNodeView.js';
-import { ProcessedNodeDataView } from './ProcessedNodeDataView.js';
 
 export class FunctionNodeView extends BlockNodeView {
     protected canInline = true;
@@ -17,8 +16,8 @@ export class FunctionNodeView extends BlockNodeView {
         }
         element.appendChild(document.createTextNode(')'));
 
-        const processedDataView = new ProcessedNodeDataView();
-        element.appendChild(processedDataView.getElement());
+        const processedDataView = this.createProcessedDataView();
+        element.appendChild(processedDataView.render());
         return element;
     }
 

@@ -1,7 +1,7 @@
 import { ITreeNode } from '../../model/nodes/ITreeNode.js';
 import { TreeNodeType } from '../../model/nodes/TreeNodeType.js';
 import { INodeView } from './INodeView.js';
-import { ProcessedNodeDataView } from './ProcessedNodeDataView.js';
+import { ProcessedDataView } from '../processedData/ProcessedDataView.js';
 
 export class BlockNodeView implements INodeView {
     protected readonly treeNode: ITreeNode;
@@ -49,8 +49,8 @@ export class BlockNodeView implements INodeView {
         const header = document.createTextNode(this.treeNode.type + nodeIdentity);
         nodeElement.append(header);
 
-        const processedDataView = new ProcessedNodeDataView();
-        nodeElement.appendChild(processedDataView.getElement());
+        const processedDataView = this.createProcessedDataView();
+        nodeElement.appendChild(processedDataView.render());
 
         if (this.children.length > 0) {
             const childrenListElement = document.createElement('ul');
@@ -68,5 +68,9 @@ export class BlockNodeView implements INodeView {
     protected renderAsInline(): HTMLElement {
         // By default it'll render as block
         return this.renderAsBlock();
+    }
+
+    protected createProcessedDataView(): ProcessedDataView {
+        return new ProcessedDataView(this.treeNode);
     }
 }

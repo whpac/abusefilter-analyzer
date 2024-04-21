@@ -1,5 +1,4 @@
 import { BlockNodeView } from './BlockNodeView.js';
-import { ProcessedNodeDataView } from './ProcessedNodeDataView.js';
 
 export class OperatorNodeView extends BlockNodeView {
     protected canInline = true;
@@ -19,8 +18,8 @@ export class OperatorNodeView extends BlockNodeView {
             }
 
             // We do it only for non-unary operators because those are trivial to understand
-            const processedDataView = new ProcessedNodeDataView();
-            element.appendChild(processedDataView.getElement());
+            const processedDataView = this.createProcessedDataView();
+            element.appendChild(processedDataView.render());
         }
         return element;
     }
