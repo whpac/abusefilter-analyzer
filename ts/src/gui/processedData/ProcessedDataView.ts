@@ -1,17 +1,15 @@
-import { IEvaluableTreeNode } from '../../model/nodes/IEvaluableTreeNode.js';
-import { ITreeNode } from '../../model/nodes/ITreeNode.js';
-import { NodeValueView } from '../value/NodeValueView.js';
+import { IView } from '../IView.js';
 
 export class ProcessedDataView {
     protected element: HTMLElement;
 
-    public constructor(node: ITreeNode) {
+    public constructor() {
         this.element = document.createElement('span');
         this.element.textContent = ' -> ';
+    }
 
-        if ('getValue' in node) {
-            this.element.append(new NodeValueView(node as IEvaluableTreeNode).render());
-        }
+    public addView(view: IView): void {
+        this.element.appendChild(view.render());
     }
 
     public render(): HTMLElement {

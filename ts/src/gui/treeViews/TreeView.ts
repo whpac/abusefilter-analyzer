@@ -1,8 +1,9 @@
 import { ITreeNode } from '../../model/nodes/ITreeNode.js';
+import { IView } from '../IView.js';
 import { INodeView } from './INodeView.js';
 import { ViewFactory } from './ViewFactory.js';
 
-export class TreeView {
+export class TreeView implements IView {
 
     protected readonly rootNodeView: INodeView;
 

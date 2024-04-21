@@ -1,7 +1,6 @@
-export interface INodeView {
+import { IView } from '../IView.js';
 
-    /** Renders the HTML view of the node. */
-    render(): HTMLElement;
+export interface INodeView extends IView {
 
     /** Tests if this node is simple enough to be displayed inline. */
     isInline(): boolean;

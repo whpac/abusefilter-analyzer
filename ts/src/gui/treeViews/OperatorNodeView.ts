@@ -18,8 +18,7 @@ export class OperatorNodeView extends BlockNodeView {
             }
 
             // We do it only for non-unary operators because those are trivial to understand
-            const processedDataView = this.createProcessedDataView();
-            element.appendChild(processedDataView.render());
+            element.appendChild(this.dataView.render());
         }
         return element;
     }

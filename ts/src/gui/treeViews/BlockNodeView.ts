@@ -1,17 +1,19 @@
 import { ITreeNode } from '../../model/nodes/ITreeNode.js';
 import { TreeNodeType } from '../../model/nodes/TreeNodeType.js';
 import { INodeView } from './INodeView.js';
-import { ProcessedDataView } from '../processedData/ProcessedDataView.js';
+import { IView } from '../IView.js';
 
 export class BlockNodeView implements INodeView {
     protected readonly treeNode: ITreeNode;
     protected readonly children: INodeView[];
+    protected readonly dataView: IView;
     protected canInline: boolean = false;
     private element: HTMLElement | null = null;
 
-    public constructor(node: ITreeNode, childViews: INodeView[]) {
+    public constructor(node: ITreeNode, childViews: INodeView[], dataView: IView) {
         this.treeNode = node;
         this.children = childViews;
+        this.dataView = dataView;
     }
 
     public render(): HTMLElement {
@@ -46,11 +48,8 @@ export class BlockNodeView implements INodeView {
                 break;
         }
 
-        const header = document.createTextNode(this.treeNode.type + nodeIdentity);
-        nodeElement.append(header);
-
-        const processedDataView = this.createProcessedDataView();
-        nodeElement.appendChild(processedDataView.render());
+        nodeElement.append(this.treeNode.type + nodeIdentity);
+        nodeElement.appendChild(this.dataView.render());
 
         if (this.children.length > 0) {
             const childrenListElement = document.createElement('ul');
@@ -68,9 +67,5 @@ export class BlockNodeView implements INodeView {
     protected renderAsInline(): HTMLElement {
         // By default it'll render as block
         return this.renderAsBlock();
-    }
-
-    protected createProcessedDataView(): ProcessedDataView {
-        return new ProcessedDataView(this.treeNode);
     }
 }

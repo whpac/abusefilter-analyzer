@@ -12,9 +12,9 @@ import { ITreeTransformer } from './transform/ITreeTransformer.js';
 
 export class AbuseFilter {
     public readonly tokens: readonly Token[];
-    protected rootNode: IEvaluableTreeNode;
+    public readonly defaultContext: IEvaluationContext;
 
-    protected defaultContext: IEvaluationContext;
+    protected rootNode: IEvaluableTreeNode;
     protected nodeFactory: EvaluableNodeFactory;
 
     public constructor(filterText: string) {

@@ -16,8 +16,7 @@ export class FunctionNodeView extends BlockNodeView {
         }
         element.appendChild(document.createTextNode(')'));
 
-        const processedDataView = this.createProcessedDataView();
-        element.appendChild(processedDataView.render());
+        element.appendChild(this.dataView.render());
         return element;
     }
 
