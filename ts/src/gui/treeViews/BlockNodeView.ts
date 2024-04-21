@@ -6,8 +6,8 @@ import { ProcessedNodeDataView } from './ProcessedNodeDataView.js';
 export class BlockNodeView implements INodeView {
     protected readonly treeNode: ITreeNode;
     protected readonly children: INodeView[];
-    protected element: HTMLElement | null = null;
     protected canInline: boolean = false;
+    private element: HTMLElement | null = null;
 
     public constructor(node: ITreeNode, childViews: INodeView[]) {
         this.treeNode = node;
@@ -16,7 +16,7 @@ export class BlockNodeView implements INodeView {
 
     public render(): HTMLElement {
         if (this.element === null) {
-            this.element = this.prepareElement();
+            this.element = this.isInline() ? this.renderAsInline() : this.renderAsBlock();
         }
         return this.element;
     }
@@ -30,7 +30,7 @@ export class BlockNodeView implements INodeView {
         return false;
     }
 
-    private prepareElement(): HTMLElement {
+    protected renderAsBlock(): HTMLElement {
         const nodeElement = document.createElement('div');
 
         let nodeIdentity = `(${this.treeNode.identity.type} ${this.treeNode.identity.value})`;
@@ -63,5 +63,10 @@ export class BlockNodeView implements INodeView {
         }
 
         return nodeElement;
+    }
+
+    protected renderAsInline(): HTMLElement {
+        // By default it'll render as block
+        return this.renderAsBlock();
     }
 }

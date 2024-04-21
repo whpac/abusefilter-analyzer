@@ -4,26 +4,22 @@ import { BlockNodeView } from './BlockNodeView.js';
 export class AssignmentNodeView extends BlockNodeView {
     protected canInline = true;
 
-    public render(): HTMLElement {
-        if (!this.isInline()) return super.render();
+    protected renderAsInline(): HTMLElement {
+        const isIndexAssignment = this.treeNode.type === TreeNodeType.IndexAssignment;
 
-        if (this.element === null) {
-            const isIndexAssignment = this.treeNode.type === TreeNodeType.IndexAssignment;
+        const element = document.createElement('span');
+        element.classList.add('afa-assignment');
+        element.appendChild(this.children[0].render());
 
-            this.element = document.createElement('span');
-            this.element.classList.add('afa-assignment');
-            this.element.appendChild(this.children[0].render());
-
-            if (isIndexAssignment) {
-                this.element.appendChild(document.createTextNode('['));
-                if (this.children.length > 2)
-                    this.element.appendChild(this.children[2].render());
-                this.element.appendChild(document.createTextNode(']'));
-            }
-
-            this.element.appendChild(document.createTextNode(' := '));
-            this.element.appendChild(this.children[1].render());
+        if (isIndexAssignment) {
+            element.appendChild(document.createTextNode('['));
+            if (this.children.length > 2)
+                element.appendChild(this.children[2].render());
+            element.appendChild(document.createTextNode(']'));
         }
-        return this.element;
+
+        element.appendChild(document.createTextNode(' := '));
+        element.appendChild(this.children[1].render());
+        return element;
     }
 }

@@ -4,29 +4,25 @@ import { ProcessedNodeDataView } from './ProcessedNodeDataView.js';
 export class OperatorNodeView extends BlockNodeView {
     protected canInline = true;
 
-    public render(): HTMLElement {
-        if (!this.isInline()) return super.render();
+    protected renderAsInline(): HTMLElement {
+        const element = document.createElement('span');
+        element.classList.add('afa-operator');
 
-        if (this.element === null) {
-            this.element = document.createElement('span');
-            this.element.classList.add('afa-operator');
-
-            if (this.arity === 1) {
-                this.element.appendChild(document.createTextNode(this.treeNode.identity.value));
-                this.element.appendChild(this.children[0].render());
-            } else {
-                this.element.appendChild(this.children[0].render());
-                for (let i = 1; i < this.children.length; i++) {
-                    this.element.appendChild(document.createTextNode(' ' + this.treeNode.identity.value + ' '));
-                    this.element.appendChild(this.children[i].render());
-                }
-
-                // We do it only for non-unary operators because those are trivial to understand
-                const processedDataView = new ProcessedNodeDataView();
-                this.element.appendChild(processedDataView.getElement());
+        if (this.arity === 1) {
+            element.appendChild(document.createTextNode(this.treeNode.identity.value));
+            element.appendChild(this.children[0].render());
+        } else {
+            element.appendChild(this.children[0].render());
+            for (let i = 1; i < this.children.length; i++) {
+                element.appendChild(document.createTextNode(' ' + this.treeNode.identity.value + ' '));
+                element.appendChild(this.children[i].render());
             }
+
+            // We do it only for non-unary operators because those are trivial to understand
+            const processedDataView = new ProcessedNodeDataView();
+            element.appendChild(processedDataView.getElement());
         }
-        return this.element;
+        return element;
     }
 
     public stopsInlining(): boolean {
