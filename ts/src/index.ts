@@ -15,5 +15,6 @@ added_lines_test := '';
 `;
 
 const filter = new AbuseFilter(filterText);
+filter.flattenAssociativeOperators();
 const gui = new AbuseFilterGUI(document.getElementById('bodyContent') ?? document.body);
-gui.renderSyntaxTree(filter.rootNode);
+gui.renderSyntaxTree(filter);

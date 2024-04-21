@@ -210,17 +210,15 @@ export class NodeEvaluator {
             case '>=':
                 return ValueComparer.isGreaterThanOrEqualTo(left, right);
             case '+':
-                // Plus can be unary or binary
-                return (right !== undefined) ?
-                    ValueCalculator.add(left, right) :
-                    left;
+                // Plus can be unary or binary but both are handled the same way
+                return ValueCalculator.addValues(values);
             case '-':
                 // Minus can be unary or binary
                 return (right !== undefined) ?
                     ValueCalculator.subtract(left, right) :
                     ValueCalculator.negate(left);
             case '*':
-                return ValueCalculator.multiply(left, right);
+                return ValueCalculator.multiplyValues(values);
             case '/':
                 return ValueCalculator.divide(left, right);
             case '%':

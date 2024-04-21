@@ -7,16 +7,20 @@ import { IValue } from './model/value/IValue.js';
 import { Parser } from './parser/Parser.js';
 import { Token } from './parser/Token.js';
 import { Tokenizer } from './parser/Tokenizer.js';
+import { FlattenAssociativeOpsTransformer } from './transform/FlattenAssociativeOpsTransformer.js';
+import { ITreeTransformer } from './transform/ITreeTransformer.js';
 
 export class AbuseFilter {
     public readonly tokens: readonly Token[];
-    public readonly rootNode: IEvaluableTreeNode;
+    protected rootNode: IEvaluableTreeNode;
 
     protected defaultContext: IEvaluationContext;
+    protected nodeFactory: EvaluableNodeFactory;
 
     public constructor(filterText: string) {
+        this.nodeFactory = new EvaluableNodeFactory();
         const tokenizer = new Tokenizer();
-        const parser = new Parser(new EvaluableNodeFactory());
+        const parser = new Parser(this.nodeFactory);
 
         this.tokens = tokenizer.tokenize(filterText);
         this.rootNode = parser.parse(this.tokens);
@@ -30,6 +34,14 @@ export class AbuseFilter {
         return await evaluator.evaluateNode(this.rootNode, context);
     }
 
+    public getRootNode(): IEvaluableTreeNode {
+        return this.rootNode;
+    }
+
+    public transformWith(transformer: ITreeTransformer): void {
+        this.rootNode = transformer.transform(this.rootNode, this.nodeFactory);
+    }
+
     public walkTree(callback: TreeWalkerCallback, context?: IEvaluationContext): void {
         this.walkTreeInner(this.rootNode, 0, callback, context);
     }
@@ -41,6 +53,11 @@ export class AbuseFilter {
         for(const child of node.children) {
             this.walkTreeInner(child, currentDepth + 1, callback, context);
         }
+    }
+
+    public flattenAssociativeOperators(): void {
+        const transformer = new FlattenAssociativeOpsTransformer();
+        this.transformWith(transformer);
     }
 }
 

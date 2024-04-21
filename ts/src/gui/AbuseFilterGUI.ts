@@ -16,7 +16,7 @@ export class AbuseFilterGUI {
      */
     public renderSyntaxTree(rootNode: AbuseFilter | ITreeNode): void {
         if (rootNode instanceof AbuseFilter) {
-            rootNode = rootNode.rootNode;
+            rootNode = rootNode.getRootNode();
         }
         
         const viewFactory = new ViewFactory();

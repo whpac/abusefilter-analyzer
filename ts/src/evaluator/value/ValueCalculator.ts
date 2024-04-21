@@ -20,6 +20,19 @@ export class ValueCalculator {
         }
     }
 
+    /** Performs an addition of many values */
+    public static addValues(values: IValue[]): IValue {
+        if (values.length === 1) {
+            return values[0];
+        }
+
+        let result = values[0];
+        for (let i = 1; i < values.length; i++) {
+            result = ValueCalculator.add(result, values[i]);
+        }
+        return result;
+    }
+
     /** Subtracts the other value from this one */
     public static subtract(minuend: IValue, subtrahend: IValue): IValue {
         if (minuend.dataType === ValueDataType.Undefined || subtrahend.dataType === ValueDataType.Undefined) {
@@ -42,6 +55,19 @@ export class ValueCalculator {
             ValueDataType.Float : ValueDataType.Integer;
 
         return new Value(type, res);
+    }
+
+    /** Performs a multiplication of many values */
+    public static multiplyValues(values: IValue[]): IValue {
+        if (values.length === 1) {
+            return values[0];
+        }
+
+        let result = values[0];
+        for (let i = 1; i < values.length; i++) {
+            result = ValueCalculator.multiply(result, values[i]);
+        }
+        return result;
     }
 
     /** Divides the value by the specified divisor. Throws an error if the divisor is zero. */
