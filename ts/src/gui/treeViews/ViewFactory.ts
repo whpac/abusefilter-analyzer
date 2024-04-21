@@ -1,7 +1,7 @@
 import { ITreeNode } from '../../model/nodes/ITreeNode.js';
 import { TreeNodeType } from '../../model/nodes/TreeNodeType.js';
 import { IView } from '../IView.js';
-import { ProcessedDataView } from '../processedData/ProcessedDataView.js';
+import { ProcessedDataView } from '../value/ProcessedDataView.js';
 import { ArrayDefinitionNodeView } from './ArrayDefinitionNodeView.js';
 import { AssignmentNodeView } from './AssignmentNodeView.js';
 import { AtomNodeView } from './AtomNodeView.js';

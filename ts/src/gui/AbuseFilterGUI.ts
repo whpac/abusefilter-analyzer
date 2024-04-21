@@ -7,6 +7,9 @@ import { ViewFactory } from './treeViews/ViewFactory.js';
 import { NodeValueView } from './value/NodeValueView.js';
 
 export class AbuseFilterGUI {
+    /** Whether to include the node values after evaluation (if available). */
+    public displayEvaluatedValues: boolean = true;
+
     private readonly rootElement: HTMLElement;
 
     public constructor(rootElement: HTMLElement) {
@@ -27,9 +30,9 @@ export class AbuseFilterGUI {
         }
 
         const viewFactory = new ViewFactory();
-        if (evaluationContext !== undefined) {
+        if (evaluationContext !== undefined && this.displayEvaluatedValues) {
             viewFactory.addDataViewFactory(
-                (node) => new NodeValueView(node as IEvaluableTreeNode, evaluationContext)
+                (node) => 'getValue' in node ? new NodeValueView(node as IEvaluableTreeNode, evaluationContext!) : null
             );
         }
 
