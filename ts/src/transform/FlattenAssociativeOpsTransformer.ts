@@ -4,17 +4,17 @@ import { TreeNodeType } from '../model/nodes/TreeNodeType.js';
 import { ITreeTransformer } from './ITreeTransformer.js';
 
 export class FlattenAssociativeOpsTransformer implements ITreeTransformer {
-    private static readonly associativeOperators = ['&', '|', '^', '+', '*'];
 
     public transform<TNode extends ITreeNode>(node: ITreeNode, nodeFactory: INodeFactory<TNode>): TNode {
-        if (node.type === TreeNodeType.Operator
-            && FlattenAssociativeOpsTransformer.associativeOperators.includes(node.identity.value)
-        ) {
-            const flattenedChildren = this.flatten(node);
-            const newChildren = flattenedChildren.map(child => this.transform(child, nodeFactory));
-            return nodeFactory.createNode(node.type, node.identity, newChildren);
+        let children = node.children;
+
+        const isOperator = node.type === TreeNodeType.Operator;
+        const isAssociative = ['&', '|', '^', '+', '*'].includes(node.identity.value);
+
+        if (isOperator && isAssociative) {
+            children = this.flatten(node);
         }
-        const newChildren = node.children.map(child => this.transform(child, nodeFactory));
+        const newChildren = children.map(child => this.transform(child, nodeFactory));
         return nodeFactory.createNode(node.type, node.identity, newChildren);
     }
 
