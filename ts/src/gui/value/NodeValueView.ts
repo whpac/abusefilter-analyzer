@@ -26,8 +26,8 @@ export class NodeValueView implements IView {
         }
 
         node.addOnValueSetCallback((node, context) => {
-            // Ignore updates from other contexts
-            if (context != evaluationContext) return;
+            // Ignore updates from unrelated contexts
+            if (context.rootContext != evaluationContext.rootContext) return;
 
             this.element.textContent = '';
             this.setValue(node.getValue(context));
