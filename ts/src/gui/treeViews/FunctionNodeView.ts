@@ -32,8 +32,38 @@ export class FunctionNodeView extends BlockNodeView {
         return element;
     }
 
-    protected getBlockHints(): string[] {
-        // TODO: Return argument labels
-        return ['argument'];
+    protected getBlockHints(): (string | null)[] | ((index: number) => string) {
+        // We only provide hints for functions with more than one argument.
+        // Unary functions are usually self-explanatory.
+        const functionName = this.treeNode.identity.value;
+        switch (functionName) {
+            case 'ccnorm_contains_any':
+            case 'ccnorm_contains_all':
+            case 'contains_any':
+            case 'contains_all':
+                return (index) => index === 0 ? 'haystack' : `needle ${index}`;
+            case 'count':
+                return this.children.length === 2 ? ['needle', 'haystack'] : ['string'];
+            case 'rcount':
+            case 'get_matches':
+                return this.children.length === 2 ? ['regex', 'subject'] : ['string'];
+            case 'ip_in_range':
+                return ['ip', 'range'];
+            case 'ip_in_ranges':
+                return (index) => index === 0 ? 'ip' : `range ${index}`;
+            case 'equals_to_any':
+                return (index) => index === 0 ? 'tested' : `value ${index}`;
+            case 'substr':
+                return ['string', 'start', 'length'];
+            case 'str_replace':
+                return ['string', 'search', 'replaceBy'];
+            case 'str_replace_regexp':
+                return ['string', 'regex', 'replaceBy'];
+            case 'set':
+            case 'set_var':
+                return ['variable', 'value'];
+            default:
+                return [];
+        }
     }
 }
