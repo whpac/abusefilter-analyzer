@@ -2,6 +2,7 @@ import { EvaluationContext } from './evaluator/EvaluationContext.js';
 import { NodeEvaluator } from './evaluator/NodeEvaluator.js';
 import { EvaluableNodeFactory } from './evaluator/nodes/EvaluableNodeFactory.js';
 import { AbuseFilterGUI } from './gui/AbuseFilterGUI.js';
+import { AbuseFilterApi } from './mediawiki/AbuseFilterApi.js';
 import { IEvaluationContext } from './model/IEvaluationContext.js';
 import { IEvaluableTreeNode } from './model/nodes/IEvaluableTreeNode.js';
 import { IValue } from './model/value/IValue.js';
@@ -63,6 +64,11 @@ export class AbuseFilter {
     public renderInto(container: HTMLElement): void {
         const gui = new AbuseFilterGUI(container);
         gui.renderSyntaxTree(this.rootNode, this.defaultContext);
+    }
+
+    public static async createFromFilterId(filterId: number): Promise<AbuseFilter> {
+        const filterText = await AbuseFilterApi.fetchAbuseFilterText(filterId);
+        return new AbuseFilter(filterText);
     }
 }
 
