@@ -1,8 +1,19 @@
+import { ITreeNode } from '../../model/nodes/ITreeNode.js';
 import { TreeNodeType } from '../../model/nodes/TreeNodeType.js';
+import { IView } from '../IView.js';
 import { BlockNodeView } from './BlockNodeView.js';
+import { INodeView } from './INodeView.js';
 
 export class AssignmentNodeView extends BlockNodeView {
     protected canInline = true;
+
+    public constructor(node: ITreeNode, childViews: INodeView[], dataView: IView) {
+        // For index assignment, change the order to make it more natural
+        if (node.type === TreeNodeType.IndexAssignment && childViews.length === 3) {
+            childViews = [childViews[0], childViews[2], childViews[1]];
+        }
+        super(node, childViews, dataView);
+    }
 
     protected renderAsInline(): HTMLElement {
         const isIndexAssignment = this.treeNode.type === TreeNodeType.IndexAssignment;
@@ -16,42 +27,28 @@ export class AssignmentNodeView extends BlockNodeView {
             element.appendChild(this.createTokenNode('[]'));
         } else if (isArrayAssign) {
             element.appendChild(this.createTokenNode('['));
-            element.appendChild(this.children[2].render());
+            element.appendChild(this.children[1].render());
             element.appendChild(this.createTokenNode(']'));
         }
 
         element.appendChild(this.createTokenNode(' := ', ['afa-operator']));
-        element.appendChild(this.children[1].render());
+        element.appendChild(this.children[!isArrayAssign ? 1 : 2].render());
         return element;
     }
 
-    protected renderAsBlock(): HTMLElement {
-        const header = this.renderBlockHeader();
-
-        if (this.children.length > 0) {
-            const childrenListElement = document.createElement('ul');
-            header.appendChild(childrenListElement);
-
-            // We're storing index assignment in a non-natural order
-            let childrenOrder = [0, 1];
-            if (this.treeNode.type === TreeNodeType.IndexAssignment) {
-                childrenOrder = [0, 2, 1];
+    protected renderBlockHeader(): HTMLElement {
+        const element = document.createElement('span');
+        const isArrayAssign = this.treeNode.type === TreeNodeType.IndexAssignment;
+        if (isArrayAssign) {
+            if (this.children.length === 3) {
+                element.append('Assignment to array index');
+            } else {
+                element.append('Append to array');
             }
-
-            const hints = this.getBlockHints();
-            for (const childIndex of childrenOrder) {
-                const childElement = document.createElement('li');
-                if (hints[childIndex]) {
-                    const hintView = this.renderHintView(hints[childIndex]);
-                    childElement.appendChild(hintView);
-                }
-                const childView = this.children[childIndex];
-                childElement.appendChild(childView.render());
-                childrenListElement.appendChild(childElement);
-            }
+        } else {
+            element.append('Assignment');
         }
-
-        return header;
+        return element;
     }
 
     protected getBlockHints(): string[] {
@@ -59,7 +56,8 @@ export class AssignmentNodeView extends BlockNodeView {
             case TreeNodeType.Assignment:
                 return ['variable', 'value'];
             case TreeNodeType.IndexAssignment:
-                return ['array', 'value', 'index'];
+                return this.children.length === 3 ?
+                    ['array', 'index', 'value'] : ['array', 'value'];
             default:
                 return [];
         }

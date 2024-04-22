@@ -16,11 +16,24 @@ export class FunctionNodeView extends BlockNodeView {
         }
         element.appendChild(this.createTokenNode(')'));
 
+        element.append(' ');
         element.appendChild(this.dataView.render());
         return element;
     }
 
     public stopsInlining(): boolean {
         return true;
+    }
+
+    protected renderBlockHeader(): HTMLElement {
+        const element = document.createElement('span');
+        element.append('Call function ');
+        element.append(this.createTokenNode(this.treeNode.identity.value, ['afa-function']));
+        return element;
+    }
+
+    protected getBlockHints(): string[] {
+        // TODO: Return argument labels
+        return ['argument'];
     }
 }

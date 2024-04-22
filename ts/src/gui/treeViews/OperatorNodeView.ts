@@ -26,6 +26,7 @@ export class OperatorNodeView extends BlockNodeView {
             }
 
             // We do it only for non-unary operators because those are trivial to understand
+            element.append(' ');
             element.appendChild(this.dataView.render());
         }
         return element;
@@ -37,6 +38,19 @@ export class OperatorNodeView extends BlockNodeView {
 
     public get arity(): number {
         return this.children.length;
+    }
+
+    protected renderBlockHeader(): HTMLElement {
+        const operator = this.treeNode.identity.value;
+        const element = document.createElement('span');
+
+        if (operator === ';') {
+            element.append('Statement sequence');
+        } else {
+            element.append('Operator ');
+            element.append(this.createTokenNode(operator, ['afa-operator']));
+        }
+        return element;
     }
 
     protected getBlockHints(): string[] {
@@ -53,6 +67,9 @@ export class OperatorNodeView extends BlockNodeView {
             case 'rlike':
             case 'irlike':
                 return ['subject', 'regex'];
+            case '?':
+            case 'if':
+                return ['test', 'ifTrue', 'ifFalse'];
         }
         return [];
     }

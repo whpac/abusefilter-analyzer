@@ -12,4 +12,14 @@ export class IndexNodeView extends BlockNodeView {
 
         return element;
     }
+
+    protected renderBlockHeader(): HTMLElement {
+        const element = document.createElement('span');
+        element.textContent = 'Get element at index';
+        return element;
+    }
+
+    protected getBlockHints(): string[] {
+        return ['array', 'index'];
+    }
 }

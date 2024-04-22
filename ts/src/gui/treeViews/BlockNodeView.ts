@@ -1,5 +1,4 @@
 import { ITreeNode } from '../../model/nodes/ITreeNode.js';
-import { TreeNodeType } from '../../model/nodes/TreeNodeType.js';
 import { INodeView } from './INodeView.js';
 import { IView } from '../IView.js';
 
@@ -32,17 +31,35 @@ export class BlockNodeView implements INodeView {
         return false;
     }
 
+    protected renderAsInline(): HTMLElement {
+        // By default it'll render as block
+        return this.renderAsBlock();
+    }
+
     protected renderAsBlock(): HTMLElement {
+        const element = document.createElement('div');
         const header = this.renderBlockHeader();
+        header.classList.add('afa-block-header');
+
+        element.appendChild(header);
+        element.append(' ');
+        element.appendChild(this.dataView.render());
 
         if (this.children.length > 0) {
             const childrenListElement = document.createElement('ul');
-            header.appendChild(childrenListElement);
+            element.appendChild(childrenListElement);
             const hints = this.getBlockHints();
             for (let i = 0; i < this.children.length; i++) {
                 const childElement = document.createElement('li');
-                if (hints[i]) {
-                    const hintView = this.renderHintView(hints[i]);
+                let hint: string | null = null;
+                if (typeof hints === 'function') {
+                    hint = hints(i);
+                } else if (hints[i]) {
+                    hint = hints[i];
+                }
+                
+                if (hint !== null) {
+                    const hintView = this.renderHintView(hint);
                     childElement.appendChild(hintView);
                 }
                 const childView = this.children[i];
@@ -51,36 +68,16 @@ export class BlockNodeView implements INodeView {
             }
         }
 
-        return header;
-    }
-
-    protected renderAsInline(): HTMLElement {
-        // By default it'll render as block
-        return this.renderAsBlock();
-    }
-
-    protected renderBlockHeader(): HTMLElement {
-        const element = document.createElement('div');
-
-        let nodeIdentity = `(${this.treeNode.identity.type} ${this.treeNode.identity.value})`;
-        switch (this.treeNode.type) {
-            // Skip identity for certain node types when it's not useful
-            case TreeNodeType.Assignment:
-            case TreeNodeType.ArrayDefinition:
-                nodeIdentity = '';
-                break;
-            // Function names will always be identifiers
-            case TreeNodeType.FunctionCall:
-                nodeIdentity = `(${this.treeNode.identity.value})`;
-                break;
-        }
-
-        element.append(this.treeNode.type + nodeIdentity);
-        element.appendChild(this.dataView.render());
         return element;
     }
 
-    protected getBlockHints(): string[] {
+    protected renderBlockHeader(): HTMLElement {
+        const header = document.createElement('span');
+        header.append(`${this.treeNode.type}(${this.treeNode.identity.type} ${this.treeNode.identity.value})`);
+        return header;
+    }
+
+    protected getBlockHints(): (string | null)[] | ((index: number) => string | null) {
         return [];
     }
 

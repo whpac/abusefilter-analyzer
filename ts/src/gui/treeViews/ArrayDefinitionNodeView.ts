@@ -18,4 +18,14 @@ export class ArrayDefinitionNodeView extends BlockNodeView {
         element.appendChild(this.createTokenNode(']'));
         return element;
     }
+
+    protected renderBlockHeader(): HTMLElement {
+        const element = document.createElement('span');
+        element.textContent = 'Array definition';
+        return element;
+    }
+
+    protected getBlockHints(): (index: number) => string {
+        return (index: number) => index.toString();
+    }
 }
