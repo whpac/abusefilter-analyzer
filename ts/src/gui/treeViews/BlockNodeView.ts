@@ -42,13 +42,18 @@ export class BlockNodeView implements INodeView {
 
     /** Renders the node in block mode */
     protected renderAsBlock(): HTMLElement {
-        const element = document.createElement('div');
+        const element = document.createElement('details');
+        element.setAttribute('open', '');
+        
+        const summary = document.createElement('summary');
+        element.appendChild(summary);
+
         const header = this.renderBlockHeader();
         header.classList.add('afa-block-header');
 
-        element.appendChild(header);
-        element.append(' ');
-        element.appendChild(this.dataView.render());
+        summary.appendChild(header);
+        summary.append(' ');
+        summary.appendChild(this.dataView.render());
 
         if (this.children.length > 0) {
             const childrenListElement = document.createElement('ul');

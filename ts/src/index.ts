@@ -56,4 +56,14 @@ mw.util.addCSS(`
     border-radius: 0.25em;
     background: #fcfcfc;
 }
+
+.afa-tree-container ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-left: 2.5em;
+}
+
+.afa-tree-container ul:has(> li > details) > li:not(:has(> details)) {
+    padding-left: 1em;
+}
 `);
