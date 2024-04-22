@@ -155,7 +155,7 @@ export class AbuseFilterFunctions {
     }
 
     /**
-     * Returns the number of occurrences of the second string in the first one.
+     * Returns the number of occurrences of the first string in the second one.
      * If a single argument is given, it's split by commas and the number of elements is returned
      */
     public static async count(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
@@ -185,7 +185,7 @@ export class AbuseFilterFunctions {
     }
 
     /**
-     * Returns the number of occurrences of the pattern in the first string.
+     * Returns the number of occurrences of the pattern in the second string.
      * If a single argument is given, it's split by commas and the number of elements is returned
      */
     public static async rcount(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
