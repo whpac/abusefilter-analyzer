@@ -1,6 +1,7 @@
 import { EvaluationContext } from './evaluator/EvaluationContext.js';
 import { NodeEvaluator } from './evaluator/NodeEvaluator.js';
 import { EvaluableNodeFactory } from './evaluator/nodes/EvaluableNodeFactory.js';
+import { AbuseFilterGUI } from './gui/AbuseFilterGUI.js';
 import { IEvaluationContext } from './model/IEvaluationContext.js';
 import { IEvaluableTreeNode } from './model/nodes/IEvaluableTreeNode.js';
 import { IValue } from './model/value/IValue.js';
@@ -28,9 +29,9 @@ export class AbuseFilter {
         this.defaultContext = new EvaluationContext();
     }
 
-    public async evaluate(context?: IEvaluationContext): Promise<IValue> {
+    public async evaluate(): Promise<IValue> {
         const evaluator = new NodeEvaluator();
-        context ??= this.defaultContext;
+        const context = this.defaultContext;
         return await evaluator.evaluateNode(this.rootNode, context);
     }
 
@@ -42,12 +43,11 @@ export class AbuseFilter {
         this.rootNode = transformer.transform(this.rootNode, this.nodeFactory);
     }
 
-    public walkTree(callback: TreeWalkerCallback, context?: IEvaluationContext): void {
-        this.walkTreeInner(this.rootNode, 0, callback, context);
+    public walkTree(callback: TreeWalkerCallback): void {
+        this.walkTreeInner(this.rootNode, 0, callback, this.defaultContext);
     }
 
-    protected walkTreeInner(node: IEvaluableTreeNode, currentDepth: number, callback: TreeWalkerCallback, context?: IEvaluationContext): void {
-        context ??= this.defaultContext;
+    protected walkTreeInner(node: IEvaluableTreeNode, currentDepth: number, callback: TreeWalkerCallback, context: IEvaluationContext): void {
         const value = node.getValue(context);
         callback(node, value, currentDepth);
         for(const child of node.children) {
@@ -58,6 +58,11 @@ export class AbuseFilter {
     public flattenAssociativeOperators(): void {
         const transformer = new FlattenAssociativeOpsTransformer();
         this.transformWith(transformer);
+    }
+
+    public renderInto(container: HTMLElement): void {
+        const gui = new AbuseFilterGUI(container);
+        gui.renderSyntaxTree(this.rootNode, this.defaultContext);
     }
 }
 
