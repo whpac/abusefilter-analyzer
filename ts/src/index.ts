@@ -1,21 +1,45 @@
 import { AbuseFilter } from './AbuseFilter.js';
-import { AbuseFilterGUI } from './gui/AbuseFilterGUI.js';
 
-// Sample code to evaluate an AbuseFilter from wptest1.t
+async function main() {
+    const body = document.getElementById('bodyContent') ?? document.body;
+    const rootElement = document.createElement('div');
+    body.appendChild(rootElement);
 
-const filterText = `/* Filter 30 from English Wikipedia (large deletion from article by new editors) */
-user_groups_test := ["*"];
-new_size_test := 100;
-article_namespace_test := 0;
-edit_delta_test := -5000;
-added_lines_test := '';
+    const filter = await AbuseFilter.createFromFilterId(3);
+    filter.flattenAssociativeOperators();
+    filter.renderInto(rootElement);
+    filter.evaluate();
+}
+main();
 
-!("autoconfirmed" in user_groups_test) & (new_size_test > 50) & (article_namespace_test == 0) &
-	(edit_delta_test < -2000) & !("#redirect" in lcase(added_lines_test))
-`;
+mw.util.addCSS(`
+.afa-value, .afa-token { font-family: monospace; }
+.afa-value-keyword { color: blue; }
+.afa-value-string { color: brown; }
+.afa-value-number { color: darkgreen; }
+.afa-value-identifier { color: teal; }
+.afa-keyword { color: purple; }
+.afa-function { color: #8f6300; }
+.afa-hint { display: inline-block; background: #eee; padding: 0 0.5em; border-radius: 0.5em; margin-right: 0.5em; font-size:0.85em; color:#666; }
+.afa-data { margin-left: 0.7em; display: inline-block; border: 1px solid #aaa; padding: 0 0.5em; border-radius: 0.5em; background: #f4f4f4; font-size: 0.85em; }
 
-const filter = new AbuseFilter(filterText);
-filter.flattenAssociativeOperators();
-const gui = new AbuseFilterGUI(document.getElementById('bodyContent') ?? document.body);
-gui.renderSyntaxTree(filter);
-filter.evaluate();
+.afa-data .afa-value-bool::before {
+    content: '';
+    width: 0.75em;
+    height: 0.75em;
+    display: inline-block;
+    border-radius: 50%;
+    background: #999;
+    margin-right: 0.3em;
+}
+.afa-data .afa-value-true::before { background: green; }
+.afa-data .afa-value-false::before { background: red; }
+
+.afa-tree-container {
+    border: 1px solid #ccc;
+    padding: 0.5em;
+    margin: 0.5em 0;
+    border-radius: 0.25em;
+    background: #fcfcfc;
+}
+`);
