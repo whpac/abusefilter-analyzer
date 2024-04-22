@@ -66,4 +66,15 @@ export class FunctionNodeView extends BlockNodeView {
                 return [];
         }
     }
+
+    public isInline(): boolean {
+        if (!super.isInline()) return false;
+        if (this.children.length > 4) return false;
+
+        let totalLength = 0;
+        for (const child of this.children) {
+            totalLength += child.render().textContent!.length;
+        }
+        return totalLength < 100;
+    }
 }
