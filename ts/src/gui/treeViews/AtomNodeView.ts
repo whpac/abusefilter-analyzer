@@ -3,6 +3,9 @@ import { IToken } from '../../model/tokens/IToken.js';
 import { ValueFormatter } from '../value/ValueFormatter.js';
 import { INodeView } from './INodeView.js';
 
+/**
+ * A view for an atom node in the syntax tree.
+ */
 export class AtomNodeView implements INodeView {
     private readonly token: IToken;
     private element: HTMLElement | null = null;

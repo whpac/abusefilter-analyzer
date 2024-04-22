@@ -2,6 +2,9 @@ import { ITreeNode } from '../../model/nodes/ITreeNode.js';
 import { INodeView } from './INodeView.js';
 import { IView } from '../IView.js';
 
+/**
+ * Base class for views of nodes with children.
+ */
 export class BlockNodeView implements INodeView {
     protected readonly treeNode: ITreeNode;
     protected readonly children: INodeView[];
@@ -31,11 +34,13 @@ export class BlockNodeView implements INodeView {
         return false;
     }
 
+    /** Renders the node in inline mode */
     protected renderAsInline(): HTMLElement {
         // By default it'll render as block
         return this.renderAsBlock();
     }
 
+    /** Renders the node in block mode */
     protected renderAsBlock(): HTMLElement {
         const element = document.createElement('div');
         const header = this.renderBlockHeader();
@@ -71,16 +76,26 @@ export class BlockNodeView implements INodeView {
         return element;
     }
 
+    /** Prepares an element for the block header */
     protected renderBlockHeader(): HTMLElement {
         const header = document.createElement('span');
         header.append(`${this.treeNode.type}(${this.treeNode.identity.type} ${this.treeNode.identity.value})`);
         return header;
     }
 
+    /**
+     * Returns hints to be used when displaying this node.
+     * Hints can be either specified as an array or there can
+     * be a generator function returned.
+     */
     protected getBlockHints(): (string | null)[] | ((index: number) => string | null) {
         return [];
     }
 
+    /**
+     * Renders an element for the hint.
+     * @param hint The hint to render.
+     */
     protected renderHintView(hint: string): HTMLElement {
         const element = document.createElement('span');
         element.classList.add('afa-hint');
@@ -88,13 +103,18 @@ export class BlockNodeView implements INodeView {
         return element;
     }
 
-    protected createTokenNode(value: string, classes: string[] = []): HTMLElement {
+    /**
+     * Renders the token as an element.
+     * @param token The token string to display
+     * @param classes Additional CSS classes to apply
+     */
+    protected createTokenNode(token: string, classes: string[] = []): HTMLElement {
         const element = document.createElement('span');
         element.classList.add('afa-token');
         if (classes.length > 0) {
             element.classList.add(...classes);
         }
-        element.append(value);
+        element.append(token);
         return element;
     }
 }

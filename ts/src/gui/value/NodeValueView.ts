@@ -4,9 +4,16 @@ import { IValue } from '../../model/value/IValue.js';
 import { IView } from '../IView.js';
 import { ValueFormatter } from './ValueFormatter.js';
 
+/**
+ * A view for displaying the value of a node when it's ready.
+ */
 export class NodeValueView implements IView {
     protected element: HTMLElement;
 
+    /**
+     * @param node The node for which to display the value.
+     * @param evaluationContext The context for which to fetch the value.
+     */
     public constructor(node: IEvaluableTreeNode, evaluationContext: IEvaluationContext) {
         this.element = document.createElement('span');
 

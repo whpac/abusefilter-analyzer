@@ -1,5 +1,8 @@
 import { IView } from '../IView.js';
 
+/**
+ * Represents a view for a node in the syntax tree.
+ */
 export interface INodeView extends IView {
 
     /** Tests if this node is simple enough to be displayed inline. */
