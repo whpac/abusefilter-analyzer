@@ -5,7 +5,7 @@ export class ProcessedDataView {
 
     public constructor() {
         this.element = document.createElement('span');
-        this.element.textContent = ' -> ';
+        this.element.classList.add('afa-data');
     }
 
     public addView(view: IView): void {

@@ -48,6 +48,12 @@ export class ValueFormatter {
     private static formatKeyword(value: string): HTMLElement {
         const wrapper = this.makeWrapper('keyword');
         wrapper.textContent = value;
+
+        if (value === 'true') {
+            wrapper.classList.add('afa-value-bool', 'afa-value-true');
+        } else if (value === 'false') {
+            wrapper.classList.add('afa-value-bool', 'afa-value-false');
+        }
         return wrapper;
     }
 

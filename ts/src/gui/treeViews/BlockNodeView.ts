@@ -33,7 +33,34 @@ export class BlockNodeView implements INodeView {
     }
 
     protected renderAsBlock(): HTMLElement {
-        const nodeElement = document.createElement('div');
+        const header = this.renderBlockHeader();
+
+        if (this.children.length > 0) {
+            const childrenListElement = document.createElement('ul');
+            header.appendChild(childrenListElement);
+            const hints = this.getBlockHints();
+            for (let i = 0; i < this.children.length; i++) {
+                const childElement = document.createElement('li');
+                if (hints[i]) {
+                    const hintView = this.renderHintView(hints[i]);
+                    childElement.appendChild(hintView);
+                }
+                const childView = this.children[i];
+                childElement.appendChild(childView.render());
+                childrenListElement.appendChild(childElement);
+            }
+        }
+
+        return header;
+    }
+
+    protected renderAsInline(): HTMLElement {
+        // By default it'll render as block
+        return this.renderAsBlock();
+    }
+
+    protected renderBlockHeader(): HTMLElement {
+        const element = document.createElement('div');
 
         let nodeIdentity = `(${this.treeNode.identity.type} ${this.treeNode.identity.value})`;
         switch (this.treeNode.type) {
@@ -48,24 +75,29 @@ export class BlockNodeView implements INodeView {
                 break;
         }
 
-        nodeElement.append(this.treeNode.type + nodeIdentity);
-        nodeElement.appendChild(this.dataView.render());
-
-        if (this.children.length > 0) {
-            const childrenListElement = document.createElement('ul');
-            nodeElement.appendChild(childrenListElement);
-            for (const childView of this.children) {
-                const childElement = document.createElement('li');
-                childElement.appendChild(childView.render());
-                childrenListElement.appendChild(childElement);
-            }
-        }
-
-        return nodeElement;
+        element.append(this.treeNode.type + nodeIdentity);
+        element.appendChild(this.dataView.render());
+        return element;
     }
 
-    protected renderAsInline(): HTMLElement {
-        // By default it'll render as block
-        return this.renderAsBlock();
+    protected getBlockHints(): string[] {
+        return [];
+    }
+
+    protected renderHintView(hint: string): HTMLElement {
+        const element = document.createElement('span');
+        element.classList.add('afa-hint');
+        element.append(hint);
+        return element;
+    }
+
+    protected createTokenNode(value: string, classes: string[] = []): HTMLElement {
+        const element = document.createElement('span');
+        element.classList.add('afa-token');
+        if (classes.length > 0) {
+            element.classList.add(...classes);
+        }
+        element.append(value);
+        return element;
     }
 }
