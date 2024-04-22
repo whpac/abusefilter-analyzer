@@ -59,6 +59,38 @@ export class Value<TValue = unknown> implements IValue<TValue> {
         }
     }
 
+    /** Creates a new Value from a native JavaScript value */
+    public static fromNative(value: unknown): Value {
+        if (value === null) {
+            return Value.Null;
+        }
+
+        if (value === undefined) {
+            return Value.Undefined;
+        }
+
+        if (typeof value === 'boolean') {
+            return new Value(ValueDataType.Boolean, value);
+        }
+
+        if (typeof value === 'number') {
+            if (Number.isInteger(value)) {
+                return new Value(ValueDataType.Integer, value);
+            }
+            return new Value(ValueDataType.Float, value);
+        }
+
+        if (typeof value === 'string') {
+            return new Value(ValueDataType.String, value);
+        }
+
+        if (Array.isArray(value)) {
+            return new Value(ValueDataType.Array, value.map(v => Value.fromNative(v)));
+        }
+
+        throw new Error(`Cannot create a value from native value ${value}`);
+    }
+
     /** Returns true if the stored value corresponds to the declared data type */
     protected isValid(): boolean {
         switch (this.dataType) {

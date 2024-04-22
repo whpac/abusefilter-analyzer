@@ -5,7 +5,7 @@ async function main() {
     const rootElement = document.createElement('div');
     body.appendChild(rootElement);
 
-    const filter = await AbuseFilter.createFromFilterId(3);
+    const filter = await AbuseFilter.createFromLogId(775579);
     filter.flattenAssociativeOperators();
     filter.renderInto(rootElement);
     filter.evaluate();

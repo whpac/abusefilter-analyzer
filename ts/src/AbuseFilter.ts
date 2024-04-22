@@ -1,8 +1,9 @@
 import { EvaluationContext } from './evaluator/EvaluationContext.js';
 import { NodeEvaluator } from './evaluator/NodeEvaluator.js';
 import { EvaluableNodeFactory } from './evaluator/nodes/EvaluableNodeFactory.js';
+import { Value } from './evaluator/value/Value.js';
 import { AbuseFilterGUI } from './gui/AbuseFilterGUI.js';
-import { AbuseFilterApi } from './mediawiki/AbuseFilterApi.js';
+import { AbuseFilterApi, AbuseLogEntry } from './mediawiki/AbuseFilterApi.js';
 import { IEvaluationContext } from './model/IEvaluationContext.js';
 import { IEvaluableTreeNode } from './model/nodes/IEvaluableTreeNode.js';
 import { IValue } from './model/value/IValue.js';
@@ -66,9 +67,27 @@ export class AbuseFilter {
         gui.renderSyntaxTree(this.rootNode, this.defaultContext);
     }
 
+    public setVariable(name: string, value: unknown): void {
+        this.defaultContext.setVariable(name, Value.fromNative(value));
+    }
+
+    public loadVariablesFromLogEntry(logEntry: AbuseLogEntry): void {
+        const variables = logEntry.details;
+        for (const [key, value] of Object.entries(variables)) {
+            this.setVariable(key, value);
+        }
+    }
+
     public static async createFromFilterId(filterId: number): Promise<AbuseFilter> {
         const filterText = await AbuseFilterApi.fetchAbuseFilterText(filterId);
         return new AbuseFilter(filterText);
+    }
+
+    public static async createFromLogId(logId: number): Promise<AbuseFilter> {
+        const logEntry = await AbuseFilterApi.fetchAbuseLogEntry(logId);
+        const filter = await AbuseFilter.createFromFilterId(logEntry.filter_id);
+        filter.loadVariablesFromLogEntry(logEntry);
+        return filter;
     }
 }
 
