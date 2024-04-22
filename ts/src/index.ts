@@ -20,7 +20,7 @@ mw.util.addCSS(`
 .afa-value-identifier { color: teal; }
 .afa-keyword { color: purple; }
 .afa-function { color: #8f6300; }
-.afa-hint { display: inline-block; background: #eee; padding: 0 0.5em; border-radius: 0.5em; margin-right: 0.5em; font-size:0.85em; color:#666; }
+.afa-hint { display: inline-block; background: #eee; padding: 0 0.5em; border-radius: 0.5em; font-size:0.85em; color:#666; }
 .afa-data { margin-left: 0.7em; display: inline-block; border: 1px solid #aaa; padding: 0 0.5em; border-radius: 0.5em; background: #f4f4f4; font-size: 0.85em; }
 
 .afa-data .afa-value-bool::before {

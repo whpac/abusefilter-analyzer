@@ -65,7 +65,7 @@ export class BlockNodeView implements INodeView {
                 
                 if (hint !== null) {
                     const hintView = this.renderHintView(hint);
-                    childElement.appendChild(hintView);
+                    childElement.append(hintView, ' ');
                 }
                 const childView = this.children[i];
                 childElement.appendChild(childView.render());
