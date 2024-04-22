@@ -35,6 +35,20 @@ mw.util.addCSS(`
 .afa-data .afa-value-true::before { background: green; }
 .afa-data .afa-value-false::before { background: red; }
 
+.afa-data .afa-data-more {
+    position: absolute;
+    margin-top: -0.3em;
+    left: 1em;
+    right: 1em;
+    background: #f0f0f0;
+    border: 1px solid #aaa;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    display: none;
+    box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.2);
+}
+.afa-data:hover .afa-data-more { display: block; }
+
 .afa-tree-container {
     border: 1px solid #ccc;
     padding: 0.5em;
