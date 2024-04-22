@@ -19,7 +19,7 @@ export class AbuseFilterApi {
         throw new Error(`Filter ${filterId} not found`);
     }
 
-    public static async fetchAbuseLogEntry(logId: number): Promise<AbuseLogEntry> {
+    public static async fetchAbuseLogEntry(logId: number | string): Promise<AbuseLogEntry> {
         const api = new mw.Api();
         const response = await api.get({
             action: 'query',

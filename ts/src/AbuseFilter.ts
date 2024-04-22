@@ -83,7 +83,7 @@ export class AbuseFilter {
         return new AbuseFilter(filterText);
     }
 
-    public static async createFromLogId(logId: number): Promise<AbuseFilter> {
+    public static async createFromLogId(logId: number | string): Promise<AbuseFilter> {
         const logEntry = await AbuseFilterApi.fetchAbuseLogEntry(logId);
         const filter = await AbuseFilter.createFromFilterId(logEntry.filter_id);
         filter.loadVariablesFromLogEntry(logEntry);
