@@ -14,6 +14,7 @@ export class AbuseFilterGUI {
 
     public constructor(rootElement: HTMLElement) {
         this.rootElement = rootElement;
+        this.rootElement.classList.add('afa-tree-container');
     }
 
     /**
