@@ -1,14 +1,37 @@
 import { AbuseFilter } from './AbuseFilter.js';
 
-async function main() {
-    const body = document.getElementById('bodyContent') ?? document.body;
-    const rootElement = document.createElement('div');
-    body.appendChild(rootElement);
+async function displayOnLogPage(logId: string) {
+    const fieldset = document.querySelector('#mw-content-text > fieldset');
+    if (!fieldset) return;
 
-    const filter = await AbuseFilter.createFromLogId(775579);
+    const referenceHeader = fieldset.querySelector('h3');
+    if (!referenceHeader) return;
+
+    const treeHeader = document.createElement('h3');
+    treeHeader.textContent = 'Filter evaluation tree';
+    fieldset.insertBefore(treeHeader, referenceHeader);
+
+    const rootElement = document.createElement('div');
+    rootElement.textContent = 'Loading...';
+    fieldset.insertBefore(rootElement, referenceHeader);
+
+    const filter = await AbuseFilter.createFromLogId(logId);
     filter.flattenAssociativeOperators();
     filter.renderInto(rootElement);
     filter.evaluate();
+}
+
+function main() {
+    // Run only on the AbuseLog special page
+    if (mw.config.get('wgCanonicalSpecialPageName') !== 'AbuseLog') return;
+
+    const pageName = mw.config.get('wgPageName');
+    const logMatch = pageName.match(/\/(\d+)$/);
+    const logId = logMatch?.[1];
+
+    if (logId) {
+        displayOnLogPage(logId);
+    }
 }
 main();
 

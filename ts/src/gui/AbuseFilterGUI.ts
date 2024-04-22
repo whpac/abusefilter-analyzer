@@ -9,11 +9,11 @@ export class AbuseFilterGUI {
     /** Whether to include the node values after evaluation (if available). */
     public displayEvaluatedValues: boolean = true;
 
-    private readonly rootElement: HTMLElement;
+    private readonly wrapperElement: HTMLElement;
 
-    public constructor(rootElement: HTMLElement) {
-        this.rootElement = rootElement;
-        this.rootElement.classList.add('afa-tree-container');
+    public constructor(wrapperElement: HTMLElement) {
+        this.wrapperElement = wrapperElement;
+        this.wrapperElement.classList.add('afa-tree-container');
     }
 
     /**
@@ -31,6 +31,11 @@ export class AbuseFilterGUI {
         }
 
         const rootNodeView = new TreeView(rootNode, viewFactory);
-        this.rootElement.appendChild(rootNodeView.render());
+        const rootNodeElement = rootNodeView.render();
+        if (rootNodeElement.tagName === 'DETAILS') {
+            rootNodeElement.removeAttribute('open');
+        }
+        this.wrapperElement.textContent = '';
+        this.wrapperElement.appendChild(rootNodeElement);
     }
 }
