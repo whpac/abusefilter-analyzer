@@ -29,8 +29,14 @@ export class NodeValueView implements IView {
             // Ignore updates from unrelated contexts
             if (context.rootContext != evaluationContext.rootContext) return;
 
-            this.element.textContent = '';
             this.setValue(node.getValue(context));
+        });
+
+        node.addOnErrorCallback((node, context) => {
+            // Ignore updates from unrelated contexts
+            if (context.rootContext != evaluationContext.rootContext) return;
+
+            this.setErrors(node.getErrors(context));
         });
     }
 
@@ -43,11 +49,30 @@ export class NodeValueView implements IView {
         const formattedValue = ValueFormatter.formatValue(value);
         const shortenedValue = this.shortenValue(value, formattedValue);
 
-        this.element.appendChild(shortenedValue ?? formattedValue);
-        if (shortenedValue !== null) {
+        if (shortenedValue === null) {
+            this.setViewContent(formattedValue, null);
+        } else {
+            this.setViewContent(shortenedValue, formattedValue);
+        }
+    }
+
+    protected setErrors(errors: Error[]): void {
+        const shortText = document.createElement('span');
+        shortText.textContent = 'Errors: ' + errors.length;
+
+        const longText = document.createElement('span');
+        longText.textContent = errors.map(e => e.message).join('\n');
+        this.setViewContent(shortText, longText);
+    }
+
+    protected setViewContent(shortValue: HTMLElement, longValue: HTMLElement | null): void {
+        this.element.textContent = '';
+
+        this.element.appendChild(shortValue);
+        if (longValue !== null) {
             const moreContainer = document.createElement('span');
             moreContainer.classList.add('afa-data-more');
-            moreContainer.appendChild(formattedValue);
+            moreContainer.appendChild(longValue);
             this.element.appendChild(moreContainer);
         }
     }
