@@ -47,6 +47,34 @@ export interface IEvaluableTreeNode extends ITreeNode {
      * @param callback The callback to be called when the value is set
      */
     addOnValueSetCallback(callback: OnValueSetCallback): void;
+
+    /**
+     * Sets an error that occurred during the evaluation of this node in the specified context.
+     * @param evaluationContext The context for which to set the error
+     * @param error The error that occurred during the evaluation
+     */
+    setError(evaluationContext: IEvaluationContext, error: Error): void;
+
+    /**
+     * Gets all errors that occurred during the evaluation of this node in the specified context.
+     * @param evaluationContext The context for which to obtain the error
+     */
+    getErrors(evaluationContext: IEvaluationContext): Error[];
+
+    /**
+     * Returns whether there are any errors that occurred during the evaluation of this node in the specified context.
+     * @param evaluationContext The context for which to check for errors
+     */
+    hasErrors(evaluationContext: IEvaluationContext): boolean;
+
+    /** Returns a list of evaluation contexts that have an error set. */
+    getContextsWithErrors(): IEvaluationContext[];
+
+    /**
+     * Registers a function to be called when there's an error during the evaluation of this node.
+     * @param callback The callback to be called when an error occurs during the evaluation
+     */
+    addOnErrorCallback(callback: OnValueSetCallback): void;
 }
 
 export type OnValueSetCallback = (node: IEvaluableTreeNode, evaluationContext: IEvaluationContext) => void;

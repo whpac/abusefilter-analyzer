@@ -18,6 +18,11 @@ export class EvaluableTreeNode implements IEvaluableTreeNode {
 
     private readonly onValueSetCallbacks: OnValueSetCallback[] = [];
 
+    /** Holds all the errors from evaluations of this node */
+    private readonly errorsByContext: Map<IEvaluationContext, Error[]> = new Map();
+
+    private readonly onErrorCallbacks: OnValueSetCallback[] = [];
+
     public constructor(type: TreeNodeType, identity: IToken, children: IEvaluableTreeNode[] = []) {
         this.type = type;
         this.identity = identity;
@@ -33,7 +38,7 @@ export class EvaluableTreeNode implements IEvaluableTreeNode {
     }
 
     public getValue(evaluationContext: IEvaluationContext): IValue {
-        return this.valueByContext.get(evaluationContext.rootContext) ?? Value.Null;
+        return this.valueByContext.get(evaluationContext.rootContext) ?? Value.Undefined;
     }
 
     public hasValue(evaluationContext: IEvaluationContext): boolean {
@@ -46,5 +51,31 @@ export class EvaluableTreeNode implements IEvaluableTreeNode {
 
     public addOnValueSetCallback(callback: OnValueSetCallback): void {
         this.onValueSetCallbacks.push(callback);
+    }
+
+    public setError(evaluationContext: IEvaluationContext, error: Error): void {
+        const errors = this.errorsByContext.get(evaluationContext) ?? [];
+        errors.push(error);
+        this.errorsByContext.set(evaluationContext, errors);
+
+        for(const callback of this.onErrorCallbacks) {
+            callback(this, evaluationContext);
+        }
+    }
+
+    public getErrors(evaluationContext: IEvaluationContext): Error[] {
+        return this.errorsByContext.get(evaluationContext) ?? [];
+    }
+
+    public hasErrors(evaluationContext: IEvaluationContext): boolean {
+        return this.errorsByContext.has(evaluationContext);
+    }
+
+    public getContextsWithErrors(): IEvaluationContext[] {
+        return Array.from(this.errorsByContext.keys());
+    }
+
+    public addOnErrorCallback(callback: OnValueSetCallback): void {
+        this.onErrorCallbacks.push(callback);
     }
 }
