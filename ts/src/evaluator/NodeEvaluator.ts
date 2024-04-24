@@ -20,22 +20,31 @@ export class NodeEvaluator {
     public async evaluateNode(treeNode: IEvaluableTreeNode, evaluationContext: IEvaluationContext): Promise<IValue> {
         let value;
 
-        // Atoms store value literals and variable reads
-        if (treeNode.type === TreeNodeType.Atom) {
-            const identity = treeNode.identity;
-            if (identity.type === TokenType.Identifier) {
-                // Get variable value
-                value = evaluationContext.getVariable(identity.value);
+        try {
+            // Atoms store value literals and variable reads
+            if (treeNode.type === TreeNodeType.Atom) {
+                const identity = treeNode.identity;
+                if (identity.type === TokenType.Identifier) {
+                    // Get variable value
+                    value = evaluationContext.getVariable(identity.value);
+                } else {
+                    // Else, convert the literal into a value
+                    value = Value.fromTokenLiteral(identity);
+                }
             } else {
-                // Else, convert the literal into a value
-                value = Value.fromTokenLiteral(identity);
+                // Evaluate this node
+                value = await this.evaluateNodeLazily(treeNode, evaluationContext);
             }
-        } else {
-            // Evaluate this node
-            value = await this.evaluateNodeLazily(treeNode, evaluationContext);
-        }
 
-        treeNode.setValue(evaluationContext, value);
+            // Set the value only on success, so handlers don't have to check order of events
+            treeNode.setValue(evaluationContext, value);
+        } catch (e) {
+            // Unevaluated nodes have value of undefined so return it from the function as well
+            value = Value.Undefined;
+
+            const error = (e instanceof Error) ? e : new Error('' + e);
+            treeNode.setError(evaluationContext, error);
+        }
         return value;
     }
 
