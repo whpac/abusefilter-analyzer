@@ -1,7 +1,12 @@
 export class AbuseFilterApi {
 
     public static async fetchAbuseFilterText(filterId: number | string): Promise<string> {
-        const api = new mw.Api();
+        let api = new mw.Api();
+        if (filterId.toString().startsWith('global-')) {
+            filterId = filterId.toString().replace('global-', '');
+            api = new mw.ForeignApi('https://meta.wikimedia.org/w/api.php');
+        }
+        
         const response = await api.get({
             action: 'query',
             list: 'abusefilters',
