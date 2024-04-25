@@ -10,8 +10,12 @@ export class VariableValue<TValue = unknown> extends Value<TValue> implements IV
 
     public readonly name: string;
 
+    /** Is set to false only for uninitialized variables */
+    private isInitialized: boolean = true;
+
     public override get value(): TValue {
-        if (this.isUndefined && this.name !== undefined) {
+        // TODO: Without the redundant check for name, apparently assigning to variables fails. Investigate it.
+        if (!this.isInitialized && this.name !== undefined) {
             throw new Error(`Variable ${this.name} does not exist`);
         }
         return this._value;
@@ -35,7 +39,9 @@ export class VariableValue<TValue = unknown> extends Value<TValue> implements IV
      * Creates a new uninitialized variable.
      * @param variableName The variable name
      */
-    public static fromUndefined(variableName: string): VariableValue<null> {
-        return new VariableValue(variableName, ValueDataType.Undefined, null);
+    public static makeUninitialized(variableName: string): VariableValue<null> {
+        const variable = new VariableValue(variableName, ValueDataType.Undefined, null);
+        variable.isInitialized = false;
+        return variable;
     }
 }

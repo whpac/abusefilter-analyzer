@@ -44,7 +44,7 @@ export class EvaluationContext implements IEvaluationContext {
             return this.parentContext.getVariable(variableName);
         }
 
-        return VariableValue.fromUndefined(variableName);
+        return VariableValue.makeUninitialized(variableName);
     }
 
     public setVariable(variableName: string, newValue: IValue): void {
