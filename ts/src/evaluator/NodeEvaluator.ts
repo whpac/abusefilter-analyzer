@@ -129,17 +129,32 @@ export class NodeEvaluator {
             const lastOperand = operands[operands.length - 1];
 
             let wasResolved = false;
+            let hasUndefined = false;
             let lastIterationPromise = Promise.resolve();
             for (const operand of operands) {
                 lastIterationPromise = lastIterationPromise.then(() => 
                     this.evaluateNode(operand, context).then((value) => {
+                        if (value.dataType === ValueDataType.Undefined) {
+                            // We don't really want to treat undefined as true or false
+                            // It's just an undefined value
+                            hasUndefined = true;
+                        }
+
                         // The non-neutral operand value is returned as-is if it's not last
                         // eg. (0 & true) == 0 but (true & 0) == false
                         // eg. (1 | false) == 1 but (false | 1) == true
                         if (operand == lastOperand) {
-                            if(!wasResolved) resolve(value.castToBoolean());
+                            if(!wasResolved) {
+                                const lastValue = value.castToBoolean();
+                                if (hasUndefined && value.isTruthy() === neutralElement) {
+                                    resolve(Value.Undefined);
+                                } else {
+                                    resolve(lastValue);
+                                }
+                            }
                             wasResolved = true;
-                        } else if (value.isTruthy() !== neutralElement) {
+                        } else if (value.isTruthy() !== neutralElement && value.dataType !== ValueDataType.Undefined) {
+                            // Undefined never resolves the node
                             // Resolve the whole node, but still keep evaluating other operands
                             if (!wasResolved) resolve(value);
                             wasResolved = true;
