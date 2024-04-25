@@ -11,6 +11,11 @@ export interface IEvaluationContext {
     get rootContext(): IEvaluationContext;
 
     /**
+     * Allows to check whether execution in this context is speculative.
+     */
+    get isSpeculative(): boolean;
+
+    /**
      * Returns the value of a variable. If the variable is not found in this context,
      * it will look up in its parent.
      * If the variable is not found in the parent, it will throw an error.

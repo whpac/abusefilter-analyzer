@@ -12,6 +12,8 @@ export class EvaluationContext implements IEvaluationContext {
 
     public readonly rootContext: IEvaluationContext;
 
+    public readonly isSpeculative: boolean;
+
     /**
      * Creates a new evaluation context.
      * @param parentContext The parent context, if any. If not provided, this context will be the root context.
@@ -23,6 +25,10 @@ export class EvaluationContext implements IEvaluationContext {
         } else {
             this.rootContext = this;
         }
+
+        // We might want to have non-speculative children contexts in future
+        // but for now only the root context is non-speculative
+        this.isSpeculative = (parentContext !== null);
     }
 
     public getVariable(variableName: string): VariableValue {

@@ -19,7 +19,9 @@ export class NodeValueView implements IView {
     public constructor(node: IEvaluableTreeNode, evaluationContext: IEvaluationContext) {
         this.element = document.createElement('span');
 
-        if (node.hasValue(evaluationContext)) {
+        if (node.hasErrors(evaluationContext)) {
+            this.setErrors(node.getErrors(evaluationContext), evaluationContext.isSpeculative);
+        } else if (node.hasValue(evaluationContext)) {
             this.setValue(node.getValue(evaluationContext));
         } else {
             this.element.textContent = '...';
@@ -36,7 +38,7 @@ export class NodeValueView implements IView {
             // Ignore updates from unrelated contexts
             if (context.rootContext != evaluationContext.rootContext) return;
 
-            this.setErrors(node.getErrors(context));
+            this.setErrors(node.getErrors(context), context.isSpeculative);
         });
     }
 
@@ -56,9 +58,15 @@ export class NodeValueView implements IView {
         }
     }
 
-    protected setErrors(errors: Error[]): void {
+    protected setErrors(errors: Error[], isSpeculative: boolean): void {
         const shortText = document.createElement('span');
+        shortText.classList.add('afa-data-error');
         shortText.textContent = 'Errors: ' + errors.length;
+
+        if (isSpeculative) {
+            shortText.classList.add('afa-data-error-speculative');
+            shortText.textContent += ' (speculative)';
+        }
 
         const longText = document.createElement('span');
         longText.textContent = errors.map(e => e.message).join('\n');
