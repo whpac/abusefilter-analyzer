@@ -73,25 +73,25 @@ export class AbuseFilterFunctions {
     }
 
     /** Converts the input to a string */
-    public static async string(context: IEvaluationContext, args: IValue[]): Promise<IValue<string>> {
+    public static async string(context: IEvaluationContext, args: IValue[]): Promise<IValue<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'string');
         return args[0].castToString();
     }
 
     /** Converts the input to an integer */
-    public static async int(context: IEvaluationContext, args: IValue[]): Promise<IValue<number>> {
+    public static async int(context: IEvaluationContext, args: IValue[]): Promise<IValue<number | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'int');
         return args[0].castToInt();
     }
 
     /** Converts the input to a float */
-    public static async float(context: IEvaluationContext, args: IValue[]): Promise<IValue<number>> {
+    public static async float(context: IEvaluationContext, args: IValue[]): Promise<IValue<number | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'float');
         return args[0].castToFloat();
     }
 
     /** Converts the input to a boolean */
-    public static async bool(context: IEvaluationContext, args: IValue[]): Promise<IValue<boolean>> {
+    public static async bool(context: IEvaluationContext, args: IValue[]): Promise<IValue<boolean | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'bool');
         return args[0].castToBoolean();
     }

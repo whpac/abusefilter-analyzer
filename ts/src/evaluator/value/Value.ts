@@ -123,7 +123,11 @@ export class Value<TValue = unknown> implements IValue<TValue> {
      * Checks if the value is truthy
      * @see https://www.php.net/manual/en/language.types.boolean.php#language.types.boolean.casting
      */
-    public isTruthy(): boolean {
+    public isTruthy(): boolean | undefined {
+        if (this.dataType === ValueDataType.Undefined) {
+            return undefined;
+        }
+
         if (this.dataType === ValueDataType.Boolean) {
             return this.value as boolean;
         }
@@ -140,7 +144,7 @@ export class Value<TValue = unknown> implements IValue<TValue> {
             return (this.value as unknown[]).length !== 0;
         }
 
-        if (this.dataType === ValueDataType.Null || this.dataType === ValueDataType.Undefined) {
+        if (this.dataType === ValueDataType.Null) {
             return false;
         }
 
@@ -189,27 +193,32 @@ export class Value<TValue = unknown> implements IValue<TValue> {
      * Converts the value to boolean, i.e. returns true if the value
      * is truthy and false otherwise
      */
-    public castToBoolean(): Value<boolean> {
-        return new Value(ValueDataType.Boolean, this.isTruthy());
+    public castToBoolean(): Value<boolean | null> {
+        if (this.dataType === ValueDataType.Undefined) return this as Value<null>;
+        return new Value(ValueDataType.Boolean, this.isTruthy()!);
     }
 
     /** Converts the value to integer */
-    public castToInt(): Value<number> {
+    public castToInt(): Value<number | null> {
+        if (this.dataType === ValueDataType.Undefined) return this as Value<null>;
         return new Value(ValueDataType.Integer, Math.floor(this.toNumber()));
     }
 
     /** Converts the value to float */
-    public castToFloat(): Value<number> {
+    public castToFloat(): Value<number | null> {
+        if (this.dataType === ValueDataType.Undefined) return this as Value<null>;
         return new Value(ValueDataType.Float, this.toNumber());
     }
 
     /** Converts the value to string */
-    public castToString(): Value<string> {
+    public castToString(): Value<string | null> {
+        if (this.dataType === ValueDataType.Undefined) return this as Value<null>;
         return new Value(ValueDataType.String, this.toString());
     }
 
     /** Converts the value to array */
-    public castToArray(): Value<unknown[]> {
+    public castToArray(): Value<unknown[] | null> {
+        if (this.dataType === ValueDataType.Undefined) return this as Value<null>;
         return new Value(ValueDataType.Array, this.toArray());
     }
 

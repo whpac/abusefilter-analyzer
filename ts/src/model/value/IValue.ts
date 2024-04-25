@@ -8,17 +8,17 @@ export interface IValue<TValue = unknown> {
     /** The stored value */
     get value(): TValue;
 
-    castToBoolean(): IValue<boolean>;
+    castToBoolean(): IValue<boolean | null>;
 
-    castToInt(): IValue<number>;
+    castToInt(): IValue<number | null>;
 
-    castToFloat(): IValue<number>;
+    castToFloat(): IValue<number | null>;
 
-    castToString(): IValue<string>;
+    castToString(): IValue<string | null>;
 
-    castToArray(): IValue<unknown[]>;
+    castToArray(): IValue<unknown[] | null>;
 
-    isTruthy(): boolean;
+    isTruthy(): boolean | undefined;
 
     toNumber(): number;
 

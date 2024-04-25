@@ -136,31 +136,39 @@ export class ValueCalculator {
         return new Value(type, res);
     }
 
-    /** Performs a logical conjunction of the values. The result is always a boolean. */
-    public static and(operands: IValue[]): IValue<boolean> {
+    /** Performs a logical conjunction of the values. The result is always a boolean or undefined. */
+    public static and(operands: IValue[]): IValue<boolean | null> {
+        let hasUndefined = false;
         for (const operand of operands) {
-            if (!operand.isTruthy()) {
+            if (operand.dataType === ValueDataType.Undefined) {
+                hasUndefined = true;
+            } else if (!operand.isTruthy()) {
                 return Value.False;
             }
         }
-        return Value.True;
+        return !hasUndefined ? Value.True : Value.Undefined;
     }
 
-    /** Performs a logical alternative of the values. The result is always a boolean. */
-    public static or(operands: IValue[]): IValue<boolean> {
+    /** Performs a logical alternative of the values. The result is always a boolean or undefined. */
+    public static or(operands: IValue[]): IValue<boolean | null> {
+        let hasUndefined = false;
         for (const operand of operands) {
-            if (operand.isTruthy()) {
+            if (operand.dataType === ValueDataType.Undefined) {
+                hasUndefined = true;
+            } else if (operand.isTruthy()) {
                 return Value.True;
             }
         }
-        return Value.False;
+        return !hasUndefined ? Value.True : Value.Undefined;
     }
 
-    /** Performs a logical exclusive alternative of the values. The result is always a boolean. */
-    public static xor(operands: IValue[]): IValue<boolean> {
+    /** Performs a logical exclusive alternative of the values. The result is always a boolean or undefined. */
+    public static xor(operands: IValue[]): IValue<boolean | null> {
         let trueCount = 0;
         for (const operand of operands) {
-            if (operand.isTruthy()) {
+            if (operand.dataType === ValueDataType.Undefined) {
+                return Value.Undefined;
+            } else if (operand.isTruthy()) {
                 trueCount++;
             }
         }
@@ -168,7 +176,7 @@ export class ValueCalculator {
     }
 
     /** Returns a boolean negation of the value */
-    public static not(value: IValue): IValue {
+    public static not(value: IValue): IValue<boolean | null> {
         if (value.dataType === ValueDataType.Undefined) {
             return Value.Undefined;
         }
