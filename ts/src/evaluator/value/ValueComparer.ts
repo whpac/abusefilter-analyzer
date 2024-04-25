@@ -9,68 +9,83 @@ export class ValueComparer {
      * Strict equality requires the data types and values to be
      * exactly the same.
      */
-    public static isStrictlyEqualTo(a: IValue, b: IValue): Value<boolean> {
-        return new Value(ValueDataType.Boolean, ValueComparer.areEqual(a, b, true));
+    public static isStrictlyEqualTo(a: IValue, b: IValue): Value<boolean | null> {
+        const areEqual = ValueComparer.areEqual(a, b, true);
+        return ValueComparer.boolOrUndefined(areEqual);
     }
 
     /**
      * Checks if the values are not strictly equal.
      */
-    public static isStrictlyInequalTo(a: IValue, b: IValue): Value<boolean> {
-        return new Value(ValueDataType.Boolean, !ValueComparer.areEqual(a, b, true));
+    public static isStrictlyInequalTo(a: IValue, b: IValue): Value<boolean | null> {
+        const areEqual = ValueComparer.areEqual(a, b, true);
+        return ValueComparer.boolOrUndefined((areEqual === undefined) ? undefined : !areEqual);
     }
 
     /**
      * Checks if the values are loosely equal.
      * Loose equality allows for different data types to be equal
      */
-    public static isLooselyEqualTo(a: IValue, b: IValue): Value<boolean> {
-        return new Value(ValueDataType.Boolean, ValueComparer.areEqual(a, b, false));
+    public static isLooselyEqualTo(a: IValue, b: IValue): Value<boolean | null> {
+        const areEqual = ValueComparer.areEqual(a, b, false);
+        return ValueComparer.boolOrUndefined(areEqual);
     }
 
     /**
      * Checks if the values are not loosely equal.
      */
-    public static isLooselyInequalTo(a: IValue, b: IValue): Value<boolean> {
-        return new Value(ValueDataType.Boolean, !ValueComparer.areEqual(a, b, false));
+    public static isLooselyInequalTo(a: IValue, b: IValue): Value<boolean | null> {
+        const areEqual = ValueComparer.areEqual(a, b, false);
+        return ValueComparer.boolOrUndefined((areEqual === undefined) ? undefined : !areEqual);
     }
 
     /**
      * Checks if the first value is less than the second.
      */
-    public static isLessThan(a: IValue, b: IValue): Value<boolean> {
-        return new Value(ValueDataType.Boolean, ValueComparer.compare(a, b) == ComparisonResult.LessThan);
+    public static isLessThan(a: IValue, b: IValue): Value<boolean | null> {
+        const compareResult = ValueComparer.compare(a, b);
+        if (compareResult === ComparisonResult.Undefined) return Value.Undefined;
+        return new Value(ValueDataType.Boolean, compareResult == ComparisonResult.LessThan);
     }
 
     /**
      * Checks if the first value is less than or equal to the second.
      */
-    public static isLessThanOrEqualTo(a: IValue, b: IValue): Value<boolean> {
-        return new Value(ValueDataType.Boolean, ValueComparer.compare(a, b) != ComparisonResult.GreaterThan);
+    public static isLessThanOrEqualTo(a: IValue, b: IValue): Value<boolean | null> {
+        const compareResult = ValueComparer.compare(a, b);
+        if (compareResult === ComparisonResult.Undefined) return Value.Undefined;
+        return new Value(ValueDataType.Boolean, compareResult != ComparisonResult.GreaterThan);
     }
 
     /**
      * Checks if the first value is greater than the second.
      */
-    public static isGreaterThan(a: IValue, b: IValue): Value<boolean> {
-        return new Value(ValueDataType.Boolean, ValueComparer.compare(a, b) == ComparisonResult.GreaterThan);
+    public static isGreaterThan(a: IValue, b: IValue): Value<boolean | null> {
+        const compareResult = ValueComparer.compare(a, b);
+        if (compareResult === ComparisonResult.Undefined) return Value.Undefined;
+        return new Value(ValueDataType.Boolean, compareResult == ComparisonResult.GreaterThan);
     }
 
     /**
      * Checks if the first value is greater than or equal to the second.
      */
-    public static isGreaterThanOrEqualTo(a: IValue, b: IValue): Value<boolean> {
-        return new Value(ValueDataType.Boolean, ValueComparer.compare(a, b) != ComparisonResult.LessThan);
+    public static isGreaterThanOrEqualTo(a: IValue, b: IValue): Value<boolean | null> {
+        const compareResult = ValueComparer.compare(a, b);
+        if (compareResult === ComparisonResult.Undefined) return Value.Undefined;
+        return new Value(ValueDataType.Boolean, compareResult != ComparisonResult.LessThan);
     }
 
     /**
      * Checks if the values are equal.
      * @param strict Pass true for strict equality check.
      */
-    public static areEqual(a: IValue, b: IValue, strict = false): boolean {
-        if (a.dataType === ValueDataType.Undefined || b.dataType === ValueDataType.Undefined) {
-            // First, ensure we don't have any undefineds
-            throw new Error('Undefined values cannot be compared. This should have been handled earlier.');
+    public static areEqual(a: IValue, b: IValue, strict = false): boolean | undefined {
+        if (a.isUndefined || b.isUndefined) {
+            // Original implementation does not allow for undefined values - errors are raised instead
+            // and the execution in stopped. We want to continue so that comparison to undefined has to be
+            // implemented. Since two undefined values can be equal or not and the same is true for defined
+            // and undefined, we just return undefined here.
+            return undefined;
 
         } else if (a.dataType !== ValueDataType.Array && b.dataType !== ValueDataType.Array) {
             // Scalar types are simply compared by value
@@ -111,6 +126,10 @@ export class ValueComparer {
 
     /** Performs a numerical or textual comparison of the values. */
     public static compare(a: IValue, b: IValue): ComparisonResult {
+        if (a.isUndefined || b.isUndefined){
+            return ComparisonResult.Undefined;
+        }
+
         const value1 = a.toString();
         const value2 = b.toString();
 
@@ -139,10 +158,19 @@ export class ValueComparer {
             }
         }
     }
+
+    private static boolOrUndefined(value: boolean | undefined): Value<boolean | null> {
+        if (value === undefined) {
+            return Value.Undefined;
+        } else {
+            return new Value(ValueDataType.Boolean, value);
+        }
+    }
 }
 
 enum ComparisonResult {
     LessThan = -1,
     Equal = 0,
-    GreaterThan = 1
+    GreaterThan = 1,
+    Undefined = 1000
 }

@@ -7,6 +7,7 @@ import { IValue } from '../model/value/IValue.js';
 import { ValueStringOperations } from './value/ValueStringOperations.js';
 import { ValueComparer } from './value/ValueComparer.js';
 
+// TODO: Add undefined support
 export class AbuseFilterFunctions {
 
     /** A map of all AbuseFilter functions */
@@ -43,6 +44,7 @@ export class AbuseFilterFunctions {
         ['set', AbuseFilterFunctions.set],
         ['set_var', AbuseFilterFunctions.set],
         ['sanitize', AbuseFilterFunctions.sanitize],
+        ['x_isundef', AbuseFilterFunctions.isUndefined], // TODO: Does not exist in original impl, move to test/
     ]);
 
     /** Returns a function by its name */
@@ -51,21 +53,27 @@ export class AbuseFilterFunctions {
     }
 
     /** Converts the input text to the lowercase */
-    public static async lcase(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
+    public static async lcase(context: IEvaluationContext, args: IValue[]): Promise<Value<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'lcase');
+        if (args[0].isUndefined) return Value.Undefined;
+
         return new Value(ValueDataType.String, args[0].toString().toLowerCase());
     }
 
     /** Converts the input text to the uppercase */
-    public static async ucase(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
+    public static async ucase(context: IEvaluationContext, args: IValue[]): Promise<Value<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'ucase');
+        if (args[0].isUndefined) return Value.Undefined;
+
         return new Value(ValueDataType.String, args[0].toString().toUpperCase());
     }
 
     /** Returns the length of the input text or number of elements in an array */
-    public static async lengthFunc(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
+    public static async lengthFunc(context: IEvaluationContext, args: IValue[]): Promise<Value<number | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'length');
         const input = args[0];
+        if (input.isUndefined) return Value.Undefined;
+
         if (input.dataType === ValueDataType.Array) {
             return new Value(ValueDataType.Integer, input.toArray().length);
         }
@@ -73,39 +81,43 @@ export class AbuseFilterFunctions {
     }
 
     /** Converts the input to a string */
-    public static async string(context: IEvaluationContext, args: IValue[]): Promise<IValue<string>> {
+    public static async string(context: IEvaluationContext, args: IValue[]): Promise<IValue<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'string');
         return args[0].castToString();
     }
 
     /** Converts the input to an integer */
-    public static async int(context: IEvaluationContext, args: IValue[]): Promise<IValue<number>> {
+    public static async int(context: IEvaluationContext, args: IValue[]): Promise<IValue<number | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'int');
         return args[0].castToInt();
     }
 
     /** Converts the input to a float */
-    public static async float(context: IEvaluationContext, args: IValue[]): Promise<IValue<number>> {
+    public static async float(context: IEvaluationContext, args: IValue[]): Promise<IValue<number | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'float');
         return args[0].castToFloat();
     }
 
     /** Converts the input to a boolean */
-    public static async bool(context: IEvaluationContext, args: IValue[]): Promise<IValue<boolean>> {
+    public static async bool(context: IEvaluationContext, args: IValue[]): Promise<IValue<boolean | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'bool');
         return args[0].castToBoolean();
     }
 
     /** Normalizes the input string using multiple AbuseFilter functions */
-    public static async norm(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
+    public static async norm(context: IEvaluationContext, args: IValue[]): Promise<Value<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'norm');
+        if (args[0].isUndefined) return Value.Undefined;
+
         throw new Error('Not implemented');
         // TODO: requires ccnorm
     }
 
     /** Normalizes the input string, replacing confusible characters by a class representant */
-    public static async ccnorm(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
+    public static async ccnorm(context: IEvaluationContext, args: IValue[]): Promise<Value<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'ccnorm');
+        if (args[0].isUndefined) return Value.Undefined;
+
         throw new Error('Not implemented');
         // TODO: requires ccnorm
     }
@@ -125,8 +137,10 @@ export class AbuseFilterFunctions {
     }
 
     /** Returns the number of non-alphanumeric characters divided by the total number of characters in the argument */
-    public static async specialratio(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
+    public static async specialratio(context: IEvaluationContext, args: IValue[]): Promise<Value<number | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'specialratio');
+        if (args[0].isUndefined) return Value.Undefined;
+
         const input = args[0].toString();
         if (input.length === 0) {
             return new Value(ValueDataType.Float, 0);
@@ -137,20 +151,26 @@ export class AbuseFilterFunctions {
     }
 
     /** Removes all non-alphanumeric characters from the input */
-    public static async rmspecials(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
+    public static async rmspecials(context: IEvaluationContext, args: IValue[]): Promise<Value<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmspecials');
+        if (args[0].isUndefined) return Value.Undefined;
+
         return new Value(ValueDataType.String, AbuseFilterFunctions.removeSpecialCharacters(args[0].toString()));
     }
 
     /** Removes repeating characters from the input */
-    public static async rmdoubles(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
+    public static async rmdoubles(context: IEvaluationContext, args: IValue[]): Promise<Value<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmdoubles');
+        if (args[0].isUndefined) return Value.Undefined;
+
         return new Value(ValueDataType.String, AbuseFilterFunctions.removeRepeatingCharacters(args[0].toString()));
     }
 
     /** Removes whitespace characters from the input */
-    public static async rmwhitespace(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
+    public static async rmwhitespace(context: IEvaluationContext, args: IValue[]): Promise<Value<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmwhitespace');
+        if (args[0].isUndefined) return Value.Undefined;
+
         return new Value(ValueDataType.String, AbuseFilterFunctions.removeWhitespaces(args[0].toString()));
     }
 
@@ -158,8 +178,9 @@ export class AbuseFilterFunctions {
      * Returns the number of occurrences of the first string in the second one.
      * If a single argument is given, it's split by commas and the number of elements is returned
      */
-    public static async count(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
+    public static async count(context: IEvaluationContext, args: IValue[]): Promise<Value<number | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, [1, 2], 'count');
+        if (args[0].isUndefined) return Value.Undefined;
 
         const needle = args[0].toString();
         if (args.length === 1) {
@@ -174,6 +195,7 @@ export class AbuseFilterFunctions {
             return new Value(ValueDataType.Integer, 0);
         }
 
+        if (args[1].isUndefined) return Value.Undefined;
         const haystack = args[1].toString();
         let count = 0;
         let index = 0;
@@ -188,14 +210,16 @@ export class AbuseFilterFunctions {
      * Returns the number of occurrences of the pattern in the second string.
      * If a single argument is given, it's split by commas and the number of elements is returned
      */
-    public static async rcount(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
+    public static async rcount(context: IEvaluationContext, args: IValue[]): Promise<Value<number | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, [1, 2], 'rcount');
+        if (args[0].isUndefined) return Value.Undefined;
 
         const pattern = args[0].toString();
         if (args.length === 1) {
             return new Value(ValueDataType.Integer, pattern.split(',').length);
         }
 
+        if (args[1].isUndefined) return Value.Undefined;
         const input = args[1].toString();
         const regex = RegexUtils.toEcmaRegex(pattern, { g: true, u: true });
         const matches = input.match(regex);
@@ -206,8 +230,9 @@ export class AbuseFilterFunctions {
      * Returns an array of all matches of the pattern in the input string.
      * If the pattern is not found, an empty array is returned.
      */
-    public static async get_matches(context: IEvaluationContext, args: IValue[]): Promise<Value<Value[]>> {
+    public static async get_matches(context: IEvaluationContext, args: IValue[]): Promise<Value<Value[] | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 2, 'get_matches');
+        if (args[0].isUndefined || args[1].isUndefined) return Value.Undefined;
 
         const pattern = args[0].toString();
         const input = args[1].toString();
@@ -226,19 +251,25 @@ export class AbuseFilterFunctions {
     }
 
     /** Checks if the IP address is in the specified range */
-    public static async ip_in_range(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
+    public static async ip_in_range(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 2, 'ip_in_range');
         return AbuseFilterFunctions.ip_in_ranges(context, args);
     }
 
     /** Checks if the IP address is in any of the specified ranges */
-    public static async ip_in_ranges(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
+    public static async ip_in_ranges(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ip_in_ranges');
+        if (args[0].isUndefined) return Value.Undefined;
 
         // We want to silence errors from mismatched IP versions being compared
         // and treat such a case as an ordinary "not in range"
         const ip = args[0].toString();
+        let hasUndefined = false;
         for (let i = 1; i < args.length; i++) {
+            if (args[i].isUndefined) {
+                hasUndefined = true;
+                continue;
+            }
             try {
                 const range = args[i].toString();
                 if (IPUtils.isInRange(ip, range)) {
@@ -248,54 +279,69 @@ export class AbuseFilterFunctions {
                 // Ignore, go to the next range
             }
         }
-        return Value.False;
+        return !hasUndefined ? Value.False : Value.Undefined;
     }
 
     /** Checks if the first string contains any of the subsequent ones */
-    public static async contains_any(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
+    public static async contains_any(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'contains_any');
         const input = args[0];
+        let hasUndefined = false;
         for (let i = 1; i < args.length; i++) {
-            if (ValueStringOperations.contains(input, args[i]).isTruthy()) {
+            const contains = ValueStringOperations.contains(input, args[i]);
+            if (contains.isUndefined) {
+                hasUndefined = true;
+            } else if (contains.isTruthy()) {
                 return Value.True;
             }
         }
-        return Value.False;
+        return !hasUndefined ? Value.False : Value.Undefined;
     }
 
     /** Checks if the first string contains all of the subsequent ones */
-    public static async contains_all(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
+    public static async contains_all(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'contains_all');
         const input = args[0];
+        let hasUndefined = false;
         for (let i = 1; i < args.length; i++) {
-            if (!ValueStringOperations.contains(input, args[i]).isTruthy()) {
+            const contains = ValueStringOperations.contains(input, args[i]);
+            if (contains.isUndefined) {
+                hasUndefined = true;
+            } else if (!contains.isTruthy()) {
                 return Value.False;
             }
         }
-        return Value.True;
+        return !hasUndefined ? Value.True : Value.Undefined;
     }
 
     /** Checks if the first element is equal to any of the subsequent ones */
-    public static async equals_to_any(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
+    public static async equals_to_any(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'equals_to_any');
         const input = args[0];
+        let hasUndefined = false;
         for (let i = 1; i < args.length; i++) {
-            if (ValueComparer.isStrictlyEqualTo(input, args[i]).isTruthy()) {
+            const areEqual = ValueComparer.isStrictlyEqualTo(input, args[i]);
+            if (areEqual.isUndefined) {
+                hasUndefined = true;
+            } else if (areEqual.isTruthy()) {
                 return Value.True;
             }
         }
-        return Value.False;
+        return !hasUndefined ? Value.False : Value.Undefined;
     }
 
     /** Returns a substring of the input string */
-    public static async substr(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
+    public static async substr(context: IEvaluationContext, args: IValue[]): Promise<Value<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, 3], 'substr');
+        if (args[0].isUndefined || args[1].isUndefined) return Value.Undefined;
+
         const input = args[0].toString();
         const start = args[1].toNumber();
 
         if (args.length === 2) {
             return new Value(ValueDataType.String, input.substring(start));
         } else {
+            if (args[2].isUndefined) return Value.Undefined;
             const length = args[2].toNumber();
             const end = Math.min(start + length, input.length);
             return new Value(ValueDataType.String, input.substring(start, end));
@@ -303,12 +349,15 @@ export class AbuseFilterFunctions {
     }
 
     /** Returns the position of the first occurrence of the pattern in the input string */
-    public static async strpos(context: IEvaluationContext, args: IValue[]): Promise<Value<number>> {
+    public static async strpos(context: IEvaluationContext, args: IValue[]): Promise<Value<number | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, 3], 'strpos');
+        if (args[0].isUndefined || args[1].isUndefined) return Value.Undefined;
+
         const input = args[0].toString();
         const pattern = args[1].toString();
         let offset = 0;
         if (args.length === 3) {
+            if (args[2].isUndefined) return Value.Undefined;
             offset = args[2].toNumber();
         }
 
@@ -324,8 +373,10 @@ export class AbuseFilterFunctions {
     }
 
     /** Replaces all occurrences of the pattern in the input string with the replacement */
-    public static async str_replace(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
+    public static async str_replace(context: IEvaluationContext, args: IValue[]): Promise<Value<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 3, 'str_replace');
+        if (args.some(v => v.isUndefined)) return Value.Undefined;
+
         const input = args[0].toString();
         const pattern = args[1].toString();
         const replacement = args[2].toString();
@@ -333,8 +384,10 @@ export class AbuseFilterFunctions {
     }
 
     /** Replaces all occurrences of the regex pattern in the input string with the replacement */
-    public static async str_replace_regexp(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
+    public static async str_replace_regexp(context: IEvaluationContext, args: IValue[]): Promise<Value<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 3, 'str_replace_regexp');
+        if (args.some(v => v.isUndefined)) return Value.Undefined;
+
         const input = args[0].toString();
         const pattern = args[1].toString();
         const replacement = args[2].toString();
@@ -343,8 +396,10 @@ export class AbuseFilterFunctions {
     }
 
     /** Escapes the special characters in the input string */
-    public static async rescape(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
+    public static async rescape(context: IEvaluationContext, args: IValue[]): Promise<Value<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rescape');
+        if (args[0].isUndefined) return Value.Undefined;
+
         return new Value(ValueDataType.String, args[0].toString().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
         // TODO: extract into regex utils
     }
@@ -352,15 +407,19 @@ export class AbuseFilterFunctions {
     /** Sets the variable in the context */
     public static async set(context: IEvaluationContext, args: IValue[]): Promise<IValue> {
         AbuseFilterFunctions.assertArgumentCount(args, 2, 'set');
-        const variableName = args[0].toString();
+
         const value = args[1];
-        context.setVariable(variableName, value);
+        if (!args[0].isUndefined) {
+            const variableName = args[0].toString();
+            context.setVariable(variableName, value);
+        }
         return value;
     }
 
     /** Sanitizes the input string */
-    public static async sanitize(context: IEvaluationContext, args: IValue[]): Promise<Value<string>> {
+    public static async sanitize(context: IEvaluationContext, args: IValue[]): Promise<Value<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'sanitize');
+        if (args[0].isUndefined) return Value.Undefined;
 
         const input = args[0].toString();
 
@@ -383,6 +442,13 @@ export class AbuseFilterFunctions {
         });
         
         return new Value(ValueDataType.String, sanitized);
+    }
+
+    public static async isUndefined(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'x_isundef');
+
+        const value = args[0];
+        return value.isUndefined ? Value.True : Value.False;
     }
 
     //! Utility functions for other functions

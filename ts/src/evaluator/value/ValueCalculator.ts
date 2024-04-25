@@ -5,7 +5,7 @@ import { Value } from './Value.js';
 export class ValueCalculator {
     /** Performs an addition or concatenation */
     public static add(augend: IValue, addend: IValue): IValue {
-        if (augend.dataType === ValueDataType.Undefined || addend.dataType === ValueDataType.Undefined) {
+        if (augend.isUndefined || addend.isUndefined) {
             return Value.Undefined;
         } else if (augend.dataType === ValueDataType.String || addend.dataType === ValueDataType.String) {
             return new Value(ValueDataType.String, augend.toString() + addend.toString());
@@ -35,7 +35,7 @@ export class ValueCalculator {
 
     /** Subtracts the other value from this one */
     public static subtract(minuend: IValue, subtrahend: IValue): IValue {
-        if (minuend.dataType === ValueDataType.Undefined || subtrahend.dataType === ValueDataType.Undefined) {
+        if (minuend.isUndefined || subtrahend.isUndefined) {
             return Value.Undefined;
         }
         const res = minuend.toNumber() - subtrahend.toNumber();
@@ -47,7 +47,7 @@ export class ValueCalculator {
 
     /** Multiplies this value by the other */
     public static multiply(multiplicand: IValue, multiplier: IValue): IValue {
-        if (multiplicand.dataType === ValueDataType.Undefined || multiplier.dataType === ValueDataType.Undefined) {
+        if (multiplicand.isUndefined || multiplier.isUndefined) {
             return Value.Undefined;
         }
         const res = multiplicand.toNumber() * multiplier.toNumber();
@@ -72,7 +72,7 @@ export class ValueCalculator {
 
     /** Divides the value by the specified divisor. Throws an error if the divisor is zero. */
     public static divide(dividend: IValue, divisor: IValue): IValue {
-        if (divisor.dataType === ValueDataType.Undefined) {
+        if (divisor.isUndefined) {
             return Value.Undefined;
         }
 
@@ -80,7 +80,7 @@ export class ValueCalculator {
             throw new Error('dividebyzero');
         }
 
-        if (dividend.dataType === ValueDataType.Undefined) {
+        if (dividend.isUndefined) {
             return Value.Undefined;
         }
 
@@ -93,7 +93,7 @@ export class ValueCalculator {
 
     /** Computes a remainder of the division of this value by the other. */
     public static modulo(dividend: IValue, divisor: IValue): IValue {
-        if (divisor.dataType === ValueDataType.Undefined) {
+        if (divisor.isUndefined) {
             return Value.Undefined;
         }
 
@@ -101,7 +101,7 @@ export class ValueCalculator {
             throw new Error('dividebyzero');
         }
 
-        if (dividend.dataType === ValueDataType.Undefined) {
+        if (dividend.isUndefined) {
             return Value.Undefined;
         }
 
@@ -113,7 +113,7 @@ export class ValueCalculator {
 
     /** Returns the result of raising this value to the given power */
     public static pow(base: IValue, exponent: IValue): IValue {
-        if (base.dataType === ValueDataType.Undefined || exponent.dataType === ValueDataType.Undefined) {
+        if (base.isUndefined || exponent.isUndefined) {
             return Value.Undefined;
         }
 
@@ -126,7 +126,7 @@ export class ValueCalculator {
 
     /** Returns an arithmetic negation of the value */
     public static negate(value: IValue): IValue {
-        if (value.dataType === ValueDataType.Undefined) {
+        if (value.isUndefined) {
             return Value.Undefined;
         }
 
@@ -136,31 +136,39 @@ export class ValueCalculator {
         return new Value(type, res);
     }
 
-    /** Performs a logical conjunction of the values. The result is always a boolean. */
-    public static and(operands: IValue[]): IValue<boolean> {
+    /** Performs a logical conjunction of the values. The result is always a boolean or undefined. */
+    public static and(operands: IValue[]): IValue<boolean | null> {
+        let hasUndefined = false;
         for (const operand of operands) {
-            if (!operand.isTruthy()) {
+            if (operand.isUndefined) {
+                hasUndefined = true;
+            } else if (!operand.isTruthy()) {
                 return Value.False;
             }
         }
-        return Value.True;
+        return !hasUndefined ? Value.True : Value.Undefined;
     }
 
-    /** Performs a logical alternative of the values. The result is always a boolean. */
-    public static or(operands: IValue[]): IValue<boolean> {
+    /** Performs a logical alternative of the values. The result is always a boolean or undefined. */
+    public static or(operands: IValue[]): IValue<boolean | null> {
+        let hasUndefined = false;
         for (const operand of operands) {
-            if (operand.isTruthy()) {
+            if (operand.isUndefined) {
+                hasUndefined = true;
+            } else if (operand.isTruthy()) {
                 return Value.True;
             }
         }
-        return Value.False;
+        return !hasUndefined ? Value.True : Value.Undefined;
     }
 
-    /** Performs a logical exclusive alternative of the values. The result is always a boolean. */
-    public static xor(operands: IValue[]): IValue<boolean> {
+    /** Performs a logical exclusive alternative of the values. The result is always a boolean or undefined. */
+    public static xor(operands: IValue[]): IValue<boolean | null> {
         let trueCount = 0;
         for (const operand of operands) {
-            if (operand.isTruthy()) {
+            if (operand.isUndefined) {
+                return Value.Undefined;
+            } else if (operand.isTruthy()) {
                 trueCount++;
             }
         }
@@ -168,8 +176,8 @@ export class ValueCalculator {
     }
 
     /** Returns a boolean negation of the value */
-    public static not(value: IValue): IValue {
-        if (value.dataType === ValueDataType.Undefined) {
+    public static not(value: IValue): IValue<boolean | null> {
+        if (value.isUndefined) {
             return Value.Undefined;
         }
 

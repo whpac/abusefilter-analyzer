@@ -8,17 +8,20 @@ export interface IValue<TValue = unknown> {
     /** The stored value */
     get value(): TValue;
 
-    castToBoolean(): IValue<boolean>;
+    /** Whether it's an undefined value */
+    get isUndefined() : boolean;
 
-    castToInt(): IValue<number>;
+    castToBoolean(): IValue<boolean | null>;
 
-    castToFloat(): IValue<number>;
+    castToInt(): IValue<number | null>;
 
-    castToString(): IValue<string>;
+    castToFloat(): IValue<number | null>;
 
-    castToArray(): IValue<unknown[]>;
+    castToString(): IValue<string | null>;
 
-    isTruthy(): boolean;
+    castToArray(): IValue<unknown[] | null>;
+
+    isTruthy(): boolean | undefined;
 
     toNumber(): number;
 

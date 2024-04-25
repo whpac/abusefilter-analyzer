@@ -19,7 +19,9 @@ export class NodeValueView implements IView {
     public constructor(node: IEvaluableTreeNode, evaluationContext: IEvaluationContext) {
         this.element = document.createElement('span');
 
-        if (node.hasValue(evaluationContext)) {
+        if (node.hasErrors(evaluationContext)) {
+            this.setErrors(node.getErrors(evaluationContext), evaluationContext.isSpeculative);
+        } else if (node.hasValue(evaluationContext)) {
             this.setValue(node.getValue(evaluationContext));
         } else {
             this.element.textContent = '...';
@@ -29,8 +31,14 @@ export class NodeValueView implements IView {
             // Ignore updates from unrelated contexts
             if (context.rootContext != evaluationContext.rootContext) return;
 
-            this.element.textContent = '';
             this.setValue(node.getValue(context));
+        });
+
+        node.addOnErrorCallback((node, context) => {
+            // Ignore updates from unrelated contexts
+            if (context.rootContext != evaluationContext.rootContext) return;
+
+            this.setErrors(node.getErrors(context), context.isSpeculative);
         });
     }
 
@@ -43,11 +51,36 @@ export class NodeValueView implements IView {
         const formattedValue = ValueFormatter.formatValue(value);
         const shortenedValue = this.shortenValue(value, formattedValue);
 
-        this.element.appendChild(shortenedValue ?? formattedValue);
-        if (shortenedValue !== null) {
+        if (shortenedValue === null) {
+            this.setViewContent(formattedValue, null);
+        } else {
+            this.setViewContent(shortenedValue, formattedValue);
+        }
+    }
+
+    protected setErrors(errors: Error[], isSpeculative: boolean): void {
+        const shortText = document.createElement('span');
+        shortText.classList.add('afa-data-error');
+        shortText.textContent = 'Errors: ' + errors.length;
+
+        if (isSpeculative) {
+            shortText.classList.add('afa-data-error-speculative');
+            shortText.textContent += ' (speculative)';
+        }
+
+        const longText = document.createElement('span');
+        longText.textContent = errors.map(e => e.message).join('\n');
+        this.setViewContent(shortText, longText);
+    }
+
+    protected setViewContent(shortValue: HTMLElement, longValue: HTMLElement | null): void {
+        this.element.textContent = '';
+
+        this.element.appendChild(shortValue);
+        if (longValue !== null) {
             const moreContainer = document.createElement('span');
             moreContainer.classList.add('afa-data-more');
-            moreContainer.appendChild(formattedValue);
+            moreContainer.appendChild(longValue);
             this.element.appendChild(moreContainer);
         }
     }

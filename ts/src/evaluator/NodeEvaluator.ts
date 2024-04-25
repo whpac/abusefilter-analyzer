@@ -20,22 +20,31 @@ export class NodeEvaluator {
     public async evaluateNode(treeNode: IEvaluableTreeNode, evaluationContext: IEvaluationContext): Promise<IValue> {
         let value;
 
-        // Atoms store value literals and variable reads
-        if (treeNode.type === TreeNodeType.Atom) {
-            const identity = treeNode.identity;
-            if (identity.type === TokenType.Identifier) {
-                // Get variable value
-                value = evaluationContext.getVariable(identity.value);
+        try {
+            // Atoms store value literals and variable reads
+            if (treeNode.type === TreeNodeType.Atom) {
+                const identity = treeNode.identity;
+                if (identity.type === TokenType.Identifier) {
+                    // Get variable value
+                    value = evaluationContext.getVariable(identity.value);
+                } else {
+                    // Else, convert the literal into a value
+                    value = Value.fromTokenLiteral(identity);
+                }
             } else {
-                // Else, convert the literal into a value
-                value = Value.fromTokenLiteral(identity);
+                // Evaluate this node
+                value = await this.evaluateNodeLazily(treeNode, evaluationContext);
             }
-        } else {
-            // Evaluate this node
-            value = await this.evaluateNodeLazily(treeNode, evaluationContext);
-        }
 
-        treeNode.setValue(evaluationContext, value);
+            // Set the value only on success, so handlers don't have to check order of events
+            treeNode.setValue(evaluationContext, value);
+        } catch (e) {
+            // Unevaluated nodes have value of undefined so return it from the function as well
+            value = Value.Undefined;
+
+            const error = (e instanceof Error) ? e : new Error('' + e);
+            treeNode.setError(evaluationContext, error);
+        }
         return value;
     }
 
@@ -120,17 +129,32 @@ export class NodeEvaluator {
             const lastOperand = operands[operands.length - 1];
 
             let wasResolved = false;
+            let hasUndefined = false;
             let lastIterationPromise = Promise.resolve();
             for (const operand of operands) {
                 lastIterationPromise = lastIterationPromise.then(() => 
                     this.evaluateNode(operand, context).then((value) => {
+                        if (value.isUndefined) {
+                            // We don't really want to treat undefined as true or false
+                            // It's just an undefined value
+                            hasUndefined = true;
+                        }
+
                         // The non-neutral operand value is returned as-is if it's not last
                         // eg. (0 & true) == 0 but (true & 0) == false
                         // eg. (1 | false) == 1 but (false | 1) == true
                         if (operand == lastOperand) {
-                            if(!wasResolved) resolve(value.castToBoolean());
+                            if(!wasResolved) {
+                                const lastValue = value.castToBoolean();
+                                if (hasUndefined && value.isTruthy() === neutralElement) {
+                                    resolve(Value.Undefined);
+                                } else {
+                                    resolve(lastValue);
+                                }
+                            }
                             wasResolved = true;
-                        } else if (value.isTruthy() !== neutralElement) {
+                        } else if (value.isTruthy() !== neutralElement && value.dataType !== ValueDataType.Undefined) {
+                            // Undefined never resolves the node
                             // Resolve the whole node, but still keep evaluating other operands
                             if (!wasResolved) resolve(value);
                             wasResolved = true;

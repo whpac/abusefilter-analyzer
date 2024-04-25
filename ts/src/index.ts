@@ -72,6 +72,8 @@ mw.util.addCSS(`
 }
 .afa-data:hover .afa-data-more { display: block; }
 
+.afa-data-error:not(.afa-data-error-speculative) { color: red; font-weight: bold; }
+
 .afa-tree-container {
     border: 1px solid #ccc;
     padding: 0.5em;
