@@ -17,6 +17,16 @@ export class PcreParser {
         return this.pcreString[this.index++];
     }
 
+    /** Returns the current parser state, can be used to restore it */
+    protected getState(): { index: number } {
+        return { index: this.index };
+    }
+
+    /** Restores a previously obtained state */
+    protected restoreState(state: { index: number }) {
+        this.index = state.index;
+    }
+
     public parse(): PcreGroup {
         // Parse options in form (*UTF8) if needed
         const group = this.parseGroup();
@@ -153,11 +163,12 @@ export class PcreParser {
                         exitLoop = true;
                         break;
                     case '{': {
+                        const state = this.getState();
                         let min = '';
                         let max = '';
                         let modifier = '';
                         let exact = true;
-                        while(this.peek() !== ',' && this.peek() !== '}'){
+                        while(this.peek() !== ',' && this.peek() !== '}' && this.index < this.pcreString.length){
                             min += this.next();
                         }
                         if(this.next() === ',') {
@@ -168,13 +179,23 @@ export class PcreParser {
                             }
                             this.next(); // Skip the closing brace
                         }
-                        if (['?', '+'].includes(this.peek())) {
+                        if (['?', '+'].includes(this.peek()) && !exact) {
                             modifier = this.next();
                         }
+
+                        let quantifier: string;
                         if (exact) {
-                            group.addToken(new PcreMetacharacter('{' + min + '}' + modifier));
+                            quantifier = '{' + min + '}' + modifier;
                         } else {
-                            group.addToken(new PcreMetacharacter('{' + min + ',' + max + '}' + modifier));
+                            quantifier = '{' + min + ',' + max + '}' + modifier;
+                        }
+
+                        // Ensure the quantifier is valid
+                        if (/^(\{\d+\}|\{\d+,\d*\}[?+]?)/.test(quantifier)) {
+                            group.addToken(new PcreMetacharacter(quantifier));
+                        } else {
+                            this.restoreState(state);
+                            group.addToken(new PcreCharacter(c, c));
                         }
                         break;
                     }
