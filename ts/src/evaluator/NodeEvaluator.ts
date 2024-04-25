@@ -134,7 +134,7 @@ export class NodeEvaluator {
             for (const operand of operands) {
                 lastIterationPromise = lastIterationPromise.then(() => 
                     this.evaluateNode(operand, context).then((value) => {
-                        if (value.dataType === ValueDataType.Undefined) {
+                        if (value.isUndefined) {
                             // We don't really want to treat undefined as true or false
                             // It's just an undefined value
                             hasUndefined = true;

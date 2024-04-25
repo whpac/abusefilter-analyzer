@@ -80,7 +80,7 @@ export class ValueComparer {
      * @param strict Pass true for strict equality check.
      */
     public static areEqual(a: IValue, b: IValue, strict = false): boolean | undefined {
-        if (a.dataType === ValueDataType.Undefined || b.dataType === ValueDataType.Undefined) {
+        if (a.isUndefined || b.isUndefined) {
             // Original implementation does not allow for undefined values - errors are raised instead
             // and the execution in stopped. We want to continue so that comparison to undefined has to be
             // implemented. Since two undefined values can be equal or not and the same is true for defined
@@ -126,7 +126,7 @@ export class ValueComparer {
 
     /** Performs a numerical or textual comparison of the values. */
     public static compare(a: IValue, b: IValue): ComparisonResult {
-        if (a.dataType === ValueDataType.Undefined || b.dataType === ValueDataType.Undefined){
+        if (a.isUndefined || b.isUndefined){
             return ComparisonResult.Undefined;
         }
 

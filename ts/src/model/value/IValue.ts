@@ -8,6 +8,9 @@ export interface IValue<TValue = unknown> {
     /** The stored value */
     get value(): TValue;
 
+    /** Whether it's an undefined value */
+    get isUndefined() : boolean;
+
     castToBoolean(): IValue<boolean | null>;
 
     castToInt(): IValue<number | null>;

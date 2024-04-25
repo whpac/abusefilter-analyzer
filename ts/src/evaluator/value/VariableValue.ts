@@ -11,7 +11,7 @@ export class VariableValue<TValue = unknown> extends Value<TValue> implements IV
     public readonly name: string;
 
     public override get value(): TValue {
-        if (this.dataType === ValueDataType.Undefined && this.name !== undefined) {
+        if (this.isUndefined && this.name !== undefined) {
             throw new Error(`Variable ${this.name} does not exist`);
         }
         return this._value;

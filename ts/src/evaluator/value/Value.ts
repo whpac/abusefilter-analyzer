@@ -19,6 +19,10 @@ export class Value<TValue = unknown> implements IValue<TValue> {
         return this._value;
     }
 
+    public get isUndefined(): boolean {
+        return this.dataType === ValueDataType.Undefined;
+    }
+
     /** For convenience, an undefined value */
     public static readonly Undefined = new Value(ValueDataType.Undefined, null);
     /** For convenience, a null value */
@@ -124,7 +128,7 @@ export class Value<TValue = unknown> implements IValue<TValue> {
      * @see https://www.php.net/manual/en/language.types.boolean.php#language.types.boolean.casting
      */
     public isTruthy(): boolean | undefined {
-        if (this.dataType === ValueDataType.Undefined) {
+        if (this.isUndefined) {
             return undefined;
         }
 
@@ -194,31 +198,31 @@ export class Value<TValue = unknown> implements IValue<TValue> {
      * is truthy and false otherwise
      */
     public castToBoolean(): Value<boolean | null> {
-        if (this.dataType === ValueDataType.Undefined) return this as Value<null>;
+        if (this.isUndefined) return this as Value<null>;
         return new Value(ValueDataType.Boolean, this.isTruthy()!);
     }
 
     /** Converts the value to integer */
     public castToInt(): Value<number | null> {
-        if (this.dataType === ValueDataType.Undefined) return this as Value<null>;
+        if (this.isUndefined) return this as Value<null>;
         return new Value(ValueDataType.Integer, Math.floor(this.toNumber()));
     }
 
     /** Converts the value to float */
     public castToFloat(): Value<number | null> {
-        if (this.dataType === ValueDataType.Undefined) return this as Value<null>;
+        if (this.isUndefined) return this as Value<null>;
         return new Value(ValueDataType.Float, this.toNumber());
     }
 
     /** Converts the value to string */
     public castToString(): Value<string | null> {
-        if (this.dataType === ValueDataType.Undefined) return this as Value<null>;
+        if (this.isUndefined) return this as Value<null>;
         return new Value(ValueDataType.String, this.toString());
     }
 
     /** Converts the value to array */
     public castToArray(): Value<unknown[] | null> {
-        if (this.dataType === ValueDataType.Undefined) return this as Value<null>;
+        if (this.isUndefined) return this as Value<null>;
         return new Value(ValueDataType.Array, this.toArray());
     }
 
