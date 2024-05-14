@@ -400,8 +400,8 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rescape');
         if (args[0].isUndefined) return Value.Undefined;
 
-        return new Value(ValueDataType.String, args[0].toString().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-        // TODO: extract into regex utils
+        const escaped = RegexUtils.escape(args[0].toString());
+        return new Value(ValueDataType.String, escaped);
     }
 
     /** Sets the variable in the context */
