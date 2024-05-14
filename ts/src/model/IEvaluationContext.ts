@@ -33,14 +33,6 @@ export interface IEvaluationContext {
     setVariable(variableName: string, newValue: IValue): void;
 
     /**
-     * Returns a function by its name. If the function is not found in this context,
-     * it will look up in its parent.
-     * If the function is not found in the parent, it will return `null`.
-     * @param functionName A function name to look up
-     */
-    getFunction(functionName: string): AbuseFilterFunction<unknown>;
-
-    /**
      * Creates a child context that can't change data stored in its parent.
      * Used for speculative execution not to leak its results to the rest of
      * the code.

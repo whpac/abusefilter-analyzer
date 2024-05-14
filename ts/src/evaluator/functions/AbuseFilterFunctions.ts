@@ -1,13 +1,12 @@
-import { Value } from './value/Value.js';
-import { ValueDataType } from '../model/value/ValueDataType.js';
-import { IPUtils } from './utils/IPUtils.js';
-import { RegexUtils } from './utils/regex/RegexUtils.js';
-import { AbuseFilterFunction, IEvaluationContext } from '../model/IEvaluationContext.js';
-import { IValue } from '../model/value/IValue.js';
-import { ValueStringOperations } from './value/ValueStringOperations.js';
-import { ValueComparer } from './value/ValueComparer.js';
+import { Value } from '../value/Value.js';
+import { ValueDataType } from '../../model/value/ValueDataType.js';
+import { IPUtils } from '../utils/IPUtils.js';
+import { RegexUtils } from '../utils/regex/RegexUtils.js';
+import { IEvaluationContext } from '../../model/IEvaluationContext.js';
+import { IValue } from '../../model/value/IValue.js';
+import { ValueStringOperations } from '../value/ValueStringOperations.js';
+import { ValueComparer } from '../value/ValueComparer.js';
 
-// TODO: Add undefined support
 export class AbuseFilterFunctions {
 
     /** A map of all AbuseFilter functions */
@@ -482,3 +481,5 @@ export class AbuseFilterFunctions {
         }
     }
 }
+
+type AbuseFilterFunction<T> = (context: IEvaluationContext, args: IValue[]) => Promise<IValue<T>>;
