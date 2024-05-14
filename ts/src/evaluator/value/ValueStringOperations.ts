@@ -42,14 +42,13 @@ export class ValueStringOperations {
         let globPattern = pattern.toString();
 
         // First, escape the pattern according to Regex rules
-        // See: https://stackoverflow.com/a/9310752/8127198
-        globPattern = globPattern.replace(/[[\]{}()*+?.,\\/^$|\s]/g, '\\$&');
+        globPattern = RegexUtils.escape(globPattern);
 
         // Then substitute the glob wildcards with regex sequences
         globPattern = globPattern.replace(/\\\*/g, '.*')
             .replace(/\\\?/g, '.')
-            .replace(/\\\[/g, '[')
             .replace(/\\\[!/g, '[^')
+            .replace(/\\\[/g, '[')
             .replace(/\\\]/g, ']');
 
         const patternRegex = new RegExp(globPattern, 'u');

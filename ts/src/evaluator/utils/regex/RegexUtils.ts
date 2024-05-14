@@ -6,12 +6,14 @@ import { PcreGroup, PcreParser } from './PcreParser.js';
 export class RegexUtils {
 
     /**
-     * Escapes regex special characters in a string according to PCRE rules
+     * Escapes regex special characters in a string according to ECMA regex rules
      * @param str PCRE-compliant regex string
      */
     public static escape(str: string): string {
-        // TODO: Implement this
-        return str;
+        // We can't parse this string as regex and then add backslash to
+        // special characters because the input string is likely not to
+        // be a well-formed regex.
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
     /**
