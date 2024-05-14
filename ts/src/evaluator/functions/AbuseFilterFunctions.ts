@@ -43,7 +43,6 @@ export class AbuseFilterFunctions {
         ['set', AbuseFilterFunctions.set],
         ['set_var', AbuseFilterFunctions.set],
         ['sanitize', AbuseFilterFunctions.sanitize],
-        ['x_isundef', AbuseFilterFunctions.isUndefined], // TODO: Does not exist in original impl, move to test/
     ]);
 
     /** Returns a function by its name */
@@ -441,13 +440,6 @@ export class AbuseFilterFunctions {
         });
         
         return new Value(ValueDataType.String, sanitized);
-    }
-
-    public static async isUndefined(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
-        AbuseFilterFunctions.assertArgumentCount(args, 1, 'x_isundef');
-
-        const value = args[0];
-        return value.isUndefined ? Value.True : Value.False;
     }
 
     //! Utility functions for other functions
