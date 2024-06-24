@@ -274,4 +274,30 @@ export class Value<TValue = unknown> implements IValue<TValue> {
         }
         (this.value as IValue[]).push(value);
     }
+
+    public toLiteral(): string {
+        switch (this.dataType) {
+            case ValueDataType.Boolean:
+                return this.value ? 'true' : 'false';
+            case ValueDataType.Integer:
+            case ValueDataType.Float:
+                return this.toString();
+            case ValueDataType.String: {
+                let val = this.value as string;
+                val = val.replace(/\\/g, '\\\\');
+                val = val.replace(/"/g, '\\"');
+                val = val.replace(/\n/g, '\\n');
+                val = val.replace(/\r/g, '\\r');
+                val = val.replace(/\t/g, '\\t');
+                // TODO: Are there any other? eg. \0, \x00
+                return '"' + val + '"';
+            }
+            case ValueDataType.Array:
+                return '[' + (this.value as IValue[]).map(v => v.toLiteral()).join(', ') + ']';
+            case ValueDataType.Null:
+                return 'null';
+            case ValueDataType.Undefined:
+                return 'undefined';
+        }
+    }
 }

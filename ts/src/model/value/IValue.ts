@@ -34,4 +34,7 @@ export interface IValue<TValue = unknown> {
     setElementAt(index: number | IValue, value: IValue): void;
 
     appendElement(value: IValue): void;
+
+    /** Converts this value to a literal that can appear in the AbuseFilter code */
+    toLiteral(): string;
 }

@@ -1,6 +1,9 @@
 import { EvaluationContext } from './evaluator/EvaluationContext.js';
 import { NodeEvaluator } from './evaluator/NodeEvaluator.js';
 import { IFunctionExecutor } from './evaluator/functions/IFuctionExecutor.js';
+import { LocalFunctionExecutor } from './evaluator/functions/LocalFunctionExecutor.js';
+import { MultiFunctionExecutor } from './evaluator/functions/MultiFunctionExecutor.js';
+import { RemoteFunctionExecutor } from './evaluator/functions/RemoteFunctionExecutor.js';
 import { EvaluableNodeFactory } from './evaluator/nodes/EvaluableNodeFactory.js';
 import { Value } from './evaluator/value/Value.js';
 import { AbuseFilterGUI } from './gui/AbuseFilterGUI.js';
@@ -31,6 +34,11 @@ export class AbuseFilter {
         this.rootNode = parser.parse(this.tokens);
 
         this.defaultContext = new EvaluationContext();
+
+        this.functionExecutor = new MultiFunctionExecutor([
+            new LocalFunctionExecutor(),
+            new RemoteFunctionExecutor()
+        ]);
     }
 
     public async evaluate(): Promise<IValue> {
