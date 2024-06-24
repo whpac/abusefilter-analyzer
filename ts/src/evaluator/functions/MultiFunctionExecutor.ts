@@ -2,7 +2,7 @@ import { IEvaluationContext } from '../../model/IEvaluationContext.js';
 import { IValue } from '../../model/value/IValue.js';
 import { IFunctionExecutor } from './IFuctionExecutor.js';
 
-export class ComplexFunctionExecutor implements IFunctionExecutor {
+export class MultiFunctionExecutor implements IFunctionExecutor {
     protected readonly executors: IFunctionExecutor[];
 
     public constructor(executors: IFunctionExecutor[]) {
