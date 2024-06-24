@@ -10,13 +10,15 @@ export class MultiFunctionExecutor implements IFunctionExecutor {
     }
 
     public async executeFunction(functionName: string, context: IEvaluationContext, args: IValue[]): Promise<IValue> {
+        const errors = [];
         for (const executor of this.executors) {
             try {
                 return await executor.executeFunction(functionName, context, args);
             } catch (e) {
-                // Ignore and try the next executor
+                // Try the next executor
+                errors.push(e);
             }
         }
-        throw new Error(`Function ${functionName} is unknown or cannot be executed`);
+        throw new Error(`Function ${functionName} is unknown or cannot be executed: ${errors.map(e => '' + e).join(', ')}`);
     }
 }
