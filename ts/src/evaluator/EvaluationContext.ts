@@ -1,6 +1,5 @@
-import { AbuseFilterFunction, IEvaluationContext } from '../model/IEvaluationContext.js';
+import { IEvaluationContext } from '../model/IEvaluationContext.js';
 import { IValue } from '../model/value/IValue.js';
-import { AbuseFilterFunctions } from './AbuseFilterFunctions.js';
 import { VariableValue } from './value/VariableValue.js';
 
 export class EvaluationContext implements IEvaluationContext {
@@ -52,17 +51,6 @@ export class EvaluationContext implements IEvaluationContext {
         variableName = variableName.toLowerCase();
         
         this.variables.set(variableName, newValue);
-    }
-
-    public getFunction(functionName: string): AbuseFilterFunction<unknown> {
-        const func = AbuseFilterFunctions.getFunction(functionName);
-        if (func !== undefined) return func;
-
-        if (this.parentContext !== null) {
-            return this.parentContext.getFunction(functionName);
-        }
-
-        throw new Error(`Function ${functionName} not found`);
     }
 
     public createChildContext(): EvaluationContext {

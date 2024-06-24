@@ -2,6 +2,9 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { assert } from 'chai';
 import { AbuseFilter } from '../src/AbuseFilter.js';
+import { MultiFunctionExecutor } from '../src/evaluator/functions/MultiFunctionExecutor.js';
+import { LocalFunctionExecutor } from '../src/evaluator/functions/LocalFunctionExecutor.js';
+import { FunctionExecutorTestExtensions } from './FunctionExecutorTestExtensions.js';
 
 describe('Expressions from .t files', () => {
     // Read files with .t extension from the /parserTests folder
@@ -9,12 +12,19 @@ describe('Expressions from .t files', () => {
 
     const testFolder = 'parserTests';
 
+    const functionExecutorTestExtensions = new FunctionExecutorTestExtensions();
+    const localFunctionExecutor = new LocalFunctionExecutor();
+    const functionExecutor = new MultiFunctionExecutor(
+        [ functionExecutorTestExtensions, localFunctionExecutor ]
+    );
+
     fs.readdirSync(testFolder).forEach((file: string) => {
         if (path.extname(file) === '.t') {
             it(file, async () => {
                 try {
                     const content = fs.readFileSync(path.join(testFolder, file), 'utf8');
                     const filter = new AbuseFilter(content);
+                    filter.functionExecutor = functionExecutor;
                     const value = await filter.evaluate();
 
                     assert.isTrue(value.isTruthy());

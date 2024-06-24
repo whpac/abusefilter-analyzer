@@ -9,8 +9,16 @@ import { IValue } from '../model/value/IValue.js';
 import { ValueCalculator } from './value/ValueCalculator.js';
 import { ValueStringOperations } from './value/ValueStringOperations.js';
 import { ValueComparer } from './value/ValueComparer.js';
+import { LocalFunctionExecutor } from './functions/LocalFunctionExecutor.js';
+import { IFunctionExecutor } from './functions/IFuctionExecutor.js';
 
 export class NodeEvaluator {
+    /** An object that will be used to execute functions in the filter */
+    protected readonly functionExecutor: IFunctionExecutor;
+
+    public constructor(functionExecutor?: IFunctionExecutor) {
+        this.functionExecutor = functionExecutor ?? new LocalFunctionExecutor();
+    }
 
     /**
      * Evaluates the node and all its children if needed.
@@ -299,7 +307,7 @@ export class NodeEvaluator {
     }
 
     protected async calculateFunctionCallResult(context: IEvaluationContext, func: string, values: IValue[]): Promise<IValue> {
-        return await context.getFunction(func)(context, values);
+        return this.functionExecutor.executeFunction(func, context, values);
     }
 
     protected calculateArrayDefinitionResult(values: IValue[]): Value {

@@ -1,5 +1,9 @@
 import { EvaluationContext } from './evaluator/EvaluationContext.js';
 import { NodeEvaluator } from './evaluator/NodeEvaluator.js';
+import { IFunctionExecutor } from './evaluator/functions/IFuctionExecutor.js';
+import { LocalFunctionExecutor } from './evaluator/functions/LocalFunctionExecutor.js';
+import { MultiFunctionExecutor } from './evaluator/functions/MultiFunctionExecutor.js';
+import { RemoteFunctionExecutor } from './evaluator/functions/RemoteFunctionExecutor.js';
 import { EvaluableNodeFactory } from './evaluator/nodes/EvaluableNodeFactory.js';
 import { Value } from './evaluator/value/Value.js';
 import { AbuseFilterGUI } from './gui/AbuseFilterGUI.js';
@@ -16,6 +20,7 @@ import { ITreeTransformer } from './transform/ITreeTransformer.js';
 export class AbuseFilter {
     public readonly tokens: readonly Token[];
     public readonly defaultContext: IEvaluationContext;
+    public functionExecutor: IFunctionExecutor | undefined;
 
     protected rootNode: IEvaluableTreeNode;
     protected nodeFactory: EvaluableNodeFactory;
@@ -29,10 +34,15 @@ export class AbuseFilter {
         this.rootNode = parser.parse(this.tokens);
 
         this.defaultContext = new EvaluationContext();
+
+        this.functionExecutor = new MultiFunctionExecutor([
+            new LocalFunctionExecutor(),
+            new RemoteFunctionExecutor()
+        ]);
     }
 
     public async evaluate(): Promise<IValue> {
-        const evaluator = new NodeEvaluator();
+        const evaluator = new NodeEvaluator(this.functionExecutor);
         const context = this.defaultContext;
         return await evaluator.evaluateNode(this.rootNode, context);
     }

@@ -754,11 +754,11 @@ class PcreWellKnownCharacterClass implements PcreToken {
         }
         // \N and \R are not supported in ECMA regex
         if (this.classDesignator === '\\R') {
-            if (emulateOptions.inCharacterClass) return '\\n\\r\\f\\xb\\x85\\u2028\\u2029';
-            return '(?:\\n|\\r|\\r\\n|\\f|\\xb|\\x85|\\u2028|\\u2029)';
+            if (emulateOptions.inCharacterClass) return '\\n\\r\\f\\x0b\\x85\\u2028\\u2029';
+            return '(?:\\n|\\r|\\r\\n|\\f|\\x0b|\\x85|\\u2028|\\u2029)';
         }
         if (this.classDesignator === '\\N') {
-            return '[^\\n\\r\\f\\xb\\x85\\u2028\\u2029]';
+            return '[^\\n\\r\\f\\x0b\\x85\\u2028\\u2029]';
         }
 
         return this.classDesignator;
