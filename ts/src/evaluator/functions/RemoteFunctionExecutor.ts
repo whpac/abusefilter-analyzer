@@ -16,7 +16,18 @@ export class RemoteFunctionExecutor implements IFunctionExecutor {
         const apiUrl = '/w/api.php?action=abusefilterevalexpression&format=json&expression=';
         const functionExpression = `${functionName}(${args.map(arg => arg.toLiteral()).join(', ')})`;
         const response = await fetch(apiUrl + encodeURIComponent(functionExpression));
-        const result = await response.json() as AbuseFilterEvalResponse;
+
+        let result: AbuseFilterEvalResponse;
+        try {
+            result = await response.json() as AbuseFilterEvalResponse;
+        } catch(e) {
+            throw new Error('Server response is not a valid JSON object');
+        }
+
+        if (result.error) {
+            throw new Error('Server error: ' + result.error.info);
+        }
+
         const value = result.abusefilterevalexpression.result;
 
         if (value === 'null') {
@@ -35,5 +46,9 @@ export class RemoteFunctionExecutor implements IFunctionExecutor {
 type AbuseFilterEvalResponse = {
     abusefilterevalexpression: {
         result: string;
+    },
+    error?: {
+        code: string;
+        info: string;
     }
 }
