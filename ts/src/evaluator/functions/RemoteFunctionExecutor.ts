@@ -12,7 +12,6 @@ import { IFunctionExecutor } from './IFuctionExecutor.js';
 export class RemoteFunctionExecutor implements IFunctionExecutor {
 
     public async executeFunction(functionName: string, context: IEvaluationContext, args: IValue<unknown>[]): Promise<IValue<unknown>> {
-        console.log(args);
         const apiUrl = '/w/api.php?action=abusefilterevalexpression&format=json&expression=';
         const functionExpression = `${functionName}(${args.map(arg => arg.toLiteral()).join(', ')})`;
         const response = await fetch(apiUrl + encodeURIComponent(functionExpression));
