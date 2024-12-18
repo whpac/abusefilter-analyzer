@@ -18,6 +18,7 @@ This is a script for analyzing AbuseFilter syntax tree.
 The file is generated from the source code at https://github.com/whpac/abusefilter-analyzer
 
 @author [[w:pl:User:Msz2001]]
+@license GPLv2 <https://github.com/whpac/abusefilter-analyzer/blob/master/LICENSE>
 `),
     ],
 };
