@@ -12,7 +12,8 @@
         "forceConsistentCasingInFileNames": true,
         "module": "Node16",
         "moduleResolution": "Node16",
-        "outDir": "js"
+        "outDir": "js",
+        "declaration": true
     },
     "include": [
         "./ts",
