@@ -1,16 +1,18 @@
-import { IPAddressType } from './IPAddressType.js';
-
+/**
+ * Represents an IP address.
+ */
 export class IPAddress {
-
+    /** Type of this IP address */
     public readonly type: IPAddressType;
 
+    /** Numerically encoded parts of this address. Includes also the implicit parts for IPv6 */
     public readonly parts: readonly number[];
 
     public constructor(type: IPAddressType, parts: number[]) {
         this.type = type;
         this.parts = parts;
 
-        if (type === IPAddressType.IPv4) {
+        if (type === 'IPv4') {
             if (parts.length !== 4) throw new Error('Invalid number of parts for IPv4 address');
             for (const part of parts) {
                 if (part < 0 || part > 255) throw new Error('Invalid part for IPv4 address');
@@ -60,7 +62,7 @@ export class IPAddress {
             if (isNaN(num) || num < 0 || num > 255) return null;
         }
 
-        return new IPAddress(IPAddressType.IPv4, partsNum);
+        return new IPAddress('IPv4', partsNum);
     }
 
     /**
@@ -89,6 +91,8 @@ export class IPAddress {
             if (isNaN(num) || num < 0 || num > 65535) return null;
         }
 
-        return new IPAddress(IPAddressType.IPv6, partsNum);
+        return new IPAddress('IPv6', partsNum);
     }
 }
+
+type IPAddressType = 'IPv4' | 'IPv6';

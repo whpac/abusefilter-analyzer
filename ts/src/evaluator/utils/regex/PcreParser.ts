@@ -1,4 +1,8 @@
 // For PCRE spec see: https://www.pcre.org/original/doc/html/pcrepattern.html
+/**
+ * Provides a service of parsing PCRE-compliant regex strings
+ * and further converting them to ECMA-compliant regex strings.
+ */
 export class PcreParser {
     protected pcreString: string;
     protected index: number = 0;
@@ -864,7 +868,7 @@ class PcreCharacter implements PcreToken {
             case '\f': return '\\f';
         }
 
-        if(!/\p{L}|\p{M}|\p{N}|\p{P}|\p{S}|\p{Zs}/.test(this.character)) {
+        if(!/\p{L}|\p{M}|\p{N}|\p{P}|\p{S}|\p{Zs}/u.test(this.character)) {
             // Non-printable character, per https://en.wikipedia.org/wiki/Graphic_character#Unicode
             const codePoint = this.character.codePointAt(0);
             if(codePoint !== undefined && codePoint <= 31) {

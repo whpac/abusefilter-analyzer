@@ -8,12 +8,21 @@ import { TreeNodeType } from './TreeNodeType.js';
  */
 export interface ITreeNode {
 
-    /** Type of this node. */
+    /**
+     * General type of this node. Must be one of the predefined types. This field is used by other
+     * modules to determine how to process the node and what is the meaning of its children.
+     */
     get type(): TreeNodeType;
 
-    /** The token that introduced this node. */
+    /**
+     * The token that introduced this node. Further narrows the type of this node.
+     * Can be used together with the `type` field to determine the exact meaning of this node.
+     */
     get identity(): IToken;
 
-    /** Subnodes of this node. */
+    /**
+     * Subnodes of this node. They represent the arguments for the operation designated by this node.
+     * All nodes, except for atoms, are expected to have at least one child.
+     */
     get children(): readonly ITreeNode[];
 }

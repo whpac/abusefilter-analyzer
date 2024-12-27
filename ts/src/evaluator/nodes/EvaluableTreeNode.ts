@@ -5,6 +5,12 @@ import { IValue } from '../../model/value/IValue.js';
 import { TreeNodeType } from '../../model/nodes/TreeNodeType.js';
 import { Value } from '../value/Value.js';
 
+/**
+ * Represents a node in the abstract syntax tree that can store
+ * values and errors from evaluations. The node can be evaluated
+ * more than once with different contexts; it can store multiple
+ * sets of values and errors.
+ */
 export class EvaluableTreeNode implements IEvaluableTreeNode {
 
     public readonly type: TreeNodeType;

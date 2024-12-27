@@ -3,7 +3,7 @@ import { ITreeNode } from './ITreeNode.js';
 import { IValue } from '../value/IValue.js';
 
 /**
- * Evaluable tree node is a type of tree node that can store the values produced by
+ * Evaluable tree node is a type of tree node that can store values produced by
  * the operators and functions in the tree. This is useful for calculation of the
  * filter result. These nodes can store multiple values, e.g. for different sets
  * of variables specified in the same filter.
@@ -22,8 +22,8 @@ export interface IEvaluableTreeNode extends ITreeNode {
     setValue(evaluationContext: IEvaluationContext, value: IValue): void;
 
     /**
-     * Returns a value of this tree node obtained in a specified context. If the value
-     * is not available, it will return a null IValue.
+     * Returns a value of this tree node obtained in the specified context. If the value
+     * is not available, it will return an undefined IValue.
      * 
      * @param evaluationContext The context for which to obtain the value of this node
      */
@@ -50,6 +50,7 @@ export interface IEvaluableTreeNode extends ITreeNode {
 
     /**
      * Sets an error that occurred during the evaluation of this node in the specified context.
+     * If called multiple times, previous errors are kept.
      * @param evaluationContext The context for which to set the error
      * @param error The error that occurred during the evaluation
      */
@@ -57,7 +58,7 @@ export interface IEvaluableTreeNode extends ITreeNode {
 
     /**
      * Gets all errors that occurred during the evaluation of this node in the specified context.
-     * @param evaluationContext The context for which to obtain the error
+     * @param evaluationContext The context for which to obtain the errors
      */
     getErrors(evaluationContext: IEvaluationContext): Error[];
 
@@ -77,4 +78,9 @@ export interface IEvaluableTreeNode extends ITreeNode {
     addOnErrorCallback(callback: OnValueSetCallback): void;
 }
 
+/**
+ * Callback that is called when the value of a node is set.
+ * @param node The node for which the value was set
+ * @param evaluationContext The context in which the value was set
+ */
 export type OnValueSetCallback = (node: IEvaluableTreeNode, evaluationContext: IEvaluationContext) => void;

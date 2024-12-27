@@ -1,6 +1,8 @@
 import { IPAddress } from './IPAddress.js';
-import { IPAddressType } from './IPAddressType.js';
 
+/**
+ * Provides operations on IP addresses and ranges.
+ */
 export class IPUtils {
 
     public static isIPv4(ip: string): boolean {
@@ -56,11 +58,11 @@ export class IPUtils {
         const mask = parseInt(parts[1]);
         if (isNaN(mask) || mask < 0) throw new Error('Invalid CIDR mask');
 
-        if (ip.type === IPAddressType.IPv4 && mask > 32) throw new Error('Invalid CIDR mask for IPv4 address');
-        if (ip.type === IPAddressType.IPv6 && mask > 128) throw new Error('Invalid CIDR mask for IPv6 address');
+        if (ip.type === 'IPv4' && mask > 32) throw new Error('Invalid CIDR mask for IPv4 address');
+        if (ip.type === 'IPv6' && mask > 128) throw new Error('Invalid CIDR mask for IPv6 address');
 
-        const partMax = ip.type === IPAddressType.IPv4 ? 0xff : 0xffff;
-        const partSize = ip.type === IPAddressType.IPv4 ? 8 : 16;
+        const partMax = ip.type === 'IPv4' ? 0xff : 0xffff;
+        const partSize = ip.type === 'IPv4' ? 8 : 16;
 
         const startParts: number[] = [];
         const endParts: number[] = [];

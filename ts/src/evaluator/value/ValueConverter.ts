@@ -2,6 +2,10 @@ import { IValue } from '../../model/value/IValue.js';
 import { ValueDataType } from '../../model/value/ValueDataType.js';
 import { Value } from './Value.js';
 
+/**
+ * Provides methods for type converions. These methods resemble PHP's type juggling
+ * and behavior of the upstream AbuseFilter extension.
+ */
 export class ValueConverter {
 
     public static toBoolean(value: IValue): Value<boolean | null> {

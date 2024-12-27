@@ -3,6 +3,9 @@ import { ValueDataType } from '../../model/value/ValueDataType.js';
 import { Value } from './Value.js';
 import { RegexUtils } from '../utils/regex/RegexUtils.js';
 
+/**
+ * Provides string operations for values.
+ */
 export class ValueStringOperations {
 
     /** Checks if this value contains the needle (both are converted to string first) */

@@ -12,6 +12,9 @@ import { ValueComparer } from './value/ValueComparer.js';
 import { LocalFunctionExecutor } from './functions/LocalFunctionExecutor.js';
 import { IFunctionExecutor } from './functions/IFuctionExecutor.js';
 
+/**
+ * Class responsible for evaluating nodes of the syntax tree.
+ */
 export class NodeEvaluator {
     /** An object that will be used to execute functions in the filter */
     protected readonly functionExecutor: IFunctionExecutor;
@@ -186,6 +189,15 @@ export class NodeEvaluator {
         });
     }
 
+    /**
+     * Evaluates a tree node corresponding to a conditional operator.
+     * The evaluation is done lazily, so that only one of the two branches is calculated.
+     * However, the other one is still evaluated in a speculative mode.
+     * 
+     * @param operands The operands to be evaluated
+     * @param context The evaluation context to use for this evaluation
+     * @returns A promise representing the result of the conditional operation
+     */
     protected async evaluateConditionalOperatorLazily(operands: readonly IEvaluableTreeNode[], context: IEvaluationContext): Promise<IValue> {
         const condition = operands[0];
         const ifTrue = operands[1];
@@ -209,6 +221,14 @@ export class NodeEvaluator {
         }
     }
 
+    /**
+     * Accepts a set of already computed values for the operator's operands
+     * and calculates the result of the operator using them.
+     * 
+     * @param operator The operator to be calculated
+     * @param values The operands to be used in the calculation
+     * @returns A value of the calculation
+     */
     protected calculateOperatorNodeResult(operator: string, values: IValue[]): IValue {
         const left = values[0];
         const right = values[1];
@@ -275,6 +295,12 @@ export class NodeEvaluator {
         throw new Error(`Unrecognized operator: ${operator}`);
     }
 
+    /**
+     * Performs an assignment of a new value to a variable and returns the new value.
+     * @param context The evaluation context where to save the variable
+     * @param values Operands of the assignment (variable and new value)
+     * @returns The assigned value
+     */
     protected calculateAssignmentResult(context: IEvaluationContext, values: IValue[]): IValue {
         const variable = values[0];
         const newValue = values[1];
@@ -287,6 +313,12 @@ export class NodeEvaluator {
         return newValue;
     }
 
+    /**
+     * Performs an assignment of a new value to an index of an array and returns the new value.
+     * If there's no index provided, the new value is appended to the array.
+     * @param values Operands of the index assignment (array, new value, index)
+     * @returns The assigned value
+     */
     protected calculateIndexAssignmentResult(values: IValue[]): IValue {
         const array = values[0];
         const newValue = values[1];
@@ -299,6 +331,11 @@ export class NodeEvaluator {
         return newValue;
     }
 
+    /**
+     * Returns a value at the specified index in the array.
+     * @param values The operands of array indexing (array, index)
+     * @returns A value at the specified index in the array
+     */
     protected calculateArrayIndexingResult(values: IValue[]): IValue {
         const array = values[0];
         const index = values[1];
@@ -306,10 +343,22 @@ export class NodeEvaluator {
         return array.getElementAt(index);
     }
 
+    /**
+     * Invokes a specified function and returns the result.
+     * @param context The evaluation context
+     * @param func Function name
+     * @param values Function arguments
+     * @returns The function call result
+     */
     protected async calculateFunctionCallResult(context: IEvaluationContext, func: string, values: IValue[]): Promise<IValue> {
         return this.functionExecutor.executeFunction(func, context, values);
     }
 
+    /**
+     * Creates a new array value from the provided values.
+     * @param values Values to be stored in the newly created array
+     * @returns The created array
+     */
     protected calculateArrayDefinitionResult(values: IValue[]): Value {
         return new Value(ValueDataType.Array, values);
     }

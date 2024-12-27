@@ -4,6 +4,7 @@ import { ValueDataType } from './ValueDataType.js';
  * This interface represents values that can exist during the evaluation of a filter.
  * Values have the same properties as their counterparts in the upstream, especially
  * with respect to type conversions.
+ * @param TValue Native JavaScript type of the stored value
  */
 export interface IValue<TValue = unknown> {
 

@@ -3,6 +3,9 @@ import { ITreeNode } from '../model/nodes/ITreeNode.js';
 import { TreeNodeType } from '../model/nodes/TreeNodeType.js';
 import { ITreeTransformer } from './ITreeTransformer.js';
 
+/**
+ * Transforms a tree by flattening associative operators.
+ */
 export class FlattenAssociativeOpsTransformer implements ITreeTransformer {
 
     public transform<TNode extends ITreeNode>(node: ITreeNode, nodeFactory: INodeFactory<TNode>): TNode {
@@ -18,6 +21,10 @@ export class FlattenAssociativeOpsTransformer implements ITreeTransformer {
         return nodeFactory.createNode(node.type, node.identity, newChildren);
     }
 
+    /**
+     * Returns an array of children that the root node can have in order to achieve a more shallow tree
+     * @param node Root node of the tree to flatten
+     */
     public flatten(node: ITreeNode): ITreeNode[] {
         const flattened = [];
         for (const child of node.children) {

@@ -7,6 +7,9 @@ import { IValue } from '../../model/value/IValue.js';
 import { ValueStringOperations } from '../value/ValueStringOperations.js';
 import { ValueComparer } from '../value/ValueComparer.js';
 
+/**
+ * A collection of the functions available in the AbuseFilter upstream.
+ */
 export class AbuseFilterFunctions {
 
     /** A map of all AbuseFilter functions */

@@ -4,6 +4,9 @@ import { EvaluableTreeNode } from './EvaluableTreeNode.js';
 import { IEvaluableTreeNode } from '../../model/nodes/IEvaluableTreeNode.js';
 import { IToken } from '../../model/tokens/IToken.js';
 
+/**
+ * Factory class that produces instances of EvaluableTreeNode.
+ */
 export class EvaluableNodeFactory implements INodeFactory<IEvaluableTreeNode> {
 
     public createNode(type: TreeNodeType, identity: IToken, children: IEvaluableTreeNode[]): IEvaluableTreeNode {

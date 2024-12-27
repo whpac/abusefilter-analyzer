@@ -7,6 +7,7 @@ import { TreeNodeType } from '../model/nodes/TreeNodeType.js';
 
 /**
  * A parser for the AbuseFilter syntax.
+ * @param TNode The type of the nodes in the expression tree.
  * 
  * Based on https://phabricator.wikimedia.org/diffusion/EABF/browse/master/includes/Parser/AFPTreeParser.php
  */

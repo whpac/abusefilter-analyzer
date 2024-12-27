@@ -2,6 +2,9 @@ import { IValue } from '../../model/value/IValue.js';
 import { ValueDataType } from '../../model/value/ValueDataType.js';
 import { Value } from './Value.js';
 
+/**
+ * Provides methods for performing arithmetic and logical operations on values.
+ */
 export class ValueCalculator {
     /** Performs an addition or concatenation */
     public static add(augend: IValue, addend: IValue): IValue {

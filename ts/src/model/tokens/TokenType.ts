@@ -1,3 +1,8 @@
+/**
+ * represents distinct types of tokens that can appear in the filter text.
+ * Token types are categories used subsequently by the parser to properly
+ * create the output syntax tree.
+ */
 export enum TokenType {
     /** A special type of token designating an end of the input stream. */
     EndOfStream = 'EndOfStream',

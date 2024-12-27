@@ -1,7 +1,7 @@
 import { PcreGroup, PcreParser } from './PcreParser.js';
 
 /**
- * Utility class for PCRE regex compatibility
+ * Utility class for processing PCRE regular expressions
  */
 export class RegexUtils {
 

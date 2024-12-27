@@ -2,6 +2,12 @@ import { IEvaluationContext } from '../../model/IEvaluationContext.js';
 import { IValue } from '../../model/value/IValue.js';
 import { IFunctionExecutor } from './IFuctionExecutor.js';
 
+/**
+ * A compound function executor that tries to execute a function using a list of executors.
+ * The first executor that can execute the function is used. Executors are tried in the order
+ * they are provided in the constructor. If no executor can execute the function, an error
+ * is thrown.
+ */
 export class MultiFunctionExecutor implements IFunctionExecutor {
     protected readonly executors: IFunctionExecutor[];
 

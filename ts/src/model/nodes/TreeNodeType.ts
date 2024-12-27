@@ -3,7 +3,7 @@
  */
 export enum TreeNodeType {
     /**
-     * Represents an operator node. It's composed of one to three children that represent
+     * Represents an operator node. It's composed of at least one children that represent
      * the operands.
      */
     Operator = 'Operator',
@@ -39,7 +39,7 @@ export enum TreeNodeType {
     ArrayDefinition = 'ArrayDefinition',
 
     /**
-     * Represents a literal node. It's composed of a single child: a token.
+     * Represents a literal node. It has no children.
      */
     Atom = 'Atom',
 }
