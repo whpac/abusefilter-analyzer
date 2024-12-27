@@ -93,31 +93,31 @@ export class NodeValueView implements IView {
         // Scalars usually don't need shortening
         switch (value.dataType) {
             case ValueDataType.Array:
-                return this.shortenArray(value, originalRender);
+                return this.shortenArray(value as IValue<unknown[]>, originalRender);
             case ValueDataType.String:
-                return this.shortenString(value, originalRender);
+                return this.shortenString(value as IValue<string>, originalRender);
             default:
                 return null;
         }
     }
 
-    protected shortenArray(value: IValue, originalRender: HTMLElement): HTMLElement | null {
+    protected shortenArray(value: IValue<unknown[]>, originalRender: HTMLElement): HTMLElement | null {
         // We allow output that's at most 15 characters long
         const maxLength = 15;
         if (originalRender.textContent!.length <= maxLength) return null;
 
-        const arrayLength = value.toArray().length;
+        const arrayLength = value.value.length;
         const element = document.createElement('span');
         element.textContent = `array(${arrayLength})`;
         return element;
     }
 
-    protected shortenString(value: IValue, originalRender: HTMLElement): HTMLElement | null {
+    protected shortenString(value: IValue<string>, originalRender: HTMLElement): HTMLElement | null {
         // We allow output that's at most 15 characters long
         const maxLength = 15;
         if (originalRender.textContent!.length <= maxLength) return null;
 
-        const beginning = value.toString().substring(0, maxLength - 3);
+        const beginning = value.value.substring(0, maxLength - 3);
         const beginningValue = new Value(ValueDataType.String, beginning);
         const element = document.createElement('span');
         element.appendChild(ValueFormatter.formatValue(beginningValue));

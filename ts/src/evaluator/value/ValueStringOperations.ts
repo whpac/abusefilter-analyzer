@@ -11,8 +11,8 @@ export class ValueStringOperations {
             return Value.Undefined;
         }
 
-        const thisString = haystack.toString();
-        const needleString = needle.toString();
+        const thisString = haystack.asString().value!;
+        const needleString = needle.asString().value!;
 
         if (thisString === '' || needleString === '') {
             return Value.False;
@@ -27,8 +27,8 @@ export class ValueStringOperations {
             return Value.Undefined;
         }
         
-        const subjectString = subject.toString();
-        const patternRegex = RegexUtils.toEcmaRegex(pattern.toString(), { i: caseInsensitive, u: true });
+        const subjectString = subject.asString().value!;
+        const patternRegex = RegexUtils.toEcmaRegex(pattern.asString().value!, { i: caseInsensitive, u: true });
         return new Value(ValueDataType.Boolean, patternRegex.test(subjectString));
     }
 
@@ -38,8 +38,8 @@ export class ValueStringOperations {
             return Value.Undefined;
         }
 
-        const subjectString = subject.toString();
-        let globPattern = pattern.toString();
+        const subjectString = subject.asString().value!;
+        let globPattern = pattern.asString().value!;
 
         // First, escape the pattern according to Regex rules
         globPattern = RegexUtils.escape(globPattern);

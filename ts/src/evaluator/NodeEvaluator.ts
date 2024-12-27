@@ -153,7 +153,7 @@ export class NodeEvaluator {
                         // eg. (1 | false) == 1 but (false | 1) == true
                         if (operand == lastOperand) {
                             if(!wasResolved) {
-                                const lastValue = value.castToBoolean();
+                                const lastValue = value.asBoolean();
                                 if (hasUndefined && value.isTruthy() === neutralElement) {
                                     resolve(Value.Undefined);
                                 } else {

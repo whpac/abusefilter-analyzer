@@ -55,7 +55,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'lcase');
         if (args[0].isUndefined) return Value.Undefined;
 
-        return new Value(ValueDataType.String, args[0].toString().toLowerCase());
+        return new Value(ValueDataType.String, args[0].asString().value!.toLowerCase());
     }
 
     /** Converts the input text to the uppercase */
@@ -63,7 +63,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'ucase');
         if (args[0].isUndefined) return Value.Undefined;
 
-        return new Value(ValueDataType.String, args[0].toString().toUpperCase());
+        return new Value(ValueDataType.String, args[0].asString().value!.toUpperCase());
     }
 
     /** Returns the length of the input text or number of elements in an array */
@@ -73,33 +73,33 @@ export class AbuseFilterFunctions {
         if (input.isUndefined) return Value.Undefined;
 
         if (input.dataType === ValueDataType.Array) {
-            return new Value(ValueDataType.Integer, input.toArray().length);
+            return new Value(ValueDataType.Integer, (input as IValue<unknown[]>).value.length);
         }
-        return new Value(ValueDataType.Integer, input.toString().length);
+        return new Value(ValueDataType.Integer, input.asString().value!.length);
     }
 
     /** Converts the input to a string */
     public static async string(context: IEvaluationContext, args: IValue[]): Promise<IValue<string | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'string');
-        return args[0].castToString();
+        return args[0].asString();
     }
 
     /** Converts the input to an integer */
     public static async int(context: IEvaluationContext, args: IValue[]): Promise<IValue<number | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'int');
-        return args[0].castToInt();
+        return args[0].asInt();
     }
 
     /** Converts the input to a float */
     public static async float(context: IEvaluationContext, args: IValue[]): Promise<IValue<number | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'float');
-        return args[0].castToFloat();
+        return args[0].asFloat();
     }
 
     /** Converts the input to a boolean */
     public static async bool(context: IEvaluationContext, args: IValue[]): Promise<IValue<boolean | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'bool');
-        return args[0].castToBoolean();
+        return args[0].asBoolean();
     }
 
     /** Normalizes the input string using multiple AbuseFilter functions */
@@ -139,7 +139,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'specialratio');
         if (args[0].isUndefined) return Value.Undefined;
 
-        const input = args[0].toString();
+        const input = args[0].asString().value!;
         if (input.length === 0) {
             return new Value(ValueDataType.Float, 0);
         }
@@ -153,7 +153,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmspecials');
         if (args[0].isUndefined) return Value.Undefined;
 
-        return new Value(ValueDataType.String, AbuseFilterFunctions.removeSpecialCharacters(args[0].toString()));
+        return new Value(ValueDataType.String, AbuseFilterFunctions.removeSpecialCharacters(args[0].asString().value!));
     }
 
     /** Removes repeating characters from the input */
@@ -161,7 +161,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmdoubles');
         if (args[0].isUndefined) return Value.Undefined;
 
-        return new Value(ValueDataType.String, AbuseFilterFunctions.removeRepeatingCharacters(args[0].toString()));
+        return new Value(ValueDataType.String, AbuseFilterFunctions.removeRepeatingCharacters(args[0].asString().value!));
     }
 
     /** Removes whitespace characters from the input */
@@ -169,7 +169,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmwhitespace');
         if (args[0].isUndefined) return Value.Undefined;
 
-        return new Value(ValueDataType.String, AbuseFilterFunctions.removeWhitespaces(args[0].toString()));
+        return new Value(ValueDataType.String, AbuseFilterFunctions.removeWhitespaces(args[0].asString().value!));
     }
 
     /**
@@ -180,10 +180,10 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, [1, 2], 'count');
         if (args[0].isUndefined) return Value.Undefined;
 
-        const needle = args[0].toString();
+        const needle = args[0].asString().value!;
         if (args.length === 1) {
             if (args[0].dataType === ValueDataType.Array) {
-                return new Value(ValueDataType.Integer, args[0].toArray().length);
+                return new Value(ValueDataType.Integer, (args[0] as IValue<unknown[]>).value.length);
             }
 
             return new Value(ValueDataType.Integer, needle.split(',').length);
@@ -194,7 +194,7 @@ export class AbuseFilterFunctions {
         }
 
         if (args[1].isUndefined) return Value.Undefined;
-        const haystack = args[1].toString();
+        const haystack = args[1].asString().value!;
         let count = 0;
         let index = 0;
         while ((index = haystack.indexOf(needle, index)) !== -1) {
@@ -212,13 +212,13 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, [1, 2], 'rcount');
         if (args[0].isUndefined) return Value.Undefined;
 
-        const pattern = args[0].toString();
+        const pattern = args[0].asString().value!;
         if (args.length === 1) {
             return new Value(ValueDataType.Integer, pattern.split(',').length);
         }
 
         if (args[1].isUndefined) return Value.Undefined;
-        const input = args[1].toString();
+        const input = args[1].asString().value!;
         const regex = RegexUtils.toEcmaRegex(pattern, { g: true, u: true });
         const matches = input.match(regex);
         return new Value(ValueDataType.Integer, matches?.length ?? 0);
@@ -232,8 +232,8 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 2, 'get_matches');
         if (args[0].isUndefined || args[1].isUndefined) return Value.Undefined;
 
-        const pattern = args[0].toString();
-        const input = args[1].toString();
+        const pattern = args[0].asString().value!;
+        const input = args[1].asString().value!;
         const regex = RegexUtils.parse(pattern);
         const nativeRegex = RegexUtils.toEcmaRegex(regex, { u: true });
         let matches: RegExpMatchArray | undefined[] | null = input.match(nativeRegex);
@@ -261,7 +261,7 @@ export class AbuseFilterFunctions {
 
         // We want to silence errors from mismatched IP versions being compared
         // and treat such a case as an ordinary "not in range"
-        const ip = args[0].toString();
+        const ip = args[0].asString().value!;
         let hasUndefined = false;
         for (let i = 1; i < args.length; i++) {
             if (args[i].isUndefined) {
@@ -269,7 +269,7 @@ export class AbuseFilterFunctions {
                 continue;
             }
             try {
-                const range = args[i].toString();
+                const range = args[i].asString().value!;
                 if (IPUtils.isInRange(ip, range)) {
                     return Value.True;
                 }
@@ -333,14 +333,14 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, [2, 3], 'substr');
         if (args[0].isUndefined || args[1].isUndefined) return Value.Undefined;
 
-        const input = args[0].toString();
-        const start = args[1].toNumber();
+        const input = args[0].asString().value!;
+        const start = args[1].asInt().value!;
 
         if (args.length === 2) {
             return new Value(ValueDataType.String, input.substring(start));
         } else {
             if (args[2].isUndefined) return Value.Undefined;
-            const length = args[2].toNumber();
+            const length = args[2].asInt().value!;
             const end = Math.min(start + length, input.length);
             return new Value(ValueDataType.String, input.substring(start, end));
         }
@@ -351,12 +351,12 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, [2, 3], 'strpos');
         if (args[0].isUndefined || args[1].isUndefined) return Value.Undefined;
 
-        const input = args[0].toString();
-        const pattern = args[1].toString();
+        const input = args[0].asString().value!;
+        const pattern = args[1].asString().value!;
         let offset = 0;
         if (args.length === 3) {
             if (args[2].isUndefined) return Value.Undefined;
-            offset = args[2].toNumber();
+            offset = args[2].asInt().value!;
         }
 
         if (pattern.length === 0) {
@@ -375,9 +375,9 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 3, 'str_replace');
         if (args.some(v => v.isUndefined)) return Value.Undefined;
 
-        const input = args[0].toString();
-        const pattern = args[1].toString();
-        const replacement = args[2].toString();
+        const input = args[0].asString().value!;
+        const pattern = args[1].asString().value!;
+        const replacement = args[2].asString().value!;
         return new Value(ValueDataType.String, input.replaceAll(pattern, replacement));
     }
 
@@ -386,9 +386,9 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 3, 'str_replace_regexp');
         if (args.some(v => v.isUndefined)) return Value.Undefined;
 
-        const input = args[0].toString();
-        const pattern = args[1].toString();
-        const replacement = args[2].toString();
+        const input = args[0].asString().value!;
+        const pattern = args[1].asString().value!;
+        const replacement = args[2].asString().value!;
         const regex = RegexUtils.toEcmaRegex(pattern, { g: true, u: true });
         return new Value(ValueDataType.String, input.replace(regex, replacement));
     }
@@ -398,7 +398,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'rescape');
         if (args[0].isUndefined) return Value.Undefined;
 
-        const escaped = RegexUtils.escape(args[0].toString());
+        const escaped = RegexUtils.escape(args[0].asString().value!);
         return new Value(ValueDataType.String, escaped);
     }
 
@@ -408,7 +408,7 @@ export class AbuseFilterFunctions {
 
         const value = args[1];
         if (!args[0].isUndefined) {
-            const variableName = args[0].toString();
+            const variableName = args[0].asString().value!;
             context.setVariable(variableName, value);
         }
         return value;
@@ -419,7 +419,7 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'sanitize');
         if (args[0].isUndefined) return Value.Undefined;
 
-        const input = args[0].toString();
+        const input = args[0].asString().value!;
 
         // Replicate PHP html_entity_decode() behavior
         const sanitized = input.replace(/&(#\d+|#x[0-9a-f]+|quot|amp|lt|gt);/gi, function(match, charCodeRaw) {

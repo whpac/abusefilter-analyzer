@@ -8,11 +8,11 @@ export class ValueCalculator {
         if (augend.isUndefined || addend.isUndefined) {
             return Value.Undefined;
         } else if (augend.dataType === ValueDataType.String || addend.dataType === ValueDataType.String) {
-            return new Value(ValueDataType.String, augend.toString() + addend.toString());
+            return new Value(ValueDataType.String, augend.asString().value! + addend.asString().value!);
         } else if (augend.dataType === ValueDataType.Array && addend.dataType === ValueDataType.Array) {
-            return new Value(ValueDataType.Array, augend.toArray().concat(addend.toArray()));
+            return new Value(ValueDataType.Array, (augend as IValue<unknown[]>).value.concat((addend as IValue<unknown[]>).value));
         } else {
-            const res = augend.toNumber() + addend.toNumber();
+            const res = augend.asFloat().value! + addend.asFloat().value!;
             const type = (augend.dataType === ValueDataType.Float) || (addend.dataType === ValueDataType.Float) ?
                 ValueDataType.Float : ValueDataType.Integer;
 
@@ -38,7 +38,7 @@ export class ValueCalculator {
         if (minuend.isUndefined || subtrahend.isUndefined) {
             return Value.Undefined;
         }
-        const res = minuend.toNumber() - subtrahend.toNumber();
+        const res = minuend.asFloat().value! - subtrahend.asFloat().value!;
         const type = (minuend.dataType === ValueDataType.Float) || (subtrahend.dataType === ValueDataType.Float) ?
             ValueDataType.Float : ValueDataType.Integer;
 
@@ -50,7 +50,7 @@ export class ValueCalculator {
         if (multiplicand.isUndefined || multiplier.isUndefined) {
             return Value.Undefined;
         }
-        const res = multiplicand.toNumber() * multiplier.toNumber();
+        const res = multiplicand.asFloat().value! * multiplier.asFloat().value!;
         const type = (multiplicand.dataType === ValueDataType.Float) || (multiplier.dataType === ValueDataType.Float) ?
             ValueDataType.Float : ValueDataType.Integer;
 
@@ -76,7 +76,7 @@ export class ValueCalculator {
             return Value.Undefined;
         }
 
-        if (divisor.toNumber() === 0) {
+        if (divisor.asFloat().value! === 0) {
             throw new Error('dividebyzero');
         }
 
@@ -84,7 +84,7 @@ export class ValueCalculator {
             return Value.Undefined;
         }
 
-        const res = dividend.toNumber() / divisor.toNumber();
+        const res = dividend.asFloat().value! / divisor.asFloat().value!;
         const isOperandFloat = (dividend.dataType === ValueDataType.Float) || (divisor.dataType === ValueDataType.Float);
         const type = isOperandFloat || (res % 1 !== 0) ? ValueDataType.Float : ValueDataType.Integer;
 
@@ -97,7 +97,7 @@ export class ValueCalculator {
             return Value.Undefined;
         }
 
-        if (divisor.toNumber() === 0) {
+        if (divisor.asFloat().value! === 0) {
             throw new Error('dividebyzero');
         }
 
@@ -106,7 +106,7 @@ export class ValueCalculator {
         }
 
         // AbuseFilter converts operands to int for modulo
-        const res = Math.floor(dividend.toNumber()) % Math.floor(divisor.toNumber());
+        const res = Math.floor(dividend.asFloat().value!) % Math.floor(divisor.asFloat().value!);
 
         return new Value(ValueDataType.Integer, res);
     }
@@ -117,7 +117,7 @@ export class ValueCalculator {
             return Value.Undefined;
         }
 
-        const res = Math.pow(base.toNumber(), exponent.toNumber());
+        const res = Math.pow(base.asFloat().value!, exponent.asFloat().value!);
         const isOperandFloat = (base.dataType === ValueDataType.Float) || (exponent.dataType === ValueDataType.Float);
         const type = isOperandFloat || (res % 1 !== 0) ? ValueDataType.Float : ValueDataType.Integer;
 
@@ -130,7 +130,7 @@ export class ValueCalculator {
             return Value.Undefined;
         }
 
-        const res = -value.toNumber();
+        const res = -value.asFloat().value!;
         const type = (res % 1 === 0) ? ValueDataType.Integer : ValueDataType.Float;
 
         return new Value(type, res);

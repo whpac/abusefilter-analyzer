@@ -19,11 +19,11 @@ export class ValueFormatter {
                 return this.formatKeyword(value.isTruthy() ? 'true' : 'false');
             case ValueDataType.Integer:
             case ValueDataType.Float:
-                return this.formatNumberLiteral(value.toString());
+                return this.formatNumberLiteral(value.asString().value!);
             case ValueDataType.String:
-                return this.formatStringLiteral(value.toString());
+                return this.formatStringLiteral((value as IValue<string>).value);
             case ValueDataType.Array:
-                return this.processArrayValue(value);
+                return this.processArrayValue(value as IValue<IValue[]>);
         }
     }
 
@@ -80,11 +80,11 @@ export class ValueFormatter {
         return wrapper;
     }
 
-    private static processArrayValue(value: IValue): HTMLElement {
+    private static processArrayValue(value: IValue<IValue[]>): HTMLElement {
         const wrapper = this.makeWrapper(value.dataType);
         wrapper.appendChild(document.createTextNode('['));
 
-        const array = value.toArray();
+        const array = value.value;
         for (let i = 0; i < array.length; i++) {
             if (i > 0) {
                 wrapper.appendChild(document.createTextNode(', '));

@@ -2,6 +2,7 @@ import { TokenType } from '../../model/tokens/TokenType.js';
 import { ValueDataType } from '../../model/value/ValueDataType.js';
 import { IToken } from '../../model/tokens/IToken.js';
 import { IValue } from '../../model/value/IValue.js';
+import { ValueConverter } from './ValueConverter.js';
 
 /**
  * A class representing a value in the evaluation tree.
@@ -118,156 +119,61 @@ export class Value<TValue = unknown> implements IValue<TValue> {
     }
 
     // ! Casting methods
-
-    /**
-     * Checks if the value is truthy
-     * @see https://www.php.net/manual/en/language.types.boolean.php#language.types.boolean.casting
-     */
-    public isTruthy(): boolean | undefined {
-        if (this.isUndefined) {
-            return undefined;
-        }
-
-        if (this.dataType === ValueDataType.Boolean) {
-            return this.value as boolean;
-        }
-
-        if (this.dataType === ValueDataType.Integer || this.dataType === ValueDataType.Float) {
-            return (this.value !== 0);
-        }
-
-        if (this.dataType === ValueDataType.String) {
-            return (this.value !== '0' || this.value === '');
-        }
-
-        if (this.dataType === ValueDataType.Array) {
-            return (this.value as unknown[]).length !== 0;
-        }
-
-        if (this.dataType === ValueDataType.Null) {
-            return false;
-        }
-
-        return true;
+    public isTruthy(): boolean | null {
+        return this.asBoolean().value;
     }
 
-    /** Converts the value to string */
     public toString(): string {
-        switch (this.dataType) {
-            case ValueDataType.Array:
-                return (this.value as Value[]).map(v => v.toString()).join('\n') + '\n';
-            case ValueDataType.Boolean:
-                return this.value ? '1' : ''; // Like PHP's strval()...
-            case ValueDataType.Null:
-                return '';
-        }
-        return '' + this.value;
+        return this.toLiteral();
     }
 
-    /** Converts the value to number */
-    public toNumber(): number {
-        switch (this.dataType) {
-            case ValueDataType.Integer:
-            case ValueDataType.Float:
-                return this.value as number;
-            case ValueDataType.Boolean:
-                return this.value ? 1 : 0;
-            case ValueDataType.Null:
-                return 0;
-            case ValueDataType.Array:
-                return (this.value as Value[]).length;
-            default:
-                return parseFloat(this.toString());
-        }
+    public asBoolean(): Value<boolean | null> {
+        return ValueConverter.toBoolean(this);
     }
 
-    /** Converts the value to array */
-    public toArray(): IValue[] {
-        if (this.dataType === ValueDataType.Array) {
-            return this.value as Value[];
-        }
-        return [ this ];
+    public asInt(): Value<number | null> {
+        return ValueConverter.toInt(this);
     }
 
-    /**
-     * Converts the value to boolean, i.e. returns true if the value
-     * is truthy and false otherwise
-     */
-    public castToBoolean(): Value<boolean | null> {
-        if (this.isUndefined) return this as Value<null>;
-        return new Value(ValueDataType.Boolean, this.isTruthy()!);
+    public asFloat(): Value<number | null> {
+        return ValueConverter.toFloat(this);
     }
 
-    /** Converts the value to integer */
-    public castToInt(): Value<number | null> {
-        if (this.isUndefined) return this as Value<null>;
-        return new Value(ValueDataType.Integer, Math.floor(this.toNumber()));
+    public asString(): Value<string | null> {
+        return ValueConverter.toString(this);
     }
 
-    /** Converts the value to float */
-    public castToFloat(): Value<number | null> {
-        if (this.isUndefined) return this as Value<null>;
-        return new Value(ValueDataType.Float, this.toNumber());
-    }
-
-    /** Converts the value to string */
-    public castToString(): Value<string | null> {
-        if (this.isUndefined) return this as Value<null>;
-        return new Value(ValueDataType.String, this.toString());
-    }
-
-    /** Converts the value to array */
-    public castToArray(): Value<unknown[] | null> {
-        if (this.isUndefined) return this as Value<null>;
-        return new Value(ValueDataType.Array, this.toArray());
+    public asArray(): Value<IValue[] | null> {
+        return ValueConverter.toArray(this);
     }
 
     // ! Array operators
-
-    /**
-     * Returns a value stored at a given index of the array. The array is 0-indexed.
-     * @param index The index of the element to retrieve
-     */
-    public getElementAt(index: number | IValue): IValue {
+    public getElementAt(index: IValue): IValue {
         if (this.dataType !== ValueDataType.Array) {
             throw new Error('Cannot index a non-array value');
         }
 
-        if (typeof index === 'object') {
-            index = index.toNumber();
-        }
-
+        const numIndex = index.asInt().value!;
         const array = this.value as IValue[];
-        if (index < 0 || index >= array.length) {
+        if (numIndex < 0 || numIndex >= array.length) {
             throw new Error('Index out of bounds');
         }
-        return array[index] ?? Value.Undefined;
+        return array[numIndex] ?? Value.Undefined;
     }
 
-    /**
-     * Stores a given value at the given index of the array. The array is 0-indexed.
-     * @param index The index where to store the value
-     */
-    public setElementAt(index: number | IValue, value: IValue): void {
+    public setElementAt(index: IValue, value: IValue): void {
         if (this.dataType !== ValueDataType.Array) {
             throw new Error('Cannot index a non-array value');
         }
 
-        if (typeof index === 'object') {
-            index = index.toNumber();
-        }
-
+        const numIndex = index.asInt().value!;
         const array = this.value as IValue[];
-        if (index < 0 || index >= array.length) {
+        if (numIndex < 0 || numIndex >= array.length) {
             throw new Error('Index out of bounds');
         }
-        array[index] = value;
+        array[numIndex] = value;
     }
 
-    /**
-     * Appends a value to the array.
-     * @param value The value to be appended to the array
-     */
     public appendElement(value: IValue): void {
         if (this.dataType !== ValueDataType.Array) {
             throw new Error('Cannot append to a non-array value');
@@ -281,7 +187,7 @@ export class Value<TValue = unknown> implements IValue<TValue> {
                 return this.value ? 'true' : 'false';
             case ValueDataType.Integer:
             case ValueDataType.Float:
-                return this.toString();
+                return this.asString().value!;
             case ValueDataType.String: {
                 let val = this.value as string;
                 val = val.replace(/\\/g, '\\\\');

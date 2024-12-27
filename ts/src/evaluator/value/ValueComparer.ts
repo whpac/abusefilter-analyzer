@@ -90,7 +90,7 @@ export class ValueComparer {
         } else if (a.dataType !== ValueDataType.Array && b.dataType !== ValueDataType.Array) {
             // Scalar types are simply compared by value
             const typesMatch = a.dataType === b.dataType || !strict;
-            return typesMatch && a.toString() === b.toString();
+            return typesMatch && a.asString().value === b.asString().value;
 
         } else if (a.dataType === ValueDataType.Array && b.dataType === ValueDataType.Array) {
             // Arrays are compared elementwise
@@ -130,8 +130,8 @@ export class ValueComparer {
             return ComparisonResult.Undefined;
         }
 
-        const value1 = a.toString();
-        const value2 = b.toString();
+        const value1 = a.asString().value!;
+        const value2 = b.asString().value!;
 
         // See https://www.php.net/manual/en/language.types.numeric-strings.php
         const isNumeric = (value: string) => /^\s*[+-]?(\d+\.?\d*|\.\d+)(E[+-]?\d+)?\s*$/i.test(value);
