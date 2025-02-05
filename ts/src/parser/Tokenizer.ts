@@ -17,7 +17,7 @@ export class Tokenizer {
     private readonly operatorsRegex = /(!==|!=|!|\*\*|\*|\/|\+|-|%|&|\||\^|:=|\?|:|<=|<|>=|>|===|==|=)/y;
 
     /** Regular expression to match numbers in varying bases. */
-    private readonly numberRegex = /(?:0(?<base>[xbo]))?(?<number>[0-9A-Fa-f]+(?:\.\d*)?|\.\d+)(?!\w)/y;
+    private readonly numberRegex = /(?:0([xbo]))?([0-9A-Fa-f]+(?:\.\d*)?|\.\d+)(?!\w)/y;
 
     /**
      * Regular expression to match identifiers and keywords. We allow for identifiers starting with digit,
@@ -137,9 +137,9 @@ export class Tokenizer {
         this.numberRegex.lastIndex = startOffset;
         const numberMatch = this.numberRegex.exec(input);
         if(numberMatch !== null) {
-            const baseChar = numberMatch.groups?.base ?? 'd';
+            const baseChar = numberMatch[1] ?? 'd';
             const base = Tokenizer.numberBases.get(baseChar) ?? 10;
-            const number = numberMatch.groups?.number ?? '0';
+            const number = numberMatch[2] ?? '0';
             const tokenLength = numberMatch[0].length;
 
             // TODO: Vulnerable to malformed data like `0xfa.07` or `0b23` (has to try/catch and throw)
