@@ -15,10 +15,15 @@ async function displayOnLogPage(logId: string) {
     rootElement.textContent = 'Loading...';
     fieldset.insertBefore(rootElement, referenceHeader);
 
-    const filter = await mw.libs.abuseFilter.createFromLogId(logId);
-    filter.flattenAssociativeOperators();
-    filter.renderInto(rootElement);
-    filter.evaluate();
+    try {
+        const filter = await mw.libs.abuseFilter.createFromLogId(logId);
+        filter.flattenAssociativeOperators();
+        filter.renderInto(rootElement);
+        await filter.evaluate();
+    } catch (error: unknown) {
+        const errorMessage = (error instanceof Error) ? error.message : ('' + error);
+        rootElement.textContent = `Can't load the abuse filter: ${errorMessage}`;
+    }
 }
 
 function main() {
