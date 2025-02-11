@@ -124,6 +124,12 @@ mw.util.addCSS(`
     --afa-color-true: green;
     --afa-color-false: red;
 }
+.afa-filter-wrapper {
+    text-align: right;
+}
+.afa-filter-wrapper label {
+    margin-left: 0.6em;
+}
 
 .afa-value, .afa-token { font-family: monospace; }
 .afa-value-keyword { color: var(--afa-color-value-keyword); }
