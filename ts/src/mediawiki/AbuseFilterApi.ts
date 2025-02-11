@@ -30,7 +30,9 @@ export class AbuseFilterApi {
             action: 'query',
             list: 'abuselog',
             afllogid: logId,
-            aflprop: 'ids|details'
+            aflprop: 'ids|details',
+            maxage: 3600, // log entries don't change, so we can cache them for a long time
+            smaxage: 43200,
         });
 
         const logObject = response?.query?.abuselog?.[0] as AbuseLogEntry | undefined;
