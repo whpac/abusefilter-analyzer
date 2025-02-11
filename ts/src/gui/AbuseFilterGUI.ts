@@ -1,15 +1,9 @@
-import { IEvaluationContext } from '../model/IEvaluationContext.js';
-import { IEvaluableTreeNode } from '../model/nodes/IEvaluableTreeNode.js';
 import { ITreeNode } from '../model/nodes/ITreeNode.js';
 import { ITreeFilter } from './filters/ITreeFilter.js';
 import { INodeView } from './treeViews/INodeView.js';
 import { ViewFactory } from './treeViews/ViewFactory.js';
-import { NodeValueView } from './value/NodeValueView.js';
 
 export class AbuseFilterGUI {
-    /** Whether to include the node values after evaluation (if available). */
-    public displayEvaluatedValues: boolean = true;
-
     private readonly wrapperElement: HTMLElement;
     private readonly filters: ITreeFilter[];
     private rootNodeView: INodeView | null = null;
@@ -25,16 +19,10 @@ export class AbuseFilterGUI {
     /**
      * Renders the tree, representing the syntax of the given AbuseFilter
      * @param rootNode The root node of the syntax tree to render
+     * @param viewFactory The factory to use to create views for the nodes
      */
-    public renderSyntaxTree(rootNode: ITreeNode): void;
-    public renderSyntaxTree(rootNode: IEvaluableTreeNode, evaluationContext: IEvaluationContext): void;
-    public renderSyntaxTree(rootNode: ITreeNode, evaluationContext?: IEvaluationContext): void {
-        const viewFactory = new ViewFactory();
-        if (evaluationContext !== undefined && this.displayEvaluatedValues) {
-            viewFactory.addDataViewFactory(
-                (node) => 'getValue' in node ? new NodeValueView(node as IEvaluableTreeNode, evaluationContext!) : null
-            );
-        }
+    public renderSyntaxTree(rootNode: ITreeNode, viewFactory?: ViewFactory): void {
+        viewFactory ??= new ViewFactory();
 
         this.rootNodeView = viewFactory.createView(rootNode);
         const rootNodeElement = this.rootNodeView.render();

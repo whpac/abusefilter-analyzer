@@ -165,6 +165,9 @@ mw.util.addCSS(`
     background: var(--background-color-neutral, #eaecf0);
     font-size: 0.85em;
 }
+.afa-data:empty {
+    display: none;
+}
 
 .afa-data .afa-value-bool::before {
     content: '';
