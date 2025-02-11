@@ -7,6 +7,8 @@ import { RemoteFunctionExecutor } from './evaluator/functions/RemoteFunctionExec
 import { EvaluableNodeFactory } from './evaluator/nodes/EvaluableNodeFactory.js';
 import { Value } from './evaluator/value/Value.js';
 import { AbuseFilterGUI } from './gui/AbuseFilterGUI.js';
+import { ViewFactory } from './gui/treeViews/ViewFactory.js';
+import { NodeValueView } from './gui/value/NodeValueView.js';
 import { ITreeFilter } from './gui/filters/ITreeFilter.js';
 import { AbuseFilterApi, AbuseLogEntry } from './mediawiki/AbuseFilterApi.js';
 import { IEvaluationContext } from './model/IEvaluationContext.js';
@@ -75,7 +77,14 @@ export class AbuseFilter {
 
     public renderInto(container: HTMLElement, treeFilters: ITreeFilter[] = []): void {
         const gui = new AbuseFilterGUI(container, treeFilters);
-        gui.renderSyntaxTree(this.rootNode, this.defaultContext);
+        const viewFactory = new ViewFactory();
+        viewFactory.addDataViewFactory(
+            // check if node is IEvaluableTreeNode
+            (node) => 'getValue' in node
+                ? new NodeValueView(node as IEvaluableTreeNode, this.defaultContext)
+                : null
+        );
+        gui.renderSyntaxTree(this.rootNode, viewFactory);
     }
 
     public setVariable(name: string, value: unknown): void {
@@ -89,7 +98,7 @@ export class AbuseFilter {
         }
     }
 
-    public static async createFromFilterId(filterId: number): Promise<AbuseFilter> {
+    public static async createFromFilterId(filterId: number | string): Promise<AbuseFilter> {
         const filterText = await AbuseFilterApi.fetchAbuseFilterText(filterId);
         return new AbuseFilter(filterText);
     }
