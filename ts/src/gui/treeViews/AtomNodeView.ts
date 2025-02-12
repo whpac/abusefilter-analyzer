@@ -1,31 +1,25 @@
 import { ITreeNode } from '../../model/nodes/ITreeNode.js';
-import { IToken } from '../../model/tokens/IToken.js';
 import { ValueFormatter } from '../value/ValueFormatter.js';
-import { INodeView } from './INodeView.js';
+import { BaseNodeView } from './BaseNodeView.js';
 
 /**
  * A view for an atom node in the syntax tree.
  */
-export class AtomNodeView implements INodeView {
-    private readonly token: IToken;
+export class AtomNodeView extends BaseNodeView {
     private element: HTMLElement | null = null;
 
     public constructor(treeNode: ITreeNode) {
-        this.token = treeNode.identity;
+        super(treeNode, []);
     }
 
     public render(): HTMLElement {
         if (this.element === null) {
-            this.element = ValueFormatter.formatLiteral(this.token);
+            this.element = ValueFormatter.formatLiteral(this.treeNode.identity);
         }
         return this.element;
     }
 
     public isInline(): boolean {
         return true;
-    }
-
-    public stopsInlining(): boolean {
-        return false;
     }
 }

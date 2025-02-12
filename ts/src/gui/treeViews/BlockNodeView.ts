@@ -1,20 +1,18 @@
 import { ITreeNode } from '../../model/nodes/ITreeNode.js';
 import { INodeView } from './INodeView.js';
 import { IView } from '../IView.js';
+import { BaseNodeView } from './BaseNodeView.js';
 
 /**
  * Base class for views of nodes with children.
  */
-export class BlockNodeView implements INodeView {
-    protected readonly treeNode: ITreeNode;
-    protected readonly children: INodeView[];
+export class BlockNodeView extends BaseNodeView {
     protected readonly dataView: IView;
     protected canInline: boolean = false;
     private element: HTMLElement | null = null;
 
     public constructor(node: ITreeNode, childViews: INodeView[], dataView: IView) {
-        this.treeNode = node;
-        this.children = childViews;
+        super(node, childViews);
         this.dataView = dataView;
     }
 
@@ -27,11 +25,7 @@ export class BlockNodeView implements INodeView {
 
     public isInline(): boolean {
         if (!this.canInline) return false;
-        return this.children.every(child => child.isInline() && !child.stopsInlining());
-    }
-
-    public stopsInlining(): boolean {
-        return false;
+        return super.isInline();
     }
 
     /** Renders the node in inline mode */
