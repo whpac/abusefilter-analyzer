@@ -1,7 +1,7 @@
 import { IEvaluationContext } from '../model/IEvaluationContext.js';
 import { IEvaluableTreeNode } from '../model/nodes/IEvaluableTreeNode.js';
 import { ITreeNode } from '../model/nodes/ITreeNode.js';
-import { TreeView } from './treeViews/TreeView.js';
+import { INodeView } from './treeViews/INodeView.js';
 import { ViewFactory } from './treeViews/ViewFactory.js';
 import { NodeValueView } from './value/NodeValueView.js';
 
@@ -9,6 +9,7 @@ export class AbuseFilterGUI {
     /** Whether to include the node values after evaluation (if available). */
     public displayEvaluatedValues: boolean = true;
 
+    private rootNodeView: INodeView | null = null;
     private readonly wrapperElement: HTMLElement;
 
     public constructor(wrapperElement: HTMLElement) {
@@ -30,8 +31,8 @@ export class AbuseFilterGUI {
             );
         }
 
-        const rootNodeView = new TreeView(rootNode, viewFactory);
-        const rootNodeElement = rootNodeView.render();
+        this.rootNodeView = viewFactory.createView(rootNode);
+        const rootNodeElement = this.rootNodeView.render();
         if (rootNodeElement.tagName === 'DETAILS') {
             rootNodeElement.removeAttribute('open');
         }

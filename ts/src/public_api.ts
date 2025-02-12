@@ -27,7 +27,6 @@ import { BlockNodeView } from './gui/treeViews/BlockNodeView.js';
 import { FunctionNodeView } from './gui/treeViews/FunctionNodeView.js';
 import { IndexNodeView } from './gui/treeViews/IndexNodeView.js';
 import { OperatorNodeView } from './gui/treeViews/OperatorNodeView.js';
-import { TreeView } from './gui/treeViews/TreeView.js';
 import { ViewFactory } from './gui/treeViews/ViewFactory.js';
 import { NodeValueView } from './gui/value/NodeValueView.js';
 import { ProcessedDataView } from './gui/value/ProcessedDataView.js';
@@ -100,7 +99,6 @@ const _abuseFilter = {
             FunctionNodeView,
             IndexNodeView,
             OperatorNodeView,
-            TreeView,
             ViewFactory,
         },
         value: {
