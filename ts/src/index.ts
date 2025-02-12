@@ -18,7 +18,12 @@ async function displayOnLogPage(logId: string) {
     try {
         const filter = await mw.libs.abuseFilter.createFromLogId(logId);
         filter.flattenAssociativeOperators();
-        filter.renderInto(rootElement);
+
+        const impactingBoolFilter = new mw.libs.abuseFilter.gui.filters.ImpactingBoolFilter(filter.defaultContext);
+        const filters = [
+            impactingBoolFilter,
+        ];
+        filter.renderInto(rootElement, filters);
         await filter.evaluate();
     } catch (error: unknown) {
         const errorMessage = (error instanceof Error) ? error.message : ('' + error);

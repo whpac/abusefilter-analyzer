@@ -20,6 +20,7 @@ import { ValueComparer } from './evaluator/value/ValueComparer.js';
 import { ValueStringOperations } from './evaluator/value/ValueStringOperations.js';
 import { VariableValue } from './evaluator/value/VariableValue.js';
 import { AbuseFilterGUI } from './gui/AbuseFilterGUI.js';
+import { ImpactingBoolFilter } from './gui/filters/ImpactingBoolFilter.js';
 import { ArrayDefinitionNodeView } from './gui/treeViews/ArrayDefinitionNodeView.js';
 import { AssignmentNodeView } from './gui/treeViews/AssignmentNodeView.js';
 import { AtomNodeView } from './gui/treeViews/AtomNodeView.js';
@@ -91,6 +92,9 @@ const _abuseFilter = {
 
     gui: {
         AbuseFilterGUI,
+        filters: {
+            ImpactingBoolFilter,
+        },
         treeViews: {
             ArrayDefinitionNodeView,
             AssignmentNodeView,

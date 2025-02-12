@@ -7,6 +7,7 @@ import { RemoteFunctionExecutor } from './evaluator/functions/RemoteFunctionExec
 import { EvaluableNodeFactory } from './evaluator/nodes/EvaluableNodeFactory.js';
 import { Value } from './evaluator/value/Value.js';
 import { AbuseFilterGUI } from './gui/AbuseFilterGUI.js';
+import { ITreeFilter } from './gui/filters/ITreeFilter.js';
 import { AbuseFilterApi, AbuseLogEntry } from './mediawiki/AbuseFilterApi.js';
 import { IEvaluationContext } from './model/IEvaluationContext.js';
 import { IEvaluableTreeNode } from './model/nodes/IEvaluableTreeNode.js';
@@ -72,8 +73,8 @@ export class AbuseFilter {
         this.transformWith(transformer);
     }
 
-    public renderInto(container: HTMLElement): void {
-        const gui = new AbuseFilterGUI(container);
+    public renderInto(container: HTMLElement, treeFilters: ITreeFilter[] = []): void {
+        const gui = new AbuseFilterGUI(container, treeFilters);
         gui.renderSyntaxTree(this.rootNode, this.defaultContext);
     }
 
