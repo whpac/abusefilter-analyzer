@@ -135,7 +135,7 @@ mw.util.addCSS(`
     margin-left: 0.6em;
 }
 
-.afa-value, .afa-token { font-family: monospace; }
+.afa-value, .afa-token { font-family: monospace; word-break: break-all; }
 .afa-value-keyword { color: var(--afa-color-value-keyword); }
 .afa-value-string { color: var(--afa-color-value-string); }
 .afa-value-number { color: var(--afa-color-value-number); }
