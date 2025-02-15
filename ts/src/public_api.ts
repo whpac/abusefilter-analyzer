@@ -130,6 +130,7 @@ mw.util.addCSS(`
 }
 .afa-filter-wrapper {
     text-align: right;
+    margin-bottom: 0.5em;
 }
 .afa-filter-wrapper label {
     margin-left: 0.6em;

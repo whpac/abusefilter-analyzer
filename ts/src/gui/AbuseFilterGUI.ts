@@ -43,18 +43,42 @@ export class AbuseFilterGUI {
         }
         this.wrapperElement.textContent = '';
 
-        if (this.filters.length > 0) {
-            const filterWrapper = document.createElement('div');
-            filterWrapper.classList.add('afa-filter-wrapper');
-            this.wrapperElement.appendChild(filterWrapper);
-            this.displayFilterCheckboxes(filterWrapper);
-            
-            for (const filter of this.filters) {
-                filter.initialize(this.rootNodeView, () => this.updateFilteringDebounced());
-            }
-            this.updateFiltering();
+        const filterWrapper = document.createElement('div');
+        filterWrapper.classList.add('afa-filter-wrapper');
+        this.wrapperElement.appendChild(filterWrapper);
+        this.displayExpandCollapseButton(filterWrapper);
+        this.displayFilterCheckboxes(filterWrapper);
+        
+        for (const filter of this.filters) {
+            filter.initialize(this.rootNodeView, () => this.updateFilteringDebounced());
         }
+        this.updateFiltering();
         this.wrapperElement.appendChild(rootNodeElement);
+    }
+
+    private displayExpandCollapseButton(wrapperElement: HTMLElement): void {
+        const button = document.createElement('button');
+        button.textContent = 'Expand/Collapse all';
+        button.style.float = 'left';
+        button.style.marginRight = '1em';
+        button.addEventListener('click', () => {
+            // If there are any collapsed, expand the tree
+            // If there are none collapsed, collapse the tree
+            const collapsedDetails = this.wrapperElement.querySelectorAll('details:not([open])') as NodeListOf<HTMLElement>;
+            const shownCollapsedDetails = Array.from(collapsedDetails).filter(el => el.style.display !== 'none');
+
+            const detailsTags = this.wrapperElement.querySelectorAll('details');
+            if (shownCollapsedDetails.length > 0) {
+                for (const details of detailsTags) {
+                    details.setAttribute('open', '');
+                }
+            } else {
+                for (const details of detailsTags) {
+                    details.removeAttribute('open');
+                }
+            }
+        });
+        wrapperElement.prepend(button);
     }
 
     private displayFilterCheckboxes(filterWrapper: HTMLElement): void {
