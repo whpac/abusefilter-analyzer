@@ -132,6 +132,11 @@ mw.util.addCSS(`
     text-align: right;
     margin-bottom: 0.5em;
 }
+.afa-filter-wrapper::after {
+    clear: both;
+    content: '';
+    display: block;
+}
 .afa-filter-wrapper label {
     margin-left: 0.6em;
 }

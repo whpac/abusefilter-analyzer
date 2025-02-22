@@ -82,6 +82,8 @@ export class AbuseFilterGUI {
     }
 
     private displayFilterCheckboxes(filterWrapper: HTMLElement): void {
+        if (this.filters.length === 0) return;
+
         filterWrapper.append('Options: ');
         for (const filter of this.filters) {
             const filterKey = filter.constructor.name;
