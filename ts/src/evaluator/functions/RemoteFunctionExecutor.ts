@@ -12,9 +12,21 @@ import { IFunctionExecutor } from './IFuctionExecutor.js';
 export class RemoteFunctionExecutor implements IFunctionExecutor {
 
     public async executeFunction(functionName: string, context: IEvaluationContext, args: IValue<unknown>[]): Promise<IValue<unknown>> {
-        const apiUrl = '/w/api.php?action=abusefilterevalexpression&format=json&expression=';
         const functionExpression = `${functionName}(${args.map(arg => arg.toLiteral()).join(', ')})`;
-        const response = await fetch(apiUrl + encodeURIComponent(functionExpression));
+        
+        const apiParams = new FormData();
+        apiParams.set('action', 'abusefilterevalexpression');
+        apiParams.set('format', 'json');
+        apiParams.set('expression', functionExpression);
+        
+        const apiUrl = '/w/api.php';
+        const response = await fetch(
+            apiUrl,
+            {
+                method: 'POST',
+                body: apiParams
+            }
+        );
 
         let result: AbuseFilterEvalResponse;
         try {
