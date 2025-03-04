@@ -62,12 +62,23 @@ export class BlockNodeView extends BaseNodeView {
                     hint = hints[i];
                 }
                 
+                const childView = this.children[i];
+                const renderedChild = childView.render();
+
+
                 if (hint !== null) {
                     const hintView = this.renderHintView(hint);
-                    childElement.append(hintView, ' ');
+
+                    let hintRoot: HTMLElement = childElement;
+                    if (renderedChild.tagName === 'DETAILS') {
+                        const summaryElements = renderedChild.getElementsByTagName('summary');
+                        if (summaryElements.length > 0) {
+                            hintRoot = summaryElements[0];
+                        }
+                    }
+                    hintRoot.prepend(hintView, ' ');
                 }
-                const childView = this.children[i];
-                childElement.appendChild(childView.render());
+                childElement.appendChild(renderedChild);
                 childrenListElement.appendChild(childElement);
             }
         }
