@@ -9,7 +9,7 @@ import { ValueFormatter } from './ValueFormatter.js';
  * A view for displaying the value of a node when it's ready.
  */
 export class NodeValueView extends NodeValueViewBase implements IView {
-    protected element: HTMLElement;
+    protected element: HTMLSpanElement;
     protected relevantContext: IEvaluationContext;
 
     /**
@@ -20,6 +20,7 @@ export class NodeValueView extends NodeValueViewBase implements IView {
         super();
 
         this.element = document.createElement('span');
+        this.element.textContent = '...';
         this.relevantContext = evaluationContext;
 
         this.listenToChanges(node);
@@ -29,12 +30,13 @@ export class NodeValueView extends NodeValueViewBase implements IView {
         if (context.rootContext != this.relevantContext.rootContext) return;
 
         this.element.textContent = '';
+        const maxLength = 15;
         const formattedValue = ValueFormatter.formatValue(value);
-        const shortenedValue = this.shortenValue(value, formattedValue);
-
-        if (shortenedValue === null) {
+        
+        if (formattedValue.textContent!.length <= maxLength) {
             this.setViewContent(formattedValue, null);
         } else {
+            const shortenedValue = this.shortenValue(value, maxLength);
             this.setViewContent(shortenedValue, formattedValue);
         }
     }

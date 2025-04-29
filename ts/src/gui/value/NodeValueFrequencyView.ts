@@ -54,6 +54,7 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
         }
 
         this.values.push({ value, count: 1 });
+        this.scheduleViewUpdate();
     }
 
     protected override onErrorSet(errors: Error[], context: IEvaluationContext): void {
@@ -110,13 +111,13 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
             return;
         }
 
+        const maxLength = 15;
         const formattedValue = ValueFormatter.formatValue(mostFrequent.value);
-        const shortenedValue = this.shortenValue(mostFrequent.value, formattedValue);
-
-
-        if (shortenedValue === null) {
+        
+        if (formattedValue.textContent!.length <= maxLength) {
             this.setViewContent(formattedValue, frequency);
         } else {
+            const shortenedValue = this.shortenValue(mostFrequent.value, maxLength);
             this.setViewContent(shortenedValue, frequency);
         }
     }
