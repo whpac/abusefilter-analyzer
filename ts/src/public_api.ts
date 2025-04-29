@@ -32,6 +32,8 @@ import { ViewFactory } from './gui/treeViews/ViewFactory.js';
 import { NodeValueView } from './gui/value/NodeValueView.js';
 import { ProcessedDataView } from './gui/value/ProcessedDataView.js';
 import { ValueFormatter } from './gui/value/ValueFormatter.js';
+import { ValueFrequencyPillView } from './gui/value/ValueFrequencyPillView.js';
+import { ValueFrequencyPopup } from './gui/value/ValueFrequencyPopup.js';
 import { AbuseFilterApi } from './mediawiki/AbuseFilterApi.js';
 import { TreeNode } from './parser/nodes/TreeNode.js';
 import { TreeNodeFactory } from './parser/nodes/TreeNodeFactory.js';
@@ -109,6 +111,8 @@ const _abuseFilter = {
             NodeValueView,
             ProcessedDataView,
             ValueFormatter,
+            ValueFrequencyPillView,
+            ValueFrequencyPopup,
         },
     },
 };
@@ -118,7 +122,7 @@ mw.hook('userjs.abuseFilter').fire(_abuseFilter);
 
 // TODO: put this to the GUI package
 mw.util.addCSS(`
-.afa-tree-container {
+.afa-tree-container, .afa-value {
     --afa-color-value-keyword: blue;
     --afa-color-value-string: brown;
     --afa-color-value-number: darkgreen;
@@ -192,6 +196,9 @@ mw.util.addCSS(`
     border-radius: 0.5em;
     display: none;
     box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    max-height: 60vh;
+    overflow: auto;
 }
 .afa-data:hover .afa-data-more { display: block; }
 
@@ -213,6 +220,23 @@ mw.util.addCSS(`
 
 .afa-tree-container ul:has(> li > details) > li:not(:has(> details)) {
     padding-left: 1em;
+}
+
+button.afa-silent-button {
+    background: none;
+    font: inherit;
+    appearance: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    cursor: pointer;
+    outline: inherit;
+    text-align: left;
+    margin: 0;
+}
+
+summary {
+    width: fit-content;
 }
 
 html.skin-theme-clientpref-night .afa-tree-container {
