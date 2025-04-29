@@ -1,52 +1,33 @@
-import { Value } from '../../evaluator/value/Value.js';
 import { IEvaluationContext } from '../../model/IEvaluationContext.js';
 import { IEvaluableTreeNode } from '../../model/nodes/IEvaluableTreeNode.js';
 import { IValue } from '../../model/value/IValue.js';
-import { ValueDataType } from '../../model/value/ValueDataType.js';
 import { IView } from '../IView.js';
+import { NodeValueViewBase } from './NodeValueViewBase.js';
 import { ValueFormatter } from './ValueFormatter.js';
 
 /**
  * A view for displaying the value of a node when it's ready.
  */
-export class NodeValueView implements IView {
+export class NodeValueView extends NodeValueViewBase implements IView {
     protected element: HTMLElement;
+    protected relevantContext: IEvaluationContext;
 
     /**
      * @param node The node for which to display the value.
      * @param evaluationContext The context for which to fetch the value.
      */
     public constructor(node: IEvaluableTreeNode, evaluationContext: IEvaluationContext) {
+        super();
+
         this.element = document.createElement('span');
+        this.relevantContext = evaluationContext;
 
-        if (node.hasErrors(evaluationContext)) {
-            this.setErrors(node.getErrors(evaluationContext), evaluationContext.isSpeculative);
-        } else if (node.hasValue(evaluationContext)) {
-            this.setValue(node.getValue(evaluationContext));
-        } else {
-            this.element.textContent = '...';
-        }
-
-        node.addOnValueSetCallback((node, context) => {
-            // Ignore updates from unrelated contexts
-            if (context.rootContext != evaluationContext.rootContext) return;
-
-            this.setValue(node.getValue(context));
-        });
-
-        node.addOnErrorCallback((node, context) => {
-            // Ignore updates from unrelated contexts
-            if (context.rootContext != evaluationContext.rootContext) return;
-
-            this.setErrors(node.getErrors(context), context.isSpeculative);
-        });
+        this.listenToChanges(node);
     }
 
-    public render(): HTMLElement {
-        return this.element;
-    }
+    protected override onValueSet(value: IValue, context: IEvaluationContext): void {
+        if (context.rootContext != this.relevantContext.rootContext) return;
 
-    protected setValue(value: IValue): void {
         this.element.textContent = '';
         const formattedValue = ValueFormatter.formatValue(value);
         const shortenedValue = this.shortenValue(value, formattedValue);
@@ -58,12 +39,14 @@ export class NodeValueView implements IView {
         }
     }
 
-    protected setErrors(errors: Error[], isSpeculative: boolean): void {
+    protected override onErrorSet(errors: Error[], context: IEvaluationContext): void {
+        if (context.rootContext != this.relevantContext.rootContext) return;
+
         const shortText = document.createElement('span');
         shortText.classList.add('afa-data-error');
         shortText.textContent = 'Errors: ' + errors.length;
 
-        if (isSpeculative) {
+        if (context.isSpeculative) {
             shortText.classList.add('afa-data-error-speculative');
             shortText.textContent += ' (speculative)';
         }
@@ -83,45 +66,5 @@ export class NodeValueView implements IView {
             moreContainer.appendChild(longValue);
             this.element.appendChild(moreContainer);
         }
-    }
-
-    /**
-     * Tries to render the value in a short form.
-     * If there's no short form available, returns null.
-     */
-    protected shortenValue(value: IValue, originalRender: HTMLElement): HTMLElement | null {
-        // Scalars usually don't need shortening
-        switch (value.dataType) {
-            case ValueDataType.Array:
-                return this.shortenArray(value as IValue<unknown[]>, originalRender);
-            case ValueDataType.String:
-                return this.shortenString(value as IValue<string>, originalRender);
-            default:
-                return null;
-        }
-    }
-
-    protected shortenArray(value: IValue<unknown[]>, originalRender: HTMLElement): HTMLElement | null {
-        // We allow output that's at most 15 characters long
-        const maxLength = 15;
-        if (originalRender.textContent!.length <= maxLength) return null;
-
-        const arrayLength = value.value.length;
-        const element = document.createElement('span');
-        element.textContent = `array(${arrayLength})`;
-        return element;
-    }
-
-    protected shortenString(value: IValue<string>, originalRender: HTMLElement): HTMLElement | null {
-        // We allow output that's at most 15 characters long
-        const maxLength = 15;
-        if (originalRender.textContent!.length <= maxLength) return null;
-
-        const beginning = value.value.substring(0, maxLength - 3);
-        const beginningValue = new Value(ValueDataType.String, beginning);
-        const element = document.createElement('span');
-        element.appendChild(ValueFormatter.formatValue(beginningValue));
-        element.append('...');
-        return element;
     }
 }

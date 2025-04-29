@@ -1,17 +1,16 @@
-import { Value } from '../../evaluator/value/Value.js';
 import { ValueComparer } from '../../evaluator/value/ValueComparer.js';
+import { IEvaluationContext } from '../../model/IEvaluationContext.js';
 import { IEvaluableTreeNode } from '../../model/nodes/IEvaluableTreeNode.js';
 import { IValue } from '../../model/value/IValue.js';
-import { ValueDataType } from '../../model/value/ValueDataType.js';
 import { IView } from '../IView.js';
+import { NodeValueViewBase } from './NodeValueViewBase.js';
 import { ValueFormatter } from './ValueFormatter.js';
 import { ValueFrequencyPopup, ValueFrequencies } from './ValueFrequencyPopup.js';
 
 /**
  * A view for displaying the most frequent values of a node at multiple evaluations.
- * TODO: Refactor and prepare a common base class for this and NodeValueView.
  */
-export class ValueFrequencyPillView implements IView {
+export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
     protected element: HTMLButtonElement;
     // This is not optimal for large data sets, but it's good enough for now
     protected values: ValueFrequencies = [];
@@ -22,29 +21,18 @@ export class ValueFrequencyPillView implements IView {
      * @param evaluationContext The context for which to fetch the value.
      */
     public constructor(node: IEvaluableTreeNode) {
+        super();
+
         this.element = document.createElement('button');
         this.element.classList.add('afa-silent-button');
         this.element.type = 'button';
         this.element.textContent = '...';
 
-        for (const context of node.getContextsWithValue()) {
-            this.addValue(node.getValue(context));
-        }
-        for (const context of node.getContextsWithErrors()) {
-            this.addErrors(node.getErrors(context), context.isSpeculative);
-        }
+        this.listenToChanges(node);
+
         // For the initial render, display the value immediately as we are sure that there's
         // only a single initial rendering.
         this.updateViewImmediate();
-
-        node.addOnValueSetCallback((node, context) => {
-            this.addValue(node.getValue(context));
-            this.scheduleViewUpdate();
-        });
-        node.addOnErrorCallback((node, context) => {
-            this.addErrors(node.getErrors(context), context.isSpeculative);
-            this.scheduleViewUpdate();
-        });
 
         this.element.addEventListener('click', (e) => {
             const popup = new ValueFrequencyPopup();
@@ -56,11 +44,7 @@ export class ValueFrequencyPillView implements IView {
         });
     }
 
-    public render(): HTMLElement {
-        return this.element;
-    }
-
-    protected addValue(value: IValue): void {
+    protected override onValueSet(value: IValue): void {
         this.totalValueCount++;
         for (const entry of this.values) {
             if (ValueComparer.areEqual(entry.value, value, true)) {
@@ -72,14 +56,14 @@ export class ValueFrequencyPillView implements IView {
         this.values.push({ value, count: 1 });
     }
 
-    protected addErrors(errors: Error[], isSpeculative: boolean): void {
+    protected override onErrorSet(errors: Error[], context: IEvaluationContext): void {
         // TODO: Add errors here
         return;
         const shortText = document.createElement('span');
         shortText.classList.add('afa-data-error');
         shortText.textContent = 'Errors: ' + errors.length;
 
-        if (isSpeculative) {
+        if (context.isSpeculative) {
             shortText.classList.add('afa-data-error-speculative');
             shortText.textContent += ' (speculative)';
         }
@@ -147,45 +131,5 @@ export class ValueFrequencyPillView implements IView {
             frequency = Math.floor(frequency * 100);
             this.element.append(` (${frequency}%)`);
         }
-    }
-
-    /**
-     * Tries to render the value in a short form.
-     * If there's no short form available, returns null.
-     */
-    protected shortenValue(value: IValue, originalRender: HTMLElement): HTMLElement | null {
-        // Scalars usually don't need shortening
-        switch (value.dataType) {
-            case ValueDataType.Array:
-                return this.shortenArray(value as IValue<unknown[]>, originalRender);
-            case ValueDataType.String:
-                return this.shortenString(value as IValue<string>, originalRender);
-            default:
-                return null;
-        }
-    }
-
-    protected shortenArray(value: IValue<unknown[]>, originalRender: HTMLElement): HTMLElement | null {
-        // We allow output that's at most 15 characters long
-        const maxLength = 15;
-        if (originalRender.textContent!.length <= maxLength) return null;
-
-        const arrayLength = value.value.length;
-        const element = document.createElement('span');
-        element.textContent = `array(${arrayLength})`;
-        return element;
-    }
-
-    protected shortenString(value: IValue<string>, originalRender: HTMLElement): HTMLElement | null {
-        // We allow output that's at most 15 characters long
-        const maxLength = 15;
-        if (originalRender.textContent!.length <= maxLength) return null;
-
-        const beginning = value.value.substring(0, maxLength - 3);
-        const beginningValue = new Value(ValueDataType.String, beginning);
-        const element = document.createElement('span');
-        element.appendChild(ValueFormatter.formatValue(beginningValue));
-        element.append('...');
-        return element;
     }
 }

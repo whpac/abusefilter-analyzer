@@ -32,7 +32,7 @@ import { ViewFactory } from './gui/treeViews/ViewFactory.js';
 import { NodeValueView } from './gui/value/NodeValueView.js';
 import { ProcessedDataView } from './gui/value/ProcessedDataView.js';
 import { ValueFormatter } from './gui/value/ValueFormatter.js';
-import { ValueFrequencyPillView } from './gui/value/ValueFrequencyPillView.js';
+import { NodeValueFrequencyView } from './gui/value/NodeValueFrequencyView.js';
 import { ValueFrequencyPopup } from './gui/value/ValueFrequencyPopup.js';
 import { AbuseFilterApi } from './mediawiki/AbuseFilterApi.js';
 import { TreeNode } from './parser/nodes/TreeNode.js';
@@ -108,10 +108,10 @@ const _abuseFilter = {
             ViewFactory,
         },
         value: {
+            NodeValueFrequencyView,
             NodeValueView,
             ProcessedDataView,
             ValueFormatter,
-            ValueFrequencyPillView,
             ValueFrequencyPopup,
         },
     },
