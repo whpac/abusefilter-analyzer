@@ -43,6 +43,38 @@ export class AbuseFilterApi {
 
         throw new Error('Log entry does not exist or you have no permissions to view it');
     }
+
+    public static async* fetchAbuseLogEntries(filterId: number | string, limit: number): AsyncGenerator<AbuseLogEntry> {
+        const api = new mw.Api();
+        
+        let remaining = limit;
+        let aflStart = 'now';
+        while (remaining > 0) {
+            const apiLimit = Math.min(remaining, 5000); // API limit is 5000
+            const response = await api.get({
+                action: 'query',
+                list: 'abuselog',
+                aflfilter: filterId,
+                afllimit: apiLimit,
+                aflstart: aflStart,
+                aflprop: 'ids|details',
+                maxage: 600, // new log entries will appear in the list as the time passess, so cache time shouldn't be too long
+                smaxage: 1800,
+            });
+
+            const logObjects = response?.query?.abuselog as AbuseLogEntry[] | undefined;
+            if (logObjects === undefined) {
+                throw new Error(`Unable to fetch log entries for filter ${filterId}. You might not have permission to view them.`);
+            }
+
+            for (const logObject of logObjects) {
+                yield logObject;
+            }
+
+            remaining -= logObjects.length ?? 0;
+            aflStart = response.continue.aflstart;
+        }
+    }
 }
 
 export interface AbuseLogEntry {
