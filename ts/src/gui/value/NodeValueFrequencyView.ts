@@ -46,14 +46,20 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
 
     protected override onValueSet(value: IValue): void {
         this.totalValueCount++;
+
+        let found = false;
         for (const entry of this.values) {
             if (ValueComparer.areEqual(entry.value, value, true)) {
                 entry.count++;
-                return;
+                found = true;
+                break;
             }
         }
 
-        this.values.push({ value, count: 1 });
+        if (!found) {
+            this.values.push({ value, count: 1 });
+        }
+
         this.scheduleViewUpdate();
     }
 
