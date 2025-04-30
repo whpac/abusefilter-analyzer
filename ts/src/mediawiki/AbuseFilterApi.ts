@@ -1,7 +1,7 @@
 export class AbuseFilterApi {
 
     public static async fetchAbuseFilterText(filterId: number | string): Promise<string> {
-        let api = new mw.Api();
+        let api = this.getApi();
         if (filterId.toString().startsWith('global-')) {
             filterId = filterId.toString().replace('global-', '');
             api = new mw.ForeignApi('https://meta.wikimedia.org/w/api.php');
@@ -25,7 +25,7 @@ export class AbuseFilterApi {
     }
 
     public static async fetchAbuseLogEntry(logId: number | string): Promise<AbuseLogEntry> {
-        const api = new mw.Api();
+        const api = this.getApi();
         const response = await api.get({
             action: 'query',
             list: 'abuselog',
@@ -45,7 +45,7 @@ export class AbuseFilterApi {
     }
 
     public static async* fetchAbuseLogEntries(filterId: number | string, limit: number): AsyncGenerator<AbuseLogEntry> {
-        const api = new mw.Api();
+        const api = this.getApi();
         
         let remaining = limit;
         let aflStart = 'now';
@@ -74,6 +74,13 @@ export class AbuseFilterApi {
             remaining -= logObjects.length ?? 0;
             aflStart = response.continue.aflstart;
         }
+    }
+
+    private static getApi(): mw.Api {
+        return new mw.Api({
+            //@ts-expect-error types-mediawiki doesn't yet have 'userAgent' field
+            userAgent: 'abusefilter-analyzer (User:Msz2001)'
+        });
     }
 }
 
