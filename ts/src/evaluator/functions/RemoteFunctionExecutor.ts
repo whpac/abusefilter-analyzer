@@ -8,11 +8,18 @@ import { IFunctionExecutor } from './IFuctionExecutor.js';
  * Function executor that delegates the execution to the API.
  * Please note that by default only priviledged users can use that
  * API endpoint.
+ * In order to reduce server strain, the calls are cached.
  */
 export class RemoteFunctionExecutor implements IFunctionExecutor {
 
+    private cache: Map<string, IValue<unknown>> = new Map<string, IValue<unknown>>();
+
     public async executeFunction(functionName: string, context: IEvaluationContext, args: IValue<unknown>[]): Promise<IValue<unknown>> {
         const functionExpression = `${functionName}(${args.map(arg => arg.toLiteral()).join(', ')})`;
+
+        if (this.cache.has(functionExpression)) {
+            return this.cache.get(functionExpression)!;
+        }
         
         const apiParams = new FormData();
         apiParams.set('action', 'abusefilterevalexpression');
@@ -24,6 +31,9 @@ export class RemoteFunctionExecutor implements IFunctionExecutor {
             apiUrl,
             {
                 method: 'POST',
+                headers: new Headers({
+                    'Api-User-Agent': 'abusefilter-analyzer (User:Msz2001)',
+                }),
                 body: apiParams
             }
         );
@@ -38,9 +48,14 @@ export class RemoteFunctionExecutor implements IFunctionExecutor {
         if (result.error) {
             throw new Error('Server error: ' + result.error.info);
         }
-
         const value = result.abusefilterevalexpression.result;
 
+        const reifiedValue = this.reifyValue(value);
+        this.cache.set(functionExpression, reifiedValue);
+        return reifiedValue;
+    }
+
+    private reifyValue(value: string): IValue<unknown> {
         if (value === 'null') {
             return new Value(ValueDataType.Null, null);
         } else if (value === 'true' || value === 'false') {
