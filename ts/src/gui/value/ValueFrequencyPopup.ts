@@ -4,8 +4,18 @@ import { ValueFormatter } from './ValueFormatter.js';
 
 export class ValueFrequencyPopup {
 
-    public display(valueFrequencies: ValueFrequencies, attachToNode: HTMLElement | null): void {
-        const popupContent = this.makeContent(valueFrequencies);
+    public display(valueFrequencies: ValueFrequencies, errors: Error[], attachToNode: HTMLElement | null): void {
+        const content = document.createElement('div');
+        if (valueFrequencies.length > 0) {
+            content.appendChild(this.makeMainContent(valueFrequencies));
+        }
+        if (valueFrequencies.length > 0 && errors.length > 0) {
+            content.appendChild(document.createElement('hr'));
+        }
+        if (errors.length > 0) {
+            content.appendChild(this.makeErrorContent(errors));
+        }
+
         const $anchor = attachToNode ? $(attachToNode) : undefined;
 
         // Adjust the popup width based on the values to be shown
@@ -18,7 +28,7 @@ export class ValueFrequencyPopup {
                 autoClose: true,
                 padded: true,
                 width: useWidePopup ? window.innerWidth * 0.9 : 350,
-                $content: $(popupContent),
+                $content: $(content),
                 $floatableContainer: $anchor,
                 anchor: !!attachToNode,
                 head: true,
@@ -30,13 +40,28 @@ export class ValueFrequencyPopup {
         });
     }
 
-    protected makeContent(valueFrequencies: ValueFrequencies): HTMLElement {
+    protected makeMainContent(valueFrequencies: ValueFrequencies): HTMLElement {
         const container = document.createElement('ul');
         for (const entry of valueFrequencies) {
             const value = document.createElement('li');
             value.append(`${entry.count} times: `);
             value.appendChild(ValueFormatter.formatValue(entry.value, 200));
             container.appendChild(value);
+        }
+
+        return container;
+    }
+
+    protected makeErrorContent(errors: Error[]): HTMLElement {
+        const container = document.createElement('div');
+        container.append(`Errors (${errors.length}): `);
+
+        const list = document.createElement('ul');
+        container.appendChild(list);
+        for (const entry of errors) {
+            const value = document.createElement('li');
+            value.textContent = entry.message;
+            list.appendChild(value);
         }
 
         return container;

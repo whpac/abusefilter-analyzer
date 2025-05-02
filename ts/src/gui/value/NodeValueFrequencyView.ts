@@ -14,7 +14,9 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
     protected element: HTMLButtonElement;
     // This is not optimal for large data sets, but it's good enough for now
     protected values: ValueFrequencies = [];
-    protected totalValueCount = 0;
+    // This is the total number of values and error sets that have been reported by the relevant node
+    protected totalEvaluationsCount = 0;
+    protected errors: Error[] = [];
 
     /**
      * @param node The node for which to display the value.
@@ -26,6 +28,7 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
         this.element = document.createElement('button');
         this.element.classList.add('afa-silent-button');
         this.element.type = 'button';
+        this.element.title = 'Click to see the value frequency';
         this.element.textContent = '...';
 
         this.listenToChanges(node);
@@ -36,7 +39,7 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
 
         this.element.addEventListener('click', (e) => {
             const popup = new ValueFrequencyPopup();
-            popup.display(this.values, this.element);
+            popup.display(this.values, this.errors, this.element);
 
             // So as not to trigger expand/collapse on the parent <details>
             e.stopPropagation();
@@ -45,11 +48,13 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
     }
 
     protected override onValueSet(value: IValue): void {
-        this.totalValueCount++;
+        this.totalEvaluationsCount++;
 
         let found = false;
         for (const entry of this.values) {
-            if (ValueComparer.areEqual(entry.value, value, true)) {
+            // undefined needs to be handled separately, as by definition they are never equal
+            // and here we want to treat them as equal
+            if (ValueComparer.areEqual(entry.value, value, true) || (entry.value.isUndefined && value.isUndefined)) {
                 entry.count++;
                 found = true;
                 break;
@@ -64,18 +69,15 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
     }
 
     protected override onErrorSet(errors: Error[], context: IEvaluationContext): void {
-        // TODO: Add errors here
-        return;
-        const shortText = document.createElement('span');
-        shortText.classList.add('afa-data-error');
-        shortText.textContent = 'Errors: ' + errors.length;
-
         if (context.isSpeculative) {
-            shortText.classList.add('afa-data-error-speculative');
-            shortText.textContent += ' (speculative)';
+            // We only display 'real' errors, not speculative ones
+            return;
         }
 
-        this.setViewContent(shortText, null);
+        this.totalEvaluationsCount++;
+
+        this.errors.unshift(...errors);
+        this.scheduleViewUpdate();
     }
 
     private updateTimeoutReference: number | null = null;
@@ -108,7 +110,7 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
         this.values.sort((a, b) => b.count - a.count);
 
         const mostFrequent = this.values[0];
-        const frequency = mostFrequent.count / this.totalValueCount;
+        const frequency = mostFrequent.count / this.totalEvaluationsCount;
 
         if (frequency < 0.3) {
             const message = document.createElement('span');
@@ -128,15 +130,19 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
         }
     }
 
-    protected setViewContent(shortValue: HTMLElement, frequency: number | null): void {
+    protected setViewContent(value: HTMLElement, frequency: number | null): void {
         this.element.textContent = '';
 
-        this.element.appendChild(shortValue);
+        this.element.appendChild(value);
 
         if (frequency !== null) {
             // Floor so that we don't display 100% for e.g. 99.5%
             frequency = Math.floor(frequency * 100);
             this.element.append(` (${frequency}%)`);
+        }
+
+        if (this.errors.length > 0) {
+            this.element.append(`, ${this.errors.length} errors`);
         }
     }
 }
