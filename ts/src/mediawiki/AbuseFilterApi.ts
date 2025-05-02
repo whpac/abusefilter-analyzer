@@ -57,7 +57,7 @@ export class AbuseFilterApi {
                 aflfilter: filterId,
                 afllimit: apiLimit,
                 aflstart: aflStart,
-                aflprop: 'ids|details',
+                aflprop: 'ids|details|timestamp',
                 maxage: 600, // new log entries will appear in the list as the time passess, so cache time shouldn't be too long
                 smaxage: 1800,
             });
@@ -88,4 +88,5 @@ export interface AbuseLogEntry {
     id: number;
     filter_id: number;
     details: Record<string, unknown>;
+    timestamp?: string; // Formatted as 1970-01-01T00:00:00Z
 }
