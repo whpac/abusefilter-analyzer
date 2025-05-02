@@ -234,6 +234,21 @@ button.afa-silent-button {
     text-align: left;
     margin: 0;
 }
+.afa-value-inlay-button {
+    background: var(--background-color-neutral, #eaecf0);
+    font-size: 0.85em;
+    font-family: sans-serif;
+    font-weight: bold;
+    appearance: none;
+    border: none;
+    border-radius: 0.2em;
+    padding: 0 0.5em;
+    color: var(--color-base--subtle, #54595d);
+    cursor: pointer;
+    outline: inherit;
+    margin: 0;
+    margin-left: 0.2em;
+}
 
 summary {
     width: fit-content;
