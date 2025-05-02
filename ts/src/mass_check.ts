@@ -51,15 +51,28 @@ function displayOnFilterLogPage(filterId: string) {
             alert('Please enter a valid positive number.');
             return;
         }
-        button.disabled = true;
-        button.textContent = 'Loading...';
-        displayFrequencyAnalysis(rootElement, filterId, count);
+        par1.remove();
+
+        const treeRootElement = document.createElement('div');
+        rootElement.appendChild(treeRootElement);
+        displayFrequencyAnalysis(treeRootElement, filterId, count, (processed, logTimestamp) => {
+            if (processed < count) {
+                par2.textContent = 'Processed ' + processed + ' / ' + count + ' log entries.';
+            } else {
+                par2.textContent = 'Processed all ' + count + ' log entries.';
+                if (logTimestamp) {
+                    const logDate = new Date(logTimestamp);
+                    par2.textContent += ' The oldest log entry is from ' + logDate.toLocaleString() + '.';
+                }
+            }
+        });
     });
     par2.appendChild(button);
     rootElement.appendChild(par2);
 }
 
-async function displayFrequencyAnalysis(rootElement: HTMLElement, filterId: string, count: number) {
+async function displayFrequencyAnalysis(rootElement: HTMLElement, filterId: string, count: number, progressCallback?: (processed: number, logTimestamp?: string) => void) {
+    progressCallback?.(0);
     const nodeFactory = new EvaluableNodeFactory();
     const tokenizer = new Tokenizer();
     const parser = new Parser(nodeFactory);
@@ -88,6 +101,7 @@ async function displayFrequencyAnalysis(rootElement: HTMLElement, filterId: stri
     const evaluator = new NodeEvaluator(functionExecutor);
 
     try {
+        let processedCount = 0;
         for await (const logEntry of AbuseFilterApi.fetchAbuseLogEntries(filterId, count)) {
             try {
                 const evaluationContext = new EvaluationContext();
@@ -97,13 +111,15 @@ async function displayFrequencyAnalysis(rootElement: HTMLElement, filterId: stri
                 }
         
                 await evaluator.evaluateNode(rootNode, evaluationContext);
+                progressCallback?.(++processedCount, logEntry.timestamp);
             } catch (error) {
                 // TODO: Display somehow
                 console.error('Error evaluating log entry:', error);
             }
         }
     } catch (error) {
-        console.error(`Can't load the abuse filter: ${error}`);
+        const errorMessage = (error instanceof Error) ? error.message : ('' + error);
+        rootElement.textContent = `Can't load the abuse filter: ${errorMessage}`;
     }
 }
 
