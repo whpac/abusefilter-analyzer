@@ -1,46 +1,8 @@
+// Import the whole AbuseFilter Analyzer library
 import './public_api.js';
 
-async function displayOnLogPage(logId: string) {
-    const fieldset = document.querySelector('#mw-content-text > fieldset');
-    if (!fieldset) return;
-
-    const referenceHeader = fieldset.querySelector('h3');
-    if (!referenceHeader) return;
-
-    const treeHeader = document.createElement('h3');
-    treeHeader.textContent = 'Filter evaluation tree';
-    fieldset.insertBefore(treeHeader, referenceHeader);
-
-    const rootElement = document.createElement('div');
-    rootElement.textContent = 'Loading...';
-    fieldset.insertBefore(rootElement, referenceHeader);
-
-    try {
-        const filter = await mw.libs.abuseFilter.createFromLogId(logId);
-        filter.flattenAssociativeOperators();
-
-        const impactingBoolFilter = new mw.libs.abuseFilter.gui.filters.ImpactingBoolFilter(filter.defaultContext);
-        const filters = [
-            impactingBoolFilter,
-        ];
-        filter.renderInto(rootElement, filters);
-        await filter.evaluate();
-    } catch (error: unknown) {
-        const errorMessage = (error instanceof Error) ? error.message : ('' + error);
-        rootElement.textContent = `Can't load the abuse filter: ${errorMessage}`;
-    }
-}
-
-function main() {
-    // Run only on the AbuseLog special page
-    if (mw.config.get('wgCanonicalSpecialPageName') !== 'AbuseLog') return;
-
-    const pageName = mw.config.get('wgPageName');
-    const logMatch = pageName.match(/\/(\d+)$/);
-    const logId = logMatch?.[1];
-
-    if (logId) {
-        displayOnLogPage(logId);
-    }
-}
-main();
+// And then include the gadgets
+// They load themselves as a response to userjs.abuseFilter hook
+// so we don't need to do anything else here
+import './gadgets/hitDetails/main.js';
+import './gadgets/massCheck/main.js';

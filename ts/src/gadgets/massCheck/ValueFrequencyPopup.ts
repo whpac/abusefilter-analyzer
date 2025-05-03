@@ -1,6 +1,6 @@
 import { IValue } from '../../model/value/IValue.js';
 import { ValueDataType } from '../../model/value/ValueDataType.js';
-import { ValueFormatter } from './ValueFormatter.js';
+import { ValueFormatter } from '../../gui/value/ValueFormatter.js';
 
 export class ValueFrequencyPopup {
 

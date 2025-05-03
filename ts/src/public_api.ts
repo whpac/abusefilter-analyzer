@@ -30,10 +30,9 @@ import { IndexNodeView } from './gui/treeViews/IndexNodeView.js';
 import { OperatorNodeView } from './gui/treeViews/OperatorNodeView.js';
 import { ViewFactory } from './gui/treeViews/ViewFactory.js';
 import { NodeValueView } from './gui/value/NodeValueView.js';
+import { NodeValueViewBase } from './gui/value/NodeValueViewBase.js';
 import { ProcessedDataView } from './gui/value/ProcessedDataView.js';
 import { ValueFormatter } from './gui/value/ValueFormatter.js';
-import { NodeValueFrequencyView } from './gui/value/NodeValueFrequencyView.js';
-import { ValueFrequencyPopup } from './gui/value/ValueFrequencyPopup.js';
 import { AbuseFilterApi } from './mediawiki/AbuseFilterApi.js';
 import { TreeNode } from './parser/nodes/TreeNode.js';
 import { TreeNodeFactory } from './parser/nodes/TreeNodeFactory.js';
@@ -108,11 +107,10 @@ const _abuseFilter = {
             ViewFactory,
         },
         value: {
-            NodeValueFrequencyView,
+            NodeValueViewBase,
             NodeValueView,
             ProcessedDataView,
             ValueFormatter,
-            ValueFrequencyPopup,
         },
     },
 };
