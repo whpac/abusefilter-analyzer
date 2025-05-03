@@ -49,7 +49,7 @@ export class AbuseFilterApi {
         
         let remaining = limit;
         let aflStart = 'now';
-        while (remaining > 0) {
+        while (remaining > 0 && aflStart !== undefined) {
             const apiLimit = Math.min(remaining, 5000); // API limit is 5000
             const response = await api.get({
                 action: 'query',
@@ -72,7 +72,7 @@ export class AbuseFilterApi {
             }
 
             remaining -= logObjects.length ?? 0;
-            aflStart = response.continue.aflstart;
+            aflStart = response.continue?.aflstart;
         }
     }
 

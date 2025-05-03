@@ -11,7 +11,7 @@ This repository contains a library for processing the abuse filters in JavaScrip
 *This library has been developed independently from the original AbuseFilter extension and by no means is a part of it.*
 
 ## Included gadgets
-* [Hit Details](./ts/src/gadgets/hitDetails/main.ts) – the most basic gadget around abuse filters. It renders a syntax tree and displays values in its every node. It can be really useful when inspecting details of a single abuse log entry, in order to better know what caused the filter to be triggerred on an action.
+* [Hit Details](./ts/src/gadgets/hitDetails/main.ts) – the most basic gadget around abuse filters. It renders a syntax tree and displays values in its every node. It can be really useful when inspecting details of a single abuse log entry, in order to better know what caused the filter to be triggered on an action.
 * [Mass Check](./ts/src/gadgets/massCheck/main.ts) – it has a similar functionality to Hit Details, but is used on a series of hits of the same filter. It can be used to look for unnecessary conditions inside the filters, as it can summarize values in each tree node from multiple invocations.
 
 ## Use cases for JavaScript AbuseFilter library
