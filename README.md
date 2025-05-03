@@ -6,9 +6,15 @@ AbuseFilter is an extension to MediaWiki that enables administrators to configur
 
 The user interface of AbuseFilter extension allows administrators to view all the actions that matched any of the filters. However, there is no built-in debugger for that. Therefore, invocations of any complex filter may prove hard to analyse, especially when the action seems to be a false-positive result.
 
+This repository contains a library for processing the abuse filters in JavaScript environments as well as a few gadgets designed specifically for use inside MediaWiki to help administrators with their work.
+
 *This library has been developed independently from the original AbuseFilter extension and by no means is a part of it.*
 
-## Use cases for abusefilter-js library
+## Included gadgets
+* [Hit Details](./ts/src/gadgets/hitDetails/main.ts) – the most basic gadget around abuse filters. It renders a syntax tree and displays values in its every node. It can be really useful when inspecting details of a single abuse log entry, in order to better know what caused the filter to be triggerred on an action.
+* [Mass Check](./ts/src/gadgets/massCheck/main.ts) – it has a similar functionality to Hit Details, but is used on a series of hits of the same filter. It can be used to look for unnecessary conditions inside the filters, as it can summarize values in each tree node from multiple invocations.
+
+## Use cases for JavaScript AbuseFilter library
 
 As the AbuseFilter API does not provide options to inspect the data flow during filter execution, this library has been written. It mimicks the characteristics of original filter parser and evaluator, but exposes the whole sytax tree and allows for detailed inspection of values in every of the tree nodes.
 
@@ -16,7 +22,7 @@ The most basic application of this library is to help abuse filter editors to de
 
 Since this library is (almost*) completely run in the user browser, it's not limited by any rate limits or insufficient priviledges that a user could be normally subject to. Thus, it can be exploited for instance to prepare a frequency analysis of which rules are the most commonly matched (which in turn, could help optimize the filters).
 
-*Almost all actions are run in the browser – only the `ccnorm` function family is deferred to the MediaWiki server. The original character substitution table comprises of almost 10k rules that, expessed as code, weight around 100kB of unnecessary burden. This behavior will eventually change, but for now these functions are run on the server. This means that only users with enough priviledges on the wiki can run them.
+*Almost all actions are run in the browser – only the `ccnorm` function family is deferred to the MediaWiki server. The original character substitution table comprises of almost 10k rules that, expessed as code, weighs around 100kB of unnecessary burden. This behavior will eventually change, but for now these functions are run on the server. This means that only users with enough priviledges on the wiki can run them.
 
 ### Features
 

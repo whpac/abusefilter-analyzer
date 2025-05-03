@@ -2,9 +2,9 @@ import { ValueComparer } from '../../evaluator/value/ValueComparer.js';
 import { IEvaluationContext } from '../../model/IEvaluationContext.js';
 import { IEvaluableTreeNode } from '../../model/nodes/IEvaluableTreeNode.js';
 import { IValue } from '../../model/value/IValue.js';
-import { IView } from '../IView.js';
-import { NodeValueViewBase } from './NodeValueViewBase.js';
-import { ValueFormatter } from './ValueFormatter.js';
+import { IView } from '../../gui/IView.js';
+import { NodeValueViewBase } from '../../gui/value/NodeValueViewBase.js';
+import { ValueFormatter } from '../../gui/value/ValueFormatter.js';
 import { ValueFrequencyPopup, ValueFrequencies } from './ValueFrequencyPopup.js';
 
 /**
