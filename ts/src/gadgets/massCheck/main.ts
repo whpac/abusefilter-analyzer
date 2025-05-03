@@ -15,8 +15,9 @@ mw.hook('userjs.abuseFilter').add((abuseFilter: typeof mw.libs.abuseFilter) => {
 
     const urlParams = new URLSearchParams(window.location.search);
     const filterId = urlParams.get('wpSearchFilter');
+    const isSingleFilterLog = filterId && (filterId.indexOf('|') === -1);
     
-    if (filterId) {
+    if (isSingleFilterLog) {
         displayOnFilterLogPage(filterId);
     }
     
