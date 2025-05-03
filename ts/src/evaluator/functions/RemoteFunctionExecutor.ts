@@ -21,18 +21,20 @@ export class RemoteFunctionExecutor implements IFunctionExecutor {
     private cache: Map<string, IValue<unknown>> = new Map<string, IValue<unknown>>();
 
     public constructor() {
-        // Load the cache from session storage if available
-        const cacheString = sessionStorage.getItem(this.STORAGE_KEY);
-        if (cacheString) {
-            try {
-                const cacheObject = JSON.parse(cacheString) as Record<string, unknown>;
-                for (const key in cacheObject) {
-                    this.cache.set(key, Value.fromNative(cacheObject[key]));
+        try {
+            // Load the cache from session storage if available
+            const cacheString = sessionStorage.getItem(this.STORAGE_KEY);
+            if (cacheString) {
+                try {
+                    const cacheObject = JSON.parse(cacheString) as Record<string, unknown>;
+                    for (const key in cacheObject) {
+                        this.cache.set(key, Value.fromNative(cacheObject[key]));
+                    }
+                } catch (e) {
+                    console.error('Failed to load cache from session storage', e);
                 }
-            } catch (e) {
-                console.error('Failed to load cache from session storage', e);
             }
-        }
+        } catch (e) { /* Catches errors in node.js, where there's no sessionStorage */ }
     }
 
     public async executeFunction(functionName: string, context: IEvaluationContext, args: IValue<unknown>[]): Promise<IValue<unknown>> {    
