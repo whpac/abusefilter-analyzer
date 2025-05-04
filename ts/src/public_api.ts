@@ -252,7 +252,8 @@ summary {
     width: fit-content;
 }
 
-html.skin-theme-clientpref-night .afa-tree-container {
+html.skin-theme-clientpref-night .afa-tree-container,
+html.skin-theme-clientpref-night .afa-value {
     --afa-color-value-keyword: #749afa;
     --afa-color-value-string: #e08870;
     --afa-color-value-number: #b6f2b6;
@@ -264,7 +265,8 @@ html.skin-theme-clientpref-night .afa-tree-container {
 }
 
 @media screen and (prefers-color-scheme: dark) {
-    html.skin-theme-clientpref-os .afa-tree-container {
+    html.skin-theme-clientpref-os .afa-tree-container,
+    html.skin-theme-clientpref-night .afa-value {
         --afa-color-value-keyword: #749afa;
         --afa-color-value-string: #e08870;
         --afa-color-value-number: #b6f2b6;
