@@ -39,9 +39,14 @@ mw.hook('userjs.abuseFilter').add((abuseFilter: typeof mw.libs.abuseFilter) => {
         par1.textContent = 'You can use this tool to evaluate the filter on a specified number of recent log entries. ' +
             'This may be useful to see what conditions are triggered and how many times.';
         rootElement.appendChild(par1);
-    
+
+        const form = document.createElement('form');
+        rootElement.appendChild(form);
+        
         const par2 = document.createElement('p');
         par2.textContent = 'Number of log entries to check: ';
+        form.appendChild(par2);
+
         const input = document.createElement('input');
         input.type = 'number';
         input.value = '50';
@@ -51,8 +56,13 @@ mw.hook('userjs.abuseFilter').add((abuseFilter: typeof mw.libs.abuseFilter) => {
         par2.appendChild(input);
     
         const button = document.createElement('button');
+        button.type = 'submit';
         button.textContent = 'Start';
-        button.addEventListener('click', () => {
+        par2.appendChild(button);
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
             const count = parseInt(input.value, 10);
             if (isNaN(count) || count < 1) {
                 alert('Please enter a valid positive number.');
@@ -74,8 +84,6 @@ mw.hook('userjs.abuseFilter').add((abuseFilter: typeof mw.libs.abuseFilter) => {
                 }
             });
         });
-        par2.appendChild(button);
-        rootElement.appendChild(par2);
     }
     
     async function displayFrequencyAnalysis(rootElement: HTMLElement, filterId: string, count: number, progressCallback?: (processed: number, logTimestamp?: string) => void) {
