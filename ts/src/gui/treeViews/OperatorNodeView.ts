@@ -47,8 +47,10 @@ export class OperatorNodeView extends BlockNodeView {
         if (operator === ';') {
             element.append('Statement sequence');
         } else {
+            const isKeyword = /^[a-z]+$/i.test(operator);
+            const nodeClass = isKeyword ? 'afa-keyword' : 'afa-operator';
             element.append('Operator ');
-            element.append(this.createTokenNode(operator, ['afa-operator']));
+            element.append(this.createTokenNode(operator, [nodeClass]));
         }
         return element;
     }
