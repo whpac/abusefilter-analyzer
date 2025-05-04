@@ -498,7 +498,12 @@ export class PcreGroup implements PcreToken {
     }
 
     public toEcmaRegexString(emulateOptions?: EmulateOptions): string {
-        emulateOptions ??= getDefaultEmulateOptions();
+        if (emulateOptions === undefined) {
+            emulateOptions = getDefaultEmulateOptions();
+        } else {
+            // Not to bubble the changes to the parent group
+            emulateOptions = { ...emulateOptions };
+        }
 
         emulateOptions.ignoreCase ||= this.options.includes('i');
         emulateOptions.multiline ||= this.options.includes('m');
@@ -602,7 +607,12 @@ class PcreCharacterClass implements PcreToken {
     }
 
     public toEcmaRegexString(emulateOptions?: EmulateOptions): string {
-        emulateOptions ??= getDefaultEmulateOptions();
+        if (emulateOptions === undefined) {
+            emulateOptions = getDefaultEmulateOptions();
+        } else {
+            // Not to bubble the changes to the parent group
+            emulateOptions = { ...emulateOptions };
+        }
         emulateOptions.inCharacterClass = true;
 
         let str = '[';

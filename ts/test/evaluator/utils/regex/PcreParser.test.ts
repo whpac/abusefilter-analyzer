@@ -388,6 +388,42 @@ describe('PcreParser tests', () => {
             assert.equal(group.toEcmaRegexString(), '[M-bm-zA-B]');
             assert.equal(group.getOriginalString(), '(?i)[M-b]');
         });
+
+        it('should ignore dot inside a character class', () => {
+            const parser = new PcreParser('[a.b]');
+            const group = parser.parse();
+    
+            assert.equal(group.tokens.length, 1);
+            assert.equal(group.toEcmaRegexString(), '[a\\.b]');
+            assert.equal(group.getOriginalString(), '[a.b]');
+        });
+
+        it('shouldn\'t escape dash before or after a character class', () => {
+            const parser = new PcreParser('-[a]-');
+            const group = parser.parse();
+    
+            assert.equal(group.tokens.length, 3);
+            assert.equal(group.toEcmaRegexString(), '-[a]-');
+            assert.equal(group.getOriginalString(), '-[a]-');
+        });
+
+        it('should unescape a dash when there is no character class', () => {
+            const parser = new PcreParser('a\\-b');
+            const group = parser.parse();
+    
+            assert.equal(group.tokens.length, 3);
+            assert.equal(group.toEcmaRegexString(), 'a-b');
+            assert.equal(group.getOriginalString(), 'a\\-b');
+        });
+
+        it('should unescape a dash outside of character class', () => {
+            const parser = new PcreParser('a\\-b[c]\\-d');
+            const group = parser.parse();
+    
+            assert.equal(group.tokens.length, 6);
+            assert.equal(group.toEcmaRegexString(), 'a-b[c]-d');
+            assert.equal(group.getOriginalString(), 'a\\-b[c]\\-d');
+        });
     });
 
     describe('Backreferences', () => {
