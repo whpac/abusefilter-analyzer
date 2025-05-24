@@ -6,6 +6,8 @@
  * values of all the nodes in it.
  */
 
+import { ViewFactoryWithAugmented } from './ViewFactoryWithAugmented.js';
+
 mw.hook('userjs.abuseFilter').add((abuseFilter: typeof mw.libs.abuseFilter) => {
     // Run only on the AbuseLog special page
     if (mw.config.get('wgCanonicalSpecialPageName') !== 'AbuseLog') return;
@@ -41,7 +43,10 @@ mw.hook('userjs.abuseFilter').add((abuseFilter: typeof mw.libs.abuseFilter) => {
             const filters = [
                 impactingBoolFilter,
             ];
-            filter.renderInto(rootElement, filters);
+            filter.renderInto(rootElement, {
+                treeFilters: filters,
+                viewFactory: new ViewFactoryWithAugmented(filter.defaultContext),
+            });
             await filter.evaluate();
         } catch (error: unknown) {
             const errorMessage = (error instanceof Error) ? error.message : ('' + error);

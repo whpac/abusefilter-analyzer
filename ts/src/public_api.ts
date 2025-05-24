@@ -142,8 +142,23 @@ mw.util.addCSS(`
 .afa-filter-wrapper label {
     margin-left: 0.6em;
 }
+.afa-silent-button {
+    background: none;
+    font: inherit;
+    appearance: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    cursor: pointer;
+    outline: inherit;
+    text-align: left;
+    margin: 0;
+}
+.afa-silent-button[disabled] {
+    cursor: default;
+}
 
-.afa-value, .afa-token { font-family: monospace; word-break: break-all; }
+.afa-value, .afa-token { font-family: monospace; word-break: break-all; white-space-collapse: preserve; }
 .afa-value-keyword { color: var(--afa-color-value-keyword); }
 .afa-value-string { color: var(--afa-color-value-string); }
 .afa-value-number { color: var(--afa-color-value-number); }
@@ -220,18 +235,6 @@ mw.util.addCSS(`
     padding-left: 1em;
 }
 
-button.afa-silent-button {
-    background: none;
-    font: inherit;
-    appearance: none;
-    border: none;
-    padding: 0;
-    color: inherit;
-    cursor: pointer;
-    outline: inherit;
-    text-align: left;
-    margin: 0;
-}
 .afa-value-inlay-button {
     background: var(--background-color-neutral, #eaecf0);
     font-size: 0.85em;
