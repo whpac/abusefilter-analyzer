@@ -24,6 +24,26 @@ export class ValueStringOperations {
         return new Value(ValueDataType.Boolean, thisString.includes(needleString));
     }
 
+    /** Matches the haystack to the substring and returns the place where it occurs */
+    public static matchSubstring(haystack: IValue, needle: IValue): Match | null {
+        if (haystack.isUndefined || needle.isUndefined) {
+            return null;
+        }
+
+        const haystackString = haystack.asString().value!;
+        const needleString = needle.asString().value!;
+
+        const index = haystackString.indexOf(needleString);
+        if (index === -1) {
+            return null;
+        }
+
+        return {
+            start: index,
+            end: index + needleString.length,
+        };
+    }
+
     /** Checks if this value is matched by the regex pattern */
     public static testRegex(subject: IValue, pattern: IValue, caseInsensitive: boolean = false): IValue<boolean | null> {
         if (subject.isUndefined || pattern.isUndefined) {
@@ -31,8 +51,23 @@ export class ValueStringOperations {
         }
         
         const subjectString = subject.asString().value!;
-        const patternRegex = RegexUtils.toEcmaRegex(pattern.asString().value!, { i: caseInsensitive, u: true });
+        const patternRegex = this.makeRegex(pattern.asString().value!, caseInsensitive);
         return new Value(ValueDataType.Boolean, patternRegex.test(subjectString));
+    }
+
+    /** Matches the regex pattern to the subject and returns where it was found */
+    public static matchRegex(subject: IValue, pattern: IValue, caseInsensitive: boolean = false): Match | null {
+        if (subject.isUndefined || pattern.isUndefined) {
+            return null;
+        }
+        
+        const patternRegex = this.makeRegex(pattern.asString().value!, caseInsensitive);
+        return this.match(subject.asString().value!, patternRegex);
+    }
+
+    /** Converts a regex string into JavaScript regex object */
+    private static makeRegex(pattern: string, caseInsensitive: boolean): RegExp {
+        return RegexUtils.toEcmaRegex(pattern, { i: caseInsensitive, u: true });
     }
 
     /** Checks if this value is matched by the glob pattern */
@@ -42,19 +77,50 @@ export class ValueStringOperations {
         }
 
         const subjectString = subject.asString().value!;
-        let globPattern = pattern.asString().value!;
+        const patternRegex = this.globToRegex(pattern.asString().value!);
+        return new Value(ValueDataType.Boolean, patternRegex.test(subjectString));
+    }
 
+    /** Matches the glob pattern to the subject and returns where it was found */
+    public static matchGlob(subject: IValue, pattern: IValue): Match | null {
+        if (subject.isUndefined || pattern.isUndefined) {
+            return null;
+        }
+
+        const patternRegex = this.globToRegex(pattern.asString().value!);
+        return this.match(subject.asString().value!, patternRegex);
+    }
+
+    /** Converts a glob pattern into JavaScript regex object */
+    private static globToRegex(pattern: string): RegExp {
         // First, escape the pattern according to Regex rules
-        globPattern = RegexUtils.escape(globPattern);
+        pattern = RegexUtils.escape(pattern);
 
         // Then substitute the glob wildcards with regex sequences
-        globPattern = globPattern.replace(/\\\*/g, '.*')
+        pattern = pattern.replace(/\\\*/g, '.*')
             .replace(/\\\?/g, '.')
             .replace(/\\\[!/g, '[^')
             .replace(/\\\[/g, '[')
             .replace(/\\\]/g, ']');
 
-        const patternRegex = new RegExp(globPattern, 'u');
-        return new Value(ValueDataType.Boolean, patternRegex.test(subjectString));
+        return new RegExp(pattern, 'u');
+    }
+
+    private static match(subject: string, pattern: RegExp): Match | null {
+        const match = pattern.exec(subject);
+
+        if (!match) {
+            return null;
+        }
+
+        return {
+            start: match.index,
+            end: match.index + match[0].length,
+        };
     }
 }
+
+export type Match = {
+    start: number;
+    end: number;
+};

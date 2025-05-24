@@ -75,9 +75,12 @@ export class AbuseFilter {
         this.transformWith(transformer);
     }
 
-    public renderInto(container: HTMLElement, treeFilters: ITreeFilter[] = []): void {
-        const gui = new AbuseFilterGUI(container, treeFilters);
-        const viewFactory = new ViewFactory();
+    public renderInto(container: HTMLElement, options: Partial<RenderOptions> = {}): void {
+        options.treeFilters = options.treeFilters || [];
+        options.viewFactory = options.viewFactory || new ViewFactory();
+        
+        const gui = new AbuseFilterGUI(container, options.treeFilters);
+        const viewFactory = options.viewFactory;
         viewFactory.addDataViewFactory(
             // check if node is IEvaluableTreeNode
             (node) => 'getValue' in node
@@ -112,3 +115,7 @@ export class AbuseFilter {
 }
 
 type TreeWalkerCallback = (node: IEvaluableTreeNode, value: IValue, depth: number) => void;
+type RenderOptions = {
+    treeFilters: ITreeFilter[],
+    viewFactory: ViewFactory,
+};

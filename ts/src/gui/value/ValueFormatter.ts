@@ -73,11 +73,7 @@ export class ValueFormatter {
 
     private static formatStringLiteral(value: string, maxLength?: number): HTMLElement {
         const wrapper = this.makeWrapper('string');
-        const escapedValue = value
-            .replace(/\\/g, '\\\\')
-            .replace(/"/g, '\\"')
-            .replace(/\n/g, '\\n')
-            .replace(/\r/g, '\\r');
+        const escapedValue = this.escapeString(value);
 
         if (maxLength !== undefined && value.length > maxLength) {
             wrapper.append('"');
@@ -135,5 +131,14 @@ export class ValueFormatter {
             clickHandler();
         });
         return button;
+    }
+
+    /** Escapes special characters in a string for display in double quotes */
+    public static escapeString(value: string): string {
+        return value
+            .replace(/\\/g, '\\\\')
+            .replace(/"/g, '\\"')
+            .replace(/\n/g, '\\n')
+            .replace(/\r/g, '\\r');
     }
 }
