@@ -51,7 +51,7 @@ build:
         - cp upstream/equivset.json dist
     artifacts:
         paths:
-            - ./dist/abusefilter-analyzer.js
+            - ./dist/*
             - ./js/**
         expire_in: 1 week
     tags:
