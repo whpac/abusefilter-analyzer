@@ -5,9 +5,8 @@
 import { AbuseFilter } from './AbuseFilter.js';
 import { EvaluationContext } from './evaluator/EvaluationContext.js';
 import { AbuseFilterFunctions } from './evaluator/functions/AbuseFilterFunctions.js';
+import { CCNormProvider } from './evaluator/functions/CCNormProvider.js';
 import { LocalFunctionExecutor } from './evaluator/functions/LocalFunctionExecutor.js';
-import { MultiFunctionExecutor } from './evaluator/functions/MultiFunctionExecutor.js';
-import { RemoteFunctionExecutor } from './evaluator/functions/RemoteFunctionExecutor.js';
 import { NodeEvaluator } from './evaluator/NodeEvaluator.js';
 import { EvaluableNodeFactory } from './evaluator/nodes/EvaluableNodeFactory.js';
 import { EvaluableTreeNode } from './evaluator/nodes/EvaluableTreeNode.js';
@@ -69,9 +68,8 @@ const _abuseFilter = {
         NodeEvaluator,
         functions: {
             AbuseFilterFunctions,
+            CCNormProvider,
             LocalFunctionExecutor,
-            MultiFunctionExecutor,
-            RemoteFunctionExecutor,
         },
         nodes: {
             EvaluableNodeFactory,
@@ -115,6 +113,9 @@ const _abuseFilter = {
     },
 };
 
+AbuseFilterFunctions.ccnormProvider = new CCNormProvider(
+    'https://gitlab-content.toolforge.org/msz2001/abusefilter-analyzer/-/raw/deploy/equivset.json?mime=application/json&maxage=3600'
+);
 mw.libs.abuseFilter = _abuseFilter;
 mw.hook('userjs.abuseFilter').fire(_abuseFilter);
 

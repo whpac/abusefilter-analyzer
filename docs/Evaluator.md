@@ -36,6 +36,11 @@ For every operation, it dispatches processing to the relevant class.
 
 *See also:* [NodeEvaluator.ts](../ts/src/evaluator/NodeEvaluator.ts)
 
+## `CCNormProvider` class
+Takes care of normalization of confusible characters, based on a conversion table loaded from JSON.
+
+*See also:* [CCNormProvider.ts](../ts/src/evaluator/functions/CCNormProvider.ts)
+
 ## `IFunctionExecutor` interface
 Interface for a function executor. It is responsible for dispatching function calls to the appropriate function implementation. The actual function execution can happen either locally or at a remote machine, for instance a MediaWiki server.
 
@@ -47,20 +52,6 @@ Function executor that looks a function up in the local function registry and ex
 `LocalFunctionExecutor` implements the [`IFunctionExecutor`](#ifunctionexecutor-interface) interface
 
 *See also:* [LocalFunctionExecutor.ts](../ts/src/evaluator/functions/LocalFuctionExecutor.ts)
-
-## `RemoteFunctionExecutor` class
-Function executor that delegates the execution to the MediaWiki API. Please note that by default only priviledged users can use that API endpoint.
-
-`RemoteFunctionExecutor` implements the [`IFunctionExecutor`](#ifunctionexecutor-interface) interface
-
-*See also:* [RemoteFunctionExecutor.ts](../ts/src/evaluator/functions/RemoteFunctionExecutor.ts)
-
-## `MultiFunctionExecutor` class
-A compound function executor that tries to execute a function using a list of executors. The first executor that can execute the function is used. Executors are tried in the order they are provided in the constructor. If no executor can execute the function, an error is thrown.
-
-`MultiFunctionExecutor` implements the [`IFunctionExecutor`](#ifunctionexecutor-interface) interface
-
-*See also:* [MultiFunctionExecutor.ts](../ts/src/evaluator/functions/MultiFunctionExecutor.ts)
 
 ## `AbuseFilterFunctions` class
 Contains a collection of functions that are available in the abuse filters. Implements all functions except `ccnorm` and those depending on it.
