@@ -8,6 +8,7 @@
     "chai": "^5.0.3",
     "eslint": "^8.56.0",
     "mocha": "^10.2.0",
+    "mocha-junit-reporter": "^2.2.1",
     "types-mediawiki": "^1.6.0",
     "typescript": "^5.3.3",
     "webpack": "^5.91.0",
@@ -15,6 +16,7 @@
   },
   "scripts": {
     "test": "mocha",
+    "test-and-save": "mocha --reporter mocha-junit-reporter --reporter-options mochaFile=./mocha-results.xml",
     "build": "tsc && webpack"
   },
   "type": "module",

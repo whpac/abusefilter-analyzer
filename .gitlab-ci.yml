@@ -1,0 +1,109 @@
+# TODO: Update dependencies: equivset
+
+pullDeps:
+    image: alpine/git:latest
+    stage: .pre
+    script:
+        - mkdir -p temp parserTests parserTestsEquivset
+        - git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/AbuseFilter temp/AbuseFilter
+        - cp -r temp/AbuseFilter/tests/parserTests .
+        - cp -r temp/AbuseFilter/tests/parserTestsEquivset .
+
+        - rm -r temp
+
+        - git config user.email "project_3399_bot_b9e95c672cd8817455e688232cd5aa9f@noreply.gitlab.wikimedia.org"
+        - git config user.name "project_3399_bot_b9e95c672cd8817455e688232cd5aa9f"
+        - git remote add gitlab_origin https://oauth2:$CI_REPO_TOKEN@gitlab.wikimedia.org/msz2001/abusefilter-analyzer.git
+        
+        - git add parserTests
+        - git add parserTestsEquivset
+        - |-
+            CHANGES=$(git status --porcelain | wc -l)
+            if [ "$CHANGES" -gt "0" ]; then
+                # Show the status of files that are about to be created, updated or deleted
+                git status
+
+                # Commit all changes
+                git commit -m "Update parser tests from the upstream"
+
+                # Update the repository and make sure to skip the pipeline create for this commit
+                git push gitlab_origin HEAD:master -o ci.skip
+            else
+                echo Nothing to commit
+            fi
+    tags:
+        - cloud
+
+
+build:
+    image: node:latest
+    stage: build
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_REF_NAME =~ /^v\d+\.\d+\.\d+.*$/
+    script:
+        - npm ci
+        - npm run build --if-present
+    artifacts:
+        paths:
+            - ./dist/abusefilter-analyzer.js
+            - ./js/**
+        expire_in: 1 week
+    tags:
+        - cloud
+    cache:
+        key: npm
+        paths:
+            - node_modules
+
+
+test:
+    image: node:latest
+    stage: test
+    dependencies:
+        - build
+    script:
+        - npm ci
+        - npm run test-and-save
+    artifacts:
+        reports:
+            junit: ./mocha-results.xml
+        expire_in: 1 week
+    tags:
+        - cloud
+    cache:
+        key: npm
+        paths:
+            - node_modules
+
+
+deployGadget:
+    image: alpine/git:latest
+    stage: deploy
+    dependencies:
+        - build
+    script:
+        - git fetch
+        - git checkout deploy
+        - cp -r dist/* .
+
+        - git config user.email "project_3399_bot_b9e95c672cd8817455e688232cd5aa9f@noreply.gitlab.wikimedia.org"
+        - git config user.name "project_3399_bot_b9e95c672cd8817455e688232cd5aa9f"
+        - git remote add gitlab_origin https://oauth2:$CI_REPO_TOKEN@gitlab.wikimedia.org/msz2001/abusefilter-analyzer.git
+
+        - git add .
+        - |-
+            CHANGES=$(git status --porcelain | wc -l)
+            if [ "$CHANGES" -gt "0" ]; then
+                # Show the status of files that are about to be created, updated or deleted
+                git status
+
+                # Commit all changes
+                git commit -m "Update gadget"
+
+                # Update the repository and make sure to skip the pipeline create for this commit
+                git push gitlab_origin HEAD:deploy -o ci.skip
+            else
+                echo Nothing to commit
+            fi
+    tags:
+        - cloud
