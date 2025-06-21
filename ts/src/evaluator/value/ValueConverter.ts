@@ -94,6 +94,14 @@ export class ValueConverter {
                 return value.value ? '1' : ''; // Like PHP's strval()...
             case ValueDataType.Null:
                 return '';
+            case ValueDataType.Float: {
+                // We have a special case for floats. In JS (1 - 0.1) is stringified as '0.09999999999999998',
+                // but we want to return '0.1' like PHP does.
+                // Given that JS numbers have 15.95 meaningful digits, 15 seems to be a good compromise.
+                // https://stackoverflow.com/a/69152581/8127198
+                const preciseFloat = (value.value as number).toPrecision(15);
+                return preciseFloat.replace(/\.?0+(e-?\d+)?$/i, '$1'); // Remove trailing zeros
+            }
         }
         return '' + value.value;
     }

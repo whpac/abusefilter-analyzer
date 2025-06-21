@@ -6,6 +6,7 @@ import { IEvaluationContext } from '../../model/IEvaluationContext.js';
 import { IValue } from '../../model/value/IValue.js';
 import { ValueStringOperations } from '../value/ValueStringOperations.js';
 import { ValueComparer } from '../value/ValueComparer.js';
+import { CCNormProvider } from './CCNormProvider.js';
 
 /**
  * A collection of the functions available in the AbuseFilter upstream.
@@ -47,6 +48,8 @@ export class AbuseFilterFunctions {
         ['set_var', AbuseFilterFunctions.set],
         ['sanitize', AbuseFilterFunctions.sanitize],
     ]);
+
+    public static ccnormProvider: CCNormProvider | undefined;
 
     /** Returns a function by its name */
     public static getFunction(name: string): AbuseFilterFunction<unknown> | undefined {
@@ -110,8 +113,11 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'norm');
         if (args[0].isUndefined) return Value.Undefined;
 
-        throw new Error('Not implemented');
-        // TODO: requires ccnorm
+        let output = await AbuseFilterFunctions.normalizeConfusibleCharacters(args[0].asString().value!);
+        output = AbuseFilterFunctions.removeRepeatingCharacters(output);
+        output = AbuseFilterFunctions.removeSpecialCharacters(output);
+        output = AbuseFilterFunctions.removeWhitespaces(output);
+        return new Value(ValueDataType.String, output);
     }
 
     /** Normalizes the input string, replacing confusible characters by a class representant */
@@ -119,22 +125,60 @@ export class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'ccnorm');
         if (args[0].isUndefined) return Value.Undefined;
 
-        throw new Error('Not implemented');
-        // TODO: requires ccnorm
+        const normalized = await AbuseFilterFunctions.normalizeConfusibleCharacters(args[0].asString().value!);
+        return new Value(ValueDataType.String, normalized);
     }
 
     /** Checks if the first string contains any of the subsequent ones. All arguments are cc-normalized */
-    public static async ccnorm_contains_any(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
+    public static async ccnorm_contains_any(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ccnorm_contains_any');
-        throw new Error('Not implemented');
-        // TODO: requires ccnorm
+
+        const input = args[0];
+        if (input.isUndefined) return Value.Undefined;
+
+        const normalizedInput = await AbuseFilterFunctions.normalizeConfusibleCharacters(input.asString().value!);
+
+        let hasUndefined = false;
+        for (let i = 1; i < args.length; i++) {
+            if (args[i].isUndefined) {
+                hasUndefined = true;
+                continue;
+            }
+
+            const normalizedArg = await AbuseFilterFunctions.normalizeConfusibleCharacters(args[i].asString().value!);
+            const contains = normalizedInput.includes(normalizedArg);
+            if (contains) {
+                return Value.True;
+            }
+        }
+
+        return !hasUndefined ? Value.False : Value.Undefined;
     }
 
     /** Checks if the first string contains all of the subsequent ones. All arguments are cc-normalized */
-    public static async ccnorm_contains_all(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean>> {
+    public static async ccnorm_contains_all(context: IEvaluationContext, args: IValue[]): Promise<Value<boolean | null>> {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ccnorm_contains_all');
-        throw new Error('Not implemented');
-        // TODO: requires ccnorm
+
+        const input = args[0];
+        if (input.isUndefined) return Value.Undefined;
+
+        const normalizedInput = await AbuseFilterFunctions.normalizeConfusibleCharacters(input.asString().value!);
+
+        let hasUndefined = false;
+        for (let i = 1; i < args.length; i++) {
+            if (args[i].isUndefined) {
+                hasUndefined = true;
+                continue;
+            }
+
+            const normalizedArg = await AbuseFilterFunctions.normalizeConfusibleCharacters(args[i].asString().value!);
+            const contains = normalizedInput.includes(normalizedArg);
+            if (!contains) {
+                return Value.False;
+            }
+        }
+        
+        return !hasUndefined ? Value.True : Value.Undefined;
     }
 
     /** Returns the number of non-alphanumeric characters divided by the total number of characters in the argument */
@@ -456,6 +500,16 @@ export class AbuseFilterFunctions {
 
     private static removeWhitespaces(s: string) {
         return s.replace(/\s+/ug, '');
+    }
+
+    private static async normalizeConfusibleCharacters(s: string): Promise<string> {
+        const ccnormProvider = AbuseFilterFunctions.ccnormProvider;
+        if (ccnormProvider === undefined) {
+            throw new Error('CCNormProvider is not specified. Please set AbuseFilterFunctions.ccnormProvider before using ccnorm functions.');
+        }
+
+        await ccnormProvider.initializeIfNeeded();
+        return ccnormProvider.ccnorm(s);
     }
 
     //! Utility functions for checking the argument count
