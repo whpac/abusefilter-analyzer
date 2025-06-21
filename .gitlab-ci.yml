@@ -99,7 +99,7 @@ deployGadget:
                 git status
 
                 # Commit all changes
-                git commit -m "Update gadget"
+                git commit -m "$CI_COMMIT_MESSAGE"
 
                 # Update the repository and make sure to skip the pipeline create for this commit
                 git push gitlab_origin HEAD:deploy -o ci.skip
