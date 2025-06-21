@@ -18,46 +18,44 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AbuseFilter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony import */ var _evaluator_functions_AbuseFilterFunctions_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(17);
-/* harmony import */ var _evaluator_functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(16);
-/* harmony import */ var _evaluator_functions_MultiFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(20);
-/* harmony import */ var _evaluator_functions_RemoteFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(21);
-/* harmony import */ var _evaluator_NodeEvaluator_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(9);
-/* harmony import */ var _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(22);
-/* harmony import */ var _evaluator_nodes_EvaluableTreeNode_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(23);
-/* harmony import */ var _evaluator_utils_IPAddress_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(19);
-/* harmony import */ var _evaluator_utils_IPUtils_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(18);
-/* harmony import */ var _evaluator_utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(13);
-/* harmony import */ var _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(5);
-/* harmony import */ var _evaluator_value_ValueCalculator_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(11);
-/* harmony import */ var _evaluator_value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(15);
-/* harmony import */ var _evaluator_value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(12);
-/* harmony import */ var _evaluator_value_VariableValue_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(4);
-/* harmony import */ var _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(24);
-/* harmony import */ var _gui_filters_ImpactingBoolFilter_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(44);
-/* harmony import */ var _gui_treeViews_ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(27);
-/* harmony import */ var _gui_treeViews_AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(30);
-/* harmony import */ var _gui_treeViews_AtomNodeView_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(31);
-/* harmony import */ var _gui_treeViews_BlockNodeView_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(28);
-/* harmony import */ var _gui_treeViews_FunctionNodeView_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(33);
-/* harmony import */ var _gui_treeViews_IndexNodeView_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(34);
-/* harmony import */ var _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(35);
-/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(25);
-/* harmony import */ var _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(36);
-/* harmony import */ var _gui_value_NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(37);
-/* harmony import */ var _gui_value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(26);
-/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(32);
-/* harmony import */ var _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(38);
-/* harmony import */ var _parser_nodes_TreeNode_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(45);
-/* harmony import */ var _parser_nodes_TreeNodeFactory_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(46);
-/* harmony import */ var _parser_Parser_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(39);
-/* harmony import */ var _parser_ParserException_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(40);
-/* harmony import */ var _parser_Token_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(41);
-/* harmony import */ var _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(42);
-/* harmony import */ var _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(43);
+/* harmony import */ var _evaluator_functions_CCNormProvider_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(42);
+/* harmony import */ var _evaluator_functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(16);
+/* harmony import */ var _evaluator_NodeEvaluator_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(9);
+/* harmony import */ var _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(20);
+/* harmony import */ var _evaluator_nodes_EvaluableTreeNode_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(21);
+/* harmony import */ var _evaluator_utils_IPAddress_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(19);
+/* harmony import */ var _evaluator_utils_IPUtils_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(18);
+/* harmony import */ var _evaluator_utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(13);
+/* harmony import */ var _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(5);
+/* harmony import */ var _evaluator_value_ValueCalculator_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(11);
+/* harmony import */ var _evaluator_value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(15);
+/* harmony import */ var _evaluator_value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(12);
+/* harmony import */ var _evaluator_value_VariableValue_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(4);
+/* harmony import */ var _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(22);
+/* harmony import */ var _gui_filters_ImpactingBoolFilter_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(43);
+/* harmony import */ var _gui_treeViews_ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(25);
+/* harmony import */ var _gui_treeViews_AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(28);
+/* harmony import */ var _gui_treeViews_AtomNodeView_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(29);
+/* harmony import */ var _gui_treeViews_BlockNodeView_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(26);
+/* harmony import */ var _gui_treeViews_FunctionNodeView_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(31);
+/* harmony import */ var _gui_treeViews_IndexNodeView_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(32);
+/* harmony import */ var _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(33);
+/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(23);
+/* harmony import */ var _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(34);
+/* harmony import */ var _gui_value_NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(35);
+/* harmony import */ var _gui_value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(24);
+/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(30);
+/* harmony import */ var _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(36);
+/* harmony import */ var _parser_nodes_TreeNode_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(44);
+/* harmony import */ var _parser_nodes_TreeNodeFactory_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(45);
+/* harmony import */ var _parser_Parser_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(37);
+/* harmony import */ var _parser_ParserException_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(38);
+/* harmony import */ var _parser_Token_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(39);
+/* harmony import */ var _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(40);
+/* harmony import */ var _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(41);
 // This file imports all the necessary AbuseFilter modules and
 // makes them available in the global scope so as to enable
 // usage in the MediaWiki manner.
-
 
 
 
@@ -100,69 +98,69 @@ const _abuseFilter = {
     createFromFilterId: _AbuseFilter_js__WEBPACK_IMPORTED_MODULE_0__.AbuseFilter.createFromFilterId,
     createFromLogId: _AbuseFilter_js__WEBPACK_IMPORTED_MODULE_0__.AbuseFilter.createFromLogId,
     AbuseFilter: _AbuseFilter_js__WEBPACK_IMPORTED_MODULE_0__.AbuseFilter,
-    api: _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_31__.AbuseFilterApi,
+    api: _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_30__.AbuseFilterApi,
     parser: {
-        Parser: _parser_Parser_js__WEBPACK_IMPORTED_MODULE_34__.Parser,
-        ParserException: _parser_ParserException_js__WEBPACK_IMPORTED_MODULE_35__.ParserException,
-        Token: _parser_Token_js__WEBPACK_IMPORTED_MODULE_36__.Token,
-        Tokenizer: _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_37__.Tokenizer,
+        Parser: _parser_Parser_js__WEBPACK_IMPORTED_MODULE_33__.Parser,
+        ParserException: _parser_ParserException_js__WEBPACK_IMPORTED_MODULE_34__.ParserException,
+        Token: _parser_Token_js__WEBPACK_IMPORTED_MODULE_35__.Token,
+        Tokenizer: _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_36__.Tokenizer,
         nodes: {
-            TreeNode: _parser_nodes_TreeNode_js__WEBPACK_IMPORTED_MODULE_32__.TreeNode,
-            TreeNodeFactory: _parser_nodes_TreeNodeFactory_js__WEBPACK_IMPORTED_MODULE_33__.TreeNodeFactory,
+            TreeNode: _parser_nodes_TreeNode_js__WEBPACK_IMPORTED_MODULE_31__.TreeNode,
+            TreeNodeFactory: _parser_nodes_TreeNodeFactory_js__WEBPACK_IMPORTED_MODULE_32__.TreeNodeFactory,
         },
     },
     transform: {
-        FlattenAssociativeOpsTransformer: _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_38__.FlattenAssociativeOpsTransformer,
+        FlattenAssociativeOpsTransformer: _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_37__.FlattenAssociativeOpsTransformer,
     },
     evaluator: {
         EvaluationContext: _evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_1__.EvaluationContext,
-        NodeEvaluator: _evaluator_NodeEvaluator_js__WEBPACK_IMPORTED_MODULE_6__.NodeEvaluator,
+        NodeEvaluator: _evaluator_NodeEvaluator_js__WEBPACK_IMPORTED_MODULE_5__.NodeEvaluator,
         functions: {
             AbuseFilterFunctions: _evaluator_functions_AbuseFilterFunctions_js__WEBPACK_IMPORTED_MODULE_2__.AbuseFilterFunctions,
-            LocalFunctionExecutor: _evaluator_functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_3__.LocalFunctionExecutor,
-            MultiFunctionExecutor: _evaluator_functions_MultiFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_4__.MultiFunctionExecutor,
-            RemoteFunctionExecutor: _evaluator_functions_RemoteFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_5__.RemoteFunctionExecutor,
+            CCNormProvider: _evaluator_functions_CCNormProvider_js__WEBPACK_IMPORTED_MODULE_3__.CCNormProvider,
+            LocalFunctionExecutor: _evaluator_functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_4__.LocalFunctionExecutor,
         },
         nodes: {
-            EvaluableNodeFactory: _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_7__.EvaluableNodeFactory,
-            EvaluableTreeNode: _evaluator_nodes_EvaluableTreeNode_js__WEBPACK_IMPORTED_MODULE_8__.EvaluableTreeNode,
+            EvaluableNodeFactory: _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_6__.EvaluableNodeFactory,
+            EvaluableTreeNode: _evaluator_nodes_EvaluableTreeNode_js__WEBPACK_IMPORTED_MODULE_7__.EvaluableTreeNode,
         },
         utils: {
-            IPAddress: _evaluator_utils_IPAddress_js__WEBPACK_IMPORTED_MODULE_9__.IPAddress,
-            IPUtils: _evaluator_utils_IPUtils_js__WEBPACK_IMPORTED_MODULE_10__.IPUtils,
-            RegexUtils: _evaluator_utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_11__.RegexUtils, // TODO: Decouple it from this project
+            IPAddress: _evaluator_utils_IPAddress_js__WEBPACK_IMPORTED_MODULE_8__.IPAddress,
+            IPUtils: _evaluator_utils_IPUtils_js__WEBPACK_IMPORTED_MODULE_9__.IPUtils,
+            RegexUtils: _evaluator_utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_10__.RegexUtils, // TODO: Decouple it from this project
         },
         value: {
-            Value: _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_12__.Value,
-            ValueCalculator: _evaluator_value_ValueCalculator_js__WEBPACK_IMPORTED_MODULE_13__.ValueCalculator,
-            ValueComparer: _evaluator_value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_14__.ValueComparer,
-            ValueStringOperations: _evaluator_value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_15__.ValueStringOperations,
-            VariableValue: _evaluator_value_VariableValue_js__WEBPACK_IMPORTED_MODULE_16__.VariableValue,
+            Value: _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_11__.Value,
+            ValueCalculator: _evaluator_value_ValueCalculator_js__WEBPACK_IMPORTED_MODULE_12__.ValueCalculator,
+            ValueComparer: _evaluator_value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_13__.ValueComparer,
+            ValueStringOperations: _evaluator_value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_14__.ValueStringOperations,
+            VariableValue: _evaluator_value_VariableValue_js__WEBPACK_IMPORTED_MODULE_15__.VariableValue,
         },
     },
     gui: {
-        AbuseFilterGUI: _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_17__.AbuseFilterGUI,
+        AbuseFilterGUI: _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_16__.AbuseFilterGUI,
         filters: {
-            ImpactingBoolFilter: _gui_filters_ImpactingBoolFilter_js__WEBPACK_IMPORTED_MODULE_18__.ImpactingBoolFilter,
+            ImpactingBoolFilter: _gui_filters_ImpactingBoolFilter_js__WEBPACK_IMPORTED_MODULE_17__.ImpactingBoolFilter,
         },
         treeViews: {
-            ArrayDefinitionNodeView: _gui_treeViews_ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_19__.ArrayDefinitionNodeView,
-            AssignmentNodeView: _gui_treeViews_AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_20__.AssignmentNodeView,
-            AtomNodeView: _gui_treeViews_AtomNodeView_js__WEBPACK_IMPORTED_MODULE_21__.AtomNodeView,
-            BlockNodeView: _gui_treeViews_BlockNodeView_js__WEBPACK_IMPORTED_MODULE_22__.BlockNodeView,
-            FunctionNodeView: _gui_treeViews_FunctionNodeView_js__WEBPACK_IMPORTED_MODULE_23__.FunctionNodeView,
-            IndexNodeView: _gui_treeViews_IndexNodeView_js__WEBPACK_IMPORTED_MODULE_24__.IndexNodeView,
-            OperatorNodeView: _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_25__.OperatorNodeView,
-            ViewFactory: _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_26__.ViewFactory,
+            ArrayDefinitionNodeView: _gui_treeViews_ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_18__.ArrayDefinitionNodeView,
+            AssignmentNodeView: _gui_treeViews_AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_19__.AssignmentNodeView,
+            AtomNodeView: _gui_treeViews_AtomNodeView_js__WEBPACK_IMPORTED_MODULE_20__.AtomNodeView,
+            BlockNodeView: _gui_treeViews_BlockNodeView_js__WEBPACK_IMPORTED_MODULE_21__.BlockNodeView,
+            FunctionNodeView: _gui_treeViews_FunctionNodeView_js__WEBPACK_IMPORTED_MODULE_22__.FunctionNodeView,
+            IndexNodeView: _gui_treeViews_IndexNodeView_js__WEBPACK_IMPORTED_MODULE_23__.IndexNodeView,
+            OperatorNodeView: _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_24__.OperatorNodeView,
+            ViewFactory: _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_25__.ViewFactory,
         },
         value: {
-            NodeValueViewBase: _gui_value_NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_28__.NodeValueViewBase,
-            NodeValueView: _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_27__.NodeValueView,
-            ProcessedDataView: _gui_value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_29__.ProcessedDataView,
-            ValueFormatter: _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_30__.ValueFormatter,
+            NodeValueViewBase: _gui_value_NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_27__.NodeValueViewBase,
+            NodeValueView: _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_26__.NodeValueView,
+            ProcessedDataView: _gui_value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_28__.ProcessedDataView,
+            ValueFormatter: _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_29__.ValueFormatter,
         },
     },
 };
+_evaluator_functions_AbuseFilterFunctions_js__WEBPACK_IMPORTED_MODULE_2__.AbuseFilterFunctions.ccnormProvider = new _evaluator_functions_CCNormProvider_js__WEBPACK_IMPORTED_MODULE_3__.CCNormProvider('https://gitlab-content.toolforge.org/msz2001/abusefilter-analyzer/-/raw/deploy/equivset.json?mime=application/json&maxage=3600');
 mw.libs.abuseFilter = _abuseFilter;
 mw.hook('userjs.abuseFilter').fire(_abuseFilter);
 // TODO: put this to the GUI package
@@ -341,19 +339,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 /* harmony import */ var _evaluator_NodeEvaluator_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
 /* harmony import */ var _evaluator_functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(16);
-/* harmony import */ var _evaluator_functions_MultiFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(20);
-/* harmony import */ var _evaluator_functions_RemoteFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(21);
-/* harmony import */ var _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(22);
-/* harmony import */ var _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(5);
-/* harmony import */ var _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(24);
-/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(25);
-/* harmony import */ var _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(36);
-/* harmony import */ var _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(38);
-/* harmony import */ var _parser_Parser_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(39);
-/* harmony import */ var _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(42);
-/* harmony import */ var _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(43);
-
-
+/* harmony import */ var _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(20);
+/* harmony import */ var _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
+/* harmony import */ var _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(22);
+/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(23);
+/* harmony import */ var _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(34);
+/* harmony import */ var _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(36);
+/* harmony import */ var _parser_Parser_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(37);
+/* harmony import */ var _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(40);
+/* harmony import */ var _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(41);
 
 
 
@@ -368,16 +362,13 @@ __webpack_require__.r(__webpack_exports__);
 
 class AbuseFilter {
     constructor(filterText) {
-        this.nodeFactory = new _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_5__.EvaluableNodeFactory();
-        const tokenizer = new _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_12__.Tokenizer();
-        const parser = new _parser_Parser_js__WEBPACK_IMPORTED_MODULE_11__.Parser(this.nodeFactory);
+        this.nodeFactory = new _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_3__.EvaluableNodeFactory();
+        const tokenizer = new _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_10__.Tokenizer();
+        const parser = new _parser_Parser_js__WEBPACK_IMPORTED_MODULE_9__.Parser(this.nodeFactory);
         this.tokens = tokenizer.tokenize(filterText);
         this.rootNode = parser.parse(this.tokens);
         this.defaultContext = new _evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_0__.EvaluationContext();
-        this.functionExecutor = new _evaluator_functions_MultiFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_3__.MultiFunctionExecutor([
-            new _evaluator_functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_2__.LocalFunctionExecutor(),
-            new _evaluator_functions_RemoteFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_4__.RemoteFunctionExecutor()
-        ]);
+        this.functionExecutor = new _evaluator_functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_2__.LocalFunctionExecutor();
     }
     async evaluate() {
         const evaluator = new _evaluator_NodeEvaluator_js__WEBPACK_IMPORTED_MODULE_1__.NodeEvaluator(this.functionExecutor);
@@ -401,23 +392,23 @@ class AbuseFilter {
         }
     }
     flattenAssociativeOperators() {
-        const transformer = new _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_13__.FlattenAssociativeOpsTransformer();
+        const transformer = new _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_11__.FlattenAssociativeOpsTransformer();
         this.transformWith(transformer);
     }
     renderInto(container, options = {}) {
         options.treeFilters = options.treeFilters || [];
-        options.viewFactory = options.viewFactory || new _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_8__.ViewFactory();
-        const gui = new _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_7__.AbuseFilterGUI(container, options.treeFilters);
+        options.viewFactory = options.viewFactory || new _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_6__.ViewFactory();
+        const gui = new _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_5__.AbuseFilterGUI(container, options.treeFilters);
         const viewFactory = options.viewFactory;
         viewFactory.addDataViewFactory(
         // check if node is IEvaluableTreeNode
         (node) => 'getValue' in node
-            ? new _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_9__.NodeValueView(node, this.defaultContext)
+            ? new _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_7__.NodeValueView(node, this.defaultContext)
             : null);
         gui.renderSyntaxTree(this.rootNode, viewFactory);
     }
     setVariable(name, value) {
-        this.defaultContext.setVariable(name, _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_6__.Value.fromNative(value));
+        this.defaultContext.setVariable(name, _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_4__.Value.fromNative(value));
     }
     loadVariablesFromLogEntry(logEntry) {
         const variables = logEntry.details;
@@ -426,11 +417,11 @@ class AbuseFilter {
         }
     }
     static async createFromFilterId(filterId) {
-        const filterText = await _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_10__.AbuseFilterApi.fetchAbuseFilterText(filterId);
+        const filterText = await _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_8__.AbuseFilterApi.fetchAbuseFilterText(filterId);
         return new AbuseFilter(filterText);
     }
     static async createFromLogId(logId) {
-        const logEntry = await _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_10__.AbuseFilterApi.fetchAbuseLogEntry(logId);
+        const logEntry = await _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_8__.AbuseFilterApi.fetchAbuseLogEntry(logId);
         const filter = await AbuseFilter.createFromFilterId(logEntry.filter_id);
         filter.loadVariablesFromLogEntry(logEntry);
         return filter;
@@ -883,6 +874,14 @@ class ValueConverter {
                 return value.value ? '1' : ''; // Like PHP's strval()...
             case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_0__.ValueDataType.Null:
                 return '';
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_0__.ValueDataType.Float: {
+                // We have a special case for floats. In JS (1 - 0.1) is stringified as '0.09999999999999998',
+                // but we want to return '0.1' like PHP does.
+                // Given that JS numbers have 15.95 meaningful digits, 15 seems to be a good compromise.
+                // https://stackoverflow.com/a/69152581/8127198
+                const preciseFloat = value.value.toPrecision(15);
+                return preciseFloat.replace(/\.?0+(e-?\d+)?$/i, '$1'); // Remove trailing zeros
+            }
         }
         return '' + value.value;
     }
@@ -2878,28 +2877,61 @@ class AbuseFilterFunctions {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'norm');
         if (args[0].isUndefined)
             return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-        throw new Error('Not implemented');
-        // TODO: requires ccnorm
+        let output = await AbuseFilterFunctions.normalizeConfusibleCharacters(args[0].asString().value);
+        output = AbuseFilterFunctions.removeRepeatingCharacters(output);
+        output = AbuseFilterFunctions.removeSpecialCharacters(output);
+        output = AbuseFilterFunctions.removeWhitespaces(output);
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, output);
     }
     /** Normalizes the input string, replacing confusible characters by a class representant */
     static async ccnorm(context, args) {
         AbuseFilterFunctions.assertArgumentCount(args, 1, 'ccnorm');
         if (args[0].isUndefined)
             return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-        throw new Error('Not implemented');
-        // TODO: requires ccnorm
+        const normalized = await AbuseFilterFunctions.normalizeConfusibleCharacters(args[0].asString().value);
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, normalized);
     }
     /** Checks if the first string contains any of the subsequent ones. All arguments are cc-normalized */
     static async ccnorm_contains_any(context, args) {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ccnorm_contains_any');
-        throw new Error('Not implemented');
-        // TODO: requires ccnorm
+        const input = args[0];
+        if (input.isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const normalizedInput = await AbuseFilterFunctions.normalizeConfusibleCharacters(input.asString().value);
+        let hasUndefined = false;
+        for (let i = 1; i < args.length; i++) {
+            if (args[i].isUndefined) {
+                hasUndefined = true;
+                continue;
+            }
+            const normalizedArg = await AbuseFilterFunctions.normalizeConfusibleCharacters(args[i].asString().value);
+            const contains = normalizedInput.includes(normalizedArg);
+            if (contains) {
+                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.True;
+            }
+        }
+        return !hasUndefined ? _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.False : _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
     }
     /** Checks if the first string contains all of the subsequent ones. All arguments are cc-normalized */
     static async ccnorm_contains_all(context, args) {
         AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ccnorm_contains_all');
-        throw new Error('Not implemented');
-        // TODO: requires ccnorm
+        const input = args[0];
+        if (input.isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const normalizedInput = await AbuseFilterFunctions.normalizeConfusibleCharacters(input.asString().value);
+        let hasUndefined = false;
+        for (let i = 1; i < args.length; i++) {
+            if (args[i].isUndefined) {
+                hasUndefined = true;
+                continue;
+            }
+            const normalizedArg = await AbuseFilterFunctions.normalizeConfusibleCharacters(args[i].asString().value);
+            const contains = normalizedInput.includes(normalizedArg);
+            if (!contains) {
+                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.False;
+            }
+        }
+        return !hasUndefined ? _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.True : _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
     }
     /** Returns the number of non-alphanumeric characters divided by the total number of characters in the argument */
     static async specialratio(context, args) {
@@ -3195,6 +3227,14 @@ class AbuseFilterFunctions {
     static removeWhitespaces(s) {
         return s.replace(/\s+/ug, '');
     }
+    static async normalizeConfusibleCharacters(s) {
+        const ccnormProvider = AbuseFilterFunctions.ccnormProvider;
+        if (ccnormProvider === undefined) {
+            throw new Error('CCNormProvider is not specified. Please set AbuseFilterFunctions.ccnormProvider before using ccnorm functions.');
+        }
+        await ccnormProvider.initializeIfNeeded();
+        return ccnormProvider.ccnorm(s);
+    }
     //! Utility functions for checking the argument count
     /**
      * Ensures that the provided number of arguments matches the expected count.
@@ -3472,173 +3512,9 @@ class IPAddress {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   MultiFunctionExecutor: () => (/* binding */ MultiFunctionExecutor)
-/* harmony export */ });
-/**
- * A compound function executor that tries to execute a function using a list of executors.
- * The first executor that can execute the function is used. Executors are tried in the order
- * they are provided in the constructor. If no executor can execute the function, an error
- * is thrown.
- */
-class MultiFunctionExecutor {
-    constructor(executors) {
-        this.executors = executors;
-    }
-    async executeFunction(functionName, context, args) {
-        const errors = [];
-        for (const executor of this.executors) {
-            try {
-                return await executor.executeFunction(functionName, context, args);
-            }
-            catch (e) {
-                // Try the next executor
-                errors.push(e);
-            }
-        }
-        throw new Error(`Function ${functionName} is unknown or cannot be executed: ${errors.map(e => '' + e).join(', ')}`);
-    }
-}
-
-
-/***/ }),
-/* 21 */
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   RemoteFunctionExecutor: () => (/* binding */ RemoteFunctionExecutor)
-/* harmony export */ });
-/* harmony import */ var _value_Value_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
-
-/**
- * Function executor that delegates the execution to the API.
- * Please note that by default only priviledged users can use that
- * API endpoint.
- *
- * In order to reduce server strain, the calls are cached: all results
- * are kept in memory and as many as possible are saved to the session
- * storage.
- */
-class RemoteFunctionExecutor {
-    constructor() {
-        /** Key under which to store the data in session storage */
-        this.STORAGE_KEY = 'abusefilter-eval-cache';
-        /** An approximate size limit for the function result cache, in bytes */
-        this.STORAGE_SIZE_LIMIT = 3 * 1024 * 1024; // 3MB
-        this.cache = new Map();
-        this.cacheUpdateTimeout = null;
-        try {
-            // Load the cache from session storage if available
-            const cacheString = sessionStorage.getItem(this.STORAGE_KEY);
-            if (cacheString) {
-                try {
-                    const cacheObject = JSON.parse(cacheString);
-                    for (const key in cacheObject) {
-                        this.cache.set(key, _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.fromNative(cacheObject[key]));
-                    }
-                }
-                catch (e) {
-                    console.error('Failed to load cache from session storage', e);
-                }
-            }
-        }
-        catch (e) { /* Catches errors in node.js, where there's no sessionStorage */ }
-    }
-    async executeFunction(functionName, context, args) {
-        // 'Undefined' does not exist in the API, so we need to handle it separately here
-        if (args.some(arg => arg.isUndefined)) {
-            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-        }
-        const functionExpression = `${functionName}(${args.map(arg => arg.toLiteral()).join(', ')})`;
-        if (this.cache.has(functionExpression)) {
-            return this.cache.get(functionExpression);
-        }
-        const apiParams = new FormData();
-        apiParams.set('action', 'abusefilterevalexpression');
-        apiParams.set('format', 'json');
-        apiParams.set('expression', functionExpression);
-        const apiUrl = '/w/api.php';
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: new Headers({
-                'Api-User-Agent': 'abusefilter-analyzer (User:Msz2001)',
-            }),
-            body: apiParams
-        });
-        let result;
-        try {
-            result = await response.json();
-        }
-        catch (e) {
-            throw new Error('Server response is not a valid JSON object');
-        }
-        if (result.error) {
-            throw new Error('Server error: ' + result.error.info);
-        }
-        const value = result.abusefilterevalexpression.result;
-        const reifiedValue = _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.fromNative(value);
-        this.cache.set(functionExpression, reifiedValue);
-        this.scheduleSessionCacheUpdate();
-        return reifiedValue;
-    }
-    scheduleSessionCacheUpdate() {
-        // Do the updates at most every 5 seconds
-        // The evaluations are going to be every few milliseconds, so we could save
-        // some processing and update the cache every now and then
-        if (this.cacheUpdateTimeout !== null) {
-            return;
-        }
-        this.cacheUpdateTimeout = window.setTimeout(() => {
-            this.updateSessionCache();
-            this.cacheUpdateTimeout = null;
-        }, 5000);
-    }
-    updateSessionCache() {
-        // First, sort the cache entries by the size: the smallest ones first
-        // This is to avoid as many requests to API as possible, given that
-        // the session storage is limited to 5MB.
-        // We compare by the key size, as it's always a string, and in practice
-        // it's usually of a similar size to the value size (ccnorm family).
-        const sortedCache = Array.from(this.cache.entries()).sort((a, b) => {
-            const aSize = a[0].length;
-            const bSize = b[0].length;
-            return aSize - bSize;
-        });
-        let currentSize = 0; // in bytes
-        const cacheObject = {};
-        for (const [key, value] of sortedCache) {
-            // The key length is multiplied by 4 for two reasons:
-            //    - JS strings are UTF-16 encoded, so every char is 2 bytes
-            //    - we assume that keys and values have similar size, so double again
-            // We also assume that the JSON.stringify will not increase the size too much
-            currentSize += key.length * 4;
-            if (currentSize > this.STORAGE_SIZE_LIMIT) {
-                // We reached the limit, stop adding new entries
-                break;
-            }
-            cacheObject[key] = value.value;
-        }
-        // Save the cache to session storage
-        // We still need to catch any errors, eg. from other big values in the session storage
-        try {
-            sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(cacheObject));
-        }
-        catch (e) {
-            console.error('Failed to save cache to session storage', e);
-        }
-    }
-}
-
-
-/***/ }),
-/* 22 */
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   EvaluableNodeFactory: () => (/* binding */ EvaluableNodeFactory)
 /* harmony export */ });
-/* harmony import */ var _EvaluableTreeNode_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _EvaluableTreeNode_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
 
 /**
  * Factory class that produces instances of EvaluableTreeNode.
@@ -3651,7 +3527,7 @@ class EvaluableNodeFactory {
 
 
 /***/ }),
-/* 23 */
+/* 21 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -3723,14 +3599,14 @@ class EvaluableTreeNode {
 
 
 /***/ }),
-/* 24 */
+/* 22 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AbuseFilterGUI: () => (/* binding */ AbuseFilterGUI)
 /* harmony export */ });
-/* harmony import */ var _treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(25);
+/* harmony import */ var _treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
 
 class AbuseFilterGUI {
     constructor(wrapperElement, filters = []) {
@@ -3884,7 +3760,7 @@ class AbuseFilterGUI {
 
 
 /***/ }),
-/* 25 */
+/* 23 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -3892,14 +3768,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ViewFactory: () => (/* binding */ ViewFactory)
 /* harmony export */ });
 /* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
-/* harmony import */ var _value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(26);
-/* harmony import */ var _ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(27);
-/* harmony import */ var _AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(30);
-/* harmony import */ var _AtomNodeView_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(31);
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(28);
-/* harmony import */ var _FunctionNodeView_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(33);
-/* harmony import */ var _IndexNodeView_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(34);
-/* harmony import */ var _OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(35);
+/* harmony import */ var _value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
+/* harmony import */ var _ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(25);
+/* harmony import */ var _AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(28);
+/* harmony import */ var _AtomNodeView_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(29);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(26);
+/* harmony import */ var _FunctionNodeView_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(31);
+/* harmony import */ var _IndexNodeView_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(32);
+/* harmony import */ var _OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(33);
 
 
 
@@ -3981,7 +3857,7 @@ class ViewFactory {
 
 
 /***/ }),
-/* 26 */
+/* 24 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4010,14 +3886,14 @@ class ProcessedDataView {
 
 
 /***/ }),
-/* 27 */
+/* 25 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ArrayDefinitionNodeView: () => (/* binding */ ArrayDefinitionNodeView)
 /* harmony export */ });
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(28);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
 
 class ArrayDefinitionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.BlockNodeView {
     constructor() {
@@ -4060,14 +3936,14 @@ class ArrayDefinitionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE
 
 
 /***/ }),
-/* 28 */
+/* 26 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   BlockNodeView: () => (/* binding */ BlockNodeView)
 /* harmony export */ });
-/* harmony import */ var _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
+/* harmony import */ var _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
 
 /**
  * Base class for views of nodes with children.
@@ -4180,7 +4056,7 @@ class BlockNodeView extends _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_0__.BaseNo
 
 
 /***/ }),
-/* 29 */
+/* 27 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4217,7 +4093,7 @@ class BaseNodeView {
 
 
 /***/ }),
-/* 30 */
+/* 28 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4225,7 +4101,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AssignmentNodeView: () => (/* binding */ AssignmentNodeView)
 /* harmony export */ });
 /* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(28);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(26);
 
 
 class AssignmentNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__.BlockNodeView {
@@ -4286,15 +4162,15 @@ class AssignmentNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__.
 
 
 /***/ }),
-/* 31 */
+/* 29 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AtomNodeView: () => (/* binding */ AtomNodeView)
 /* harmony export */ });
-/* harmony import */ var _value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32);
-/* harmony import */ var _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
+/* harmony import */ var _value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(30);
+/* harmony import */ var _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(27);
 
 
 /**
@@ -4318,7 +4194,7 @@ class AtomNodeView extends _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_1__.BaseNod
 
 
 /***/ }),
-/* 32 */
+/* 30 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4456,14 +4332,14 @@ class ValueFormatter {
 
 
 /***/ }),
-/* 33 */
+/* 31 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   FunctionNodeView: () => (/* binding */ FunctionNodeView)
 /* harmony export */ });
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(28);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
 
 class FunctionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.BlockNodeView {
     constructor() {
@@ -4542,14 +4418,14 @@ class FunctionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.Bl
 
 
 /***/ }),
-/* 34 */
+/* 32 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   IndexNodeView: () => (/* binding */ IndexNodeView)
 /* harmony export */ });
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(28);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
 
 class IndexNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.BlockNodeView {
     constructor() {
@@ -4576,14 +4452,14 @@ class IndexNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.Block
 
 
 /***/ }),
-/* 35 */
+/* 33 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   OperatorNodeView: () => (/* binding */ OperatorNodeView)
 /* harmony export */ });
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(28);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
 
 class OperatorNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.BlockNodeView {
     constructor() {
@@ -4659,15 +4535,15 @@ class OperatorNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.Bl
 
 
 /***/ }),
-/* 36 */
+/* 34 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   NodeValueView: () => (/* binding */ NodeValueView)
 /* harmony export */ });
-/* harmony import */ var _NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(37);
-/* harmony import */ var _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32);
+/* harmony import */ var _NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(35);
+/* harmony import */ var _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
 
 
 /**
@@ -4727,7 +4603,7 @@ class NodeValueView extends _NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_0__.N
 
 
 /***/ }),
-/* 37 */
+/* 35 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4736,7 +4612,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
-/* harmony import */ var _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(32);
+/* harmony import */ var _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(30);
 
 
 
@@ -4799,7 +4675,7 @@ class NodeValueViewBase {
 
 
 /***/ }),
-/* 38 */
+/* 36 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4898,15 +4774,15 @@ class AbuseFilterApi {
 
 
 /***/ }),
-/* 39 */
+/* 37 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Parser: () => (/* binding */ Parser)
 /* harmony export */ });
-/* harmony import */ var _ParserException_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(40);
-/* harmony import */ var _Token_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(41);
+/* harmony import */ var _ParserException_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(38);
+/* harmony import */ var _Token_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(39);
 /* harmony import */ var _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
 /* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(10);
 
@@ -5352,7 +5228,7 @@ Parsing levels:
 
 
 /***/ }),
-/* 40 */
+/* 38 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -5375,7 +5251,7 @@ class ParserException extends Error {
 
 
 /***/ }),
-/* 41 */
+/* 39 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -5421,14 +5297,14 @@ Token.EOF = '';
 
 
 /***/ }),
-/* 42 */
+/* 40 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Tokenizer: () => (/* binding */ Tokenizer)
 /* harmony export */ });
-/* harmony import */ var _Token_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(41);
+/* harmony import */ var _Token_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(39);
 /* harmony import */ var _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
 
 
@@ -5682,7 +5558,7 @@ Tokenizer.keywords = new Set([
 
 
 /***/ }),
-/* 43 */
+/* 41 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -5725,7 +5601,74 @@ class FlattenAssociativeOpsTransformer {
 
 
 /***/ }),
-/* 44 */
+/* 42 */
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   CCNormProvider: () => (/* binding */ CCNormProvider)
+/* harmony export */ });
+/**
+ * This class provides a way to normalize visually-confusible characters, based on
+ * a conversion table fetched from a specified URL.
+ * The conversion table maps characters to their normalized forms.
+ */
+class CCNormProvider {
+    /**
+     * Creates an instance of CCNormProvider.
+     * @param ccnormUrl The URL to the conversion table JSON file.
+     */
+    constructor(ccnormUrl) {
+        this.ccnormUrl = ccnormUrl;
+    }
+    /**
+     * Initializes the conversion table if it has not been loaded yet.
+     * This method fetches the conversion table from the specified URL and stores it.
+     */
+    async initializeIfNeeded() {
+        if (this.conversionTable !== undefined) {
+            return; // Already initialized
+        }
+        this.conversionTable = await this.loadConversionTable(this.ccnormUrl);
+    }
+    async loadConversionTable(url) {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch conversion table from ${url}: ${response.statusText}`);
+        }
+        const data = await response.json();
+        if (typeof data !== 'object' || data === null) {
+            throw new Error(`Invalid conversion table format in ${url}`);
+        }
+        return new Map(Object.entries(data));
+    }
+    /**
+     * Normalizes the input string by replacing visually-confusible characters
+     * with their normalized forms based on the conversion table.
+     * @param input The input string to normalize.
+     * @returns The normalized string.
+     */
+    ccnorm(input) {
+        if (this.conversionTable === undefined) {
+            throw new Error('CCNormProvider is not initialized. Call initializeIfNeeded() first.');
+        }
+        let output = '';
+        for (const char of input) {
+            const normalizedChar = this.conversionTable.get(char);
+            if (normalizedChar !== undefined) {
+                output += normalizedChar;
+            }
+            else {
+                output += char; // Keep the original character if no conversion is found
+            }
+        }
+        return output;
+    }
+}
+
+
+/***/ }),
+/* 43 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -5841,7 +5784,7 @@ class ImpactingBoolFilter {
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -5863,14 +5806,14 @@ class TreeNode {
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   TreeNodeFactory: () => (/* binding */ TreeNodeFactory)
 /* harmony export */ });
-/* harmony import */ var _TreeNode_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45);
+/* harmony import */ var _TreeNode_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(44);
 
 /**
  * A simple tree node factory that produces `TreeNode` instances.
@@ -5883,11 +5826,11 @@ class TreeNodeFactory {
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ViewFactoryWithAugmented_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48);
+/* harmony import */ var _ViewFactoryWithAugmented_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
 /**
  * Hit Details gadget for AbuseFilter
  * It presents the filter evaluation tree for a given log entry.
@@ -5941,16 +5884,16 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
 
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ViewFactoryWithAugmented: () => (/* binding */ ViewFactoryWithAugmented)
 /* harmony export */ });
-/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(25);
+/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
 /* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
-/* harmony import */ var _AugmentedOperatorNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(49);
+/* harmony import */ var _AugmentedOperatorNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48);
 
 
 
@@ -5975,15 +5918,15 @@ class ViewFactoryWithAugmented extends _gui_treeViews_ViewFactory_js__WEBPACK_IM
 
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AugmentedOperatorNodeView: () => (/* binding */ AugmentedOperatorNodeView)
 /* harmony export */ });
-/* harmony import */ var _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(35);
-/* harmony import */ var _PatternExplorerPopup_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(50);
+/* harmony import */ var _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(33);
+/* harmony import */ var _PatternExplorerPopup_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(49);
 
 
 class AugmentedOperatorNodeView extends _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_0__.OperatorNodeView {
@@ -6060,7 +6003,7 @@ class AugmentedOperatorNodeView extends _gui_treeViews_OperatorNodeView_js__WEBP
 
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -6068,7 +6011,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   PatternExplorerPopup: () => (/* binding */ PatternExplorerPopup)
 /* harmony export */ });
 /* harmony import */ var _evaluator_value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
-/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32);
+/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
 
 
 class PatternExplorerPopup {
@@ -6161,11 +6104,11 @@ class PatternExplorerPopup {
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _NodeValueFrequencyView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(52);
+/* harmony import */ var _NodeValueFrequencyView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
 var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
     var m = o[Symbol.asyncIterator], i;
@@ -6260,10 +6203,7 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
             ? new _NodeValueFrequencyView_js__WEBPACK_IMPORTED_MODULE_0__.NodeValueFrequencyView(node)
             : null);
         gui.renderSyntaxTree(rootNode, viewFactory);
-        const functionExecutor = new abuseFilter.evaluator.functions.MultiFunctionExecutor([
-            new abuseFilter.evaluator.functions.LocalFunctionExecutor(),
-            new abuseFilter.evaluator.functions.RemoteFunctionExecutor()
-        ]);
+        const functionExecutor = new abuseFilter.evaluator.functions.LocalFunctionExecutor();
         const evaluator = new abuseFilter.evaluator.NodeEvaluator(functionExecutor);
         try {
             let processedCount = 0;
@@ -6304,7 +6244,7 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
 
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -6312,9 +6252,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   NodeValueFrequencyView: () => (/* binding */ NodeValueFrequencyView)
 /* harmony export */ });
 /* harmony import */ var _evaluator_value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
-/* harmony import */ var _gui_value_NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(37);
-/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(32);
-/* harmony import */ var _ValueFrequencyPopup_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(53);
+/* harmony import */ var _gui_value_NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(35);
+/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(30);
+/* harmony import */ var _ValueFrequencyPopup_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(52);
 
 
 
@@ -6436,7 +6376,7 @@ class NodeValueFrequencyView extends _gui_value_NodeValueViewBase_js__WEBPACK_IM
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -6444,7 +6384,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ValueFrequencyPopup: () => (/* binding */ ValueFrequencyPopup)
 /* harmony export */ });
 /* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
-/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32);
+/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
 
 
 class ValueFrequencyPopup {
@@ -6581,8 +6521,8 @@ var __webpack_exports__ = {};
 (() => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _public_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _gadgets_hitDetails_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(47);
-/* harmony import */ var _gadgets_massCheck_main_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(51);
+/* harmony import */ var _gadgets_hitDetails_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(46);
+/* harmony import */ var _gadgets_massCheck_main_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(50);
 // Import the whole AbuseFilter Analyzer library
 
 // And then include the gadgets
