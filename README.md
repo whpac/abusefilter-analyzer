@@ -1,3 +1,5 @@
+NOTE: This repository is being developed at [Wikimedia GitLab](https://gitlab.wikimedia.org/msz2001/abusefilter-analyzer). If you're seeing this on GitHub and would like to create a new issue, please navigate to GitLab.
+
 # MediaWiki AbuseFilter library for client-side use
 
 This library is basically a reimplementation of MediaWiki [AbuseFilter engine](https://www.mediawiki.org/wiki/Extension:AbuseFilter) for JavaScript, so that rules can be run and debugged directly in the browser.
