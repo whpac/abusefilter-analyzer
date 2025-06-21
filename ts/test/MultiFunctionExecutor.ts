@@ -1,6 +1,6 @@
-import { IEvaluationContext } from '../../model/IEvaluationContext.js';
-import { IValue } from '../../model/value/IValue.js';
-import { IFunctionExecutor } from './IFuctionExecutor.js';
+import { IEvaluationContext } from '../src/model/IEvaluationContext.js';
+import { IValue } from '../src/model/value/IValue.js';
+import { IFunctionExecutor } from '../src/evaluator/functions/IFuctionExecutor.js';
 
 /**
  * A compound function executor that tries to execute a function using a list of executors.

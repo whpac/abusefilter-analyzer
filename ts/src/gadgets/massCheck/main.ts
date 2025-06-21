@@ -109,10 +109,7 @@ mw.hook('userjs.abuseFilter').add((abuseFilter: typeof mw.libs.abuseFilter) => {
         );
         gui.renderSyntaxTree(rootNode, viewFactory);
     
-        const functionExecutor = new abuseFilter.evaluator.functions.MultiFunctionExecutor([
-            new abuseFilter.evaluator.functions.LocalFunctionExecutor(),
-            new abuseFilter.evaluator.functions.RemoteFunctionExecutor()
-        ]);
+        const functionExecutor = new abuseFilter.evaluator.functions.LocalFunctionExecutor();
         const evaluator = new abuseFilter.evaluator.NodeEvaluator(functionExecutor);
     
         try {
