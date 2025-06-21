@@ -7,10 +7,10 @@ import { LocalFunctionExecutor } from '../src/evaluator/functions/LocalFunctionE
 import { FunctionExecutorTestExtensions } from './FunctionExecutorTestExtensions.js';
 
 describe('Expressions from .t files', () => {
-    // Read files with .t extension from the /parserTests folder
+    // Read files with .t extension from the upstream/parserTests folder
     // And treat the content of every file as an expression that should be truthy
 
-    const testFolder = 'parserTests';
+    const testFolder = 'upstream/parserTests';
 
     const functionExecutorTestExtensions = new FunctionExecutorTestExtensions();
     const localFunctionExecutor = new LocalFunctionExecutor();

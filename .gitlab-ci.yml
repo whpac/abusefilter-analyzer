@@ -1,13 +1,13 @@
-# TODO: Update dependencies: equivset
-
 pullDeps:
     image: alpine/git:latest
     stage: .pre
     script:
         - mkdir -p temp parserTests parserTestsEquivset
         - git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/AbuseFilter temp/AbuseFilter
-        - cp -r temp/AbuseFilter/tests/parserTests .
-        - cp -r temp/AbuseFilter/tests/parserTestsEquivset .
+        - git clone https://gerrit.wikimedia.org/r/mediawiki/libs/Equivset temp/Equivset
+        - cp -r temp/AbuseFilter/tests/parserTests upstream
+        - cp -r temp/AbuseFilter/tests/parserTestsEquivset upstream
+        - cp temp/Equivset/dist/equivset.json upstream
 
         - rm -r temp
 
@@ -15,8 +15,9 @@ pullDeps:
         - git config user.name "project_3399_bot_b9e95c672cd8817455e688232cd5aa9f"
         - git remote add gitlab_origin https://oauth2:$CI_REPO_TOKEN@gitlab.wikimedia.org/msz2001/abusefilter-analyzer.git
         
-        - git add parserTests
-        - git add parserTestsEquivset
+        - git add upstream/parserTests
+        - git add upstream/parserTestsEquivset
+        - git add upstream/equivset.json
         - |-
             CHANGES=$(git status --porcelain | wc -l)
             if [ "$CHANGES" -gt "0" ]; then
@@ -24,7 +25,7 @@ pullDeps:
                 git status
 
                 # Commit all changes
-                git commit -m "Update parser tests from the upstream"
+                git commit -m "Update dependencies"
 
                 # Update the repository and make sure to skip the pipeline create for this commit
                 git push gitlab_origin HEAD:master -o ci.skip
