@@ -1,6 +1,8 @@
 pullDeps:
     image: alpine/git:latest
     stage: .pre
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_REF_NAME =~ /^v\d+\.\d+\.\d+.*$/
     script:
         - mkdir -p temp parserTests parserTestsEquivset
         - git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/AbuseFilter temp/AbuseFilter
@@ -60,6 +62,8 @@ build:
 test:
     image: node:latest
     stage: test
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_REF_NAME =~ /^v\d+\.\d+\.\d+.*$/
     dependencies:
         - build
     script:
@@ -80,6 +84,8 @@ test:
 deployGadget:
     image: alpine/git:latest
     stage: deploy
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_REF_NAME =~ /^v\d+\.\d+\.\d+.*$/
     dependencies:
         - build
     script:
