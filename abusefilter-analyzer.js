@@ -1,10 +1,10 @@
 /*!
  * 
  * This is a script for analyzing AbuseFilter syntax tree.
- * The file is generated from the source code at https://github.com/whpac/abusefilter-analyzer
+ * The file is generated from the source code at https://gitlab.wikimedia.org/msz2001/abusefilter-analyzer
  *
  * @author [[w:pl:User:Msz2001]]
- * @license GPLv2 <https://github.com/whpac/abusefilter-analyzer/blob/master/LICENSE>
+ * @license GPLv2 <https://gitlab.wikimedia.org/msz2001/abusefilter-analyzer/-/blob/master/LICENSE>
  *
  */
 /******/ (() => { // webpackBootstrap
@@ -352,15 +352,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _parser_Parser_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(39);
 /* harmony import */ var _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(42);
 /* harmony import */ var _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(43);
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 
 
 
@@ -388,12 +379,10 @@ class AbuseFilter {
             new _evaluator_functions_RemoteFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_4__.RemoteFunctionExecutor()
         ]);
     }
-    evaluate() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const evaluator = new _evaluator_NodeEvaluator_js__WEBPACK_IMPORTED_MODULE_1__.NodeEvaluator(this.functionExecutor);
-            const context = this.defaultContext;
-            return yield evaluator.evaluateNode(this.rootNode, context);
-        });
+    async evaluate() {
+        const evaluator = new _evaluator_NodeEvaluator_js__WEBPACK_IMPORTED_MODULE_1__.NodeEvaluator(this.functionExecutor);
+        const context = this.defaultContext;
+        return await evaluator.evaluateNode(this.rootNode, context);
     }
     getRootNode() {
         return this.rootNode;
@@ -436,19 +425,15 @@ class AbuseFilter {
             this.setVariable(key, value);
         }
     }
-    static createFromFilterId(filterId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const filterText = yield _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_10__.AbuseFilterApi.fetchAbuseFilterText(filterId);
-            return new AbuseFilter(filterText);
-        });
+    static async createFromFilterId(filterId) {
+        const filterText = await _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_10__.AbuseFilterApi.fetchAbuseFilterText(filterId);
+        return new AbuseFilter(filterText);
     }
-    static createFromLogId(logId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const logEntry = yield _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_10__.AbuseFilterApi.fetchAbuseLogEntry(logId);
-            const filter = yield AbuseFilter.createFromFilterId(logEntry.filter_id);
-            filter.loadVariablesFromLogEntry(logEntry);
-            return filter;
-        });
+    static async createFromLogId(logId) {
+        const logEntry = await _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_10__.AbuseFilterApi.fetchAbuseLogEntry(logId);
+        const filter = await AbuseFilter.createFromFilterId(logEntry.filter_id);
+        filter.loadVariablesFromLogEntry(logEntry);
+        return filter;
     }
 }
 
@@ -931,15 +916,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(12);
 /* harmony import */ var _value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(15);
 /* harmony import */ var _functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(16);
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 
 
 
@@ -961,37 +937,35 @@ class NodeEvaluator {
      * @param treeNode The tree node to be evaluated
      * @param evaluationContext The context of evaluation, containing all the variables and functions
      */
-    evaluateNode(treeNode, evaluationContext) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let value;
-            try {
-                // Atoms store value literals and variable reads
-                if (treeNode.type === _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.Atom) {
-                    const identity = treeNode.identity;
-                    if (identity.type === _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_4__.TokenType.Identifier) {
-                        // Get variable value
-                        value = evaluationContext.getVariable(identity.value);
-                    }
-                    else {
-                        // Else, convert the literal into a value
-                        value = _value_Value_js__WEBPACK_IMPORTED_MODULE_1__.Value.fromTokenLiteral(identity);
-                    }
+    async evaluateNode(treeNode, evaluationContext) {
+        let value;
+        try {
+            // Atoms store value literals and variable reads
+            if (treeNode.type === _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.Atom) {
+                const identity = treeNode.identity;
+                if (identity.type === _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_4__.TokenType.Identifier) {
+                    // Get variable value
+                    value = evaluationContext.getVariable(identity.value);
                 }
                 else {
-                    // Evaluate this node
-                    value = yield this.evaluateNodeLazily(treeNode, evaluationContext);
+                    // Else, convert the literal into a value
+                    value = _value_Value_js__WEBPACK_IMPORTED_MODULE_1__.Value.fromTokenLiteral(identity);
                 }
-                // Set the value only on success, so handlers don't have to check order of events
-                treeNode.setValue(evaluationContext, value);
             }
-            catch (e) {
-                // Unevaluated nodes have value of undefined so return it from the function as well
-                value = _value_Value_js__WEBPACK_IMPORTED_MODULE_1__.Value.Undefined;
-                const error = (e instanceof Error) ? e : new Error('' + e);
-                treeNode.setError(evaluationContext, error);
+            else {
+                // Evaluate this node
+                value = await this.evaluateNodeLazily(treeNode, evaluationContext);
             }
-            return value;
-        });
+            // Set the value only on success, so handlers don't have to check order of events
+            treeNode.setValue(evaluationContext, value);
+        }
+        catch (e) {
+            // Unevaluated nodes have value of undefined so return it from the function as well
+            value = _value_Value_js__WEBPACK_IMPORTED_MODULE_1__.Value.Undefined;
+            const error = (e instanceof Error) ? e : new Error('' + e);
+            treeNode.setError(evaluationContext, error);
+        }
+        return value;
     }
     /**
      * For logical AND and OR operators evaluates only as many operands as needed
@@ -1004,58 +978,54 @@ class NodeEvaluator {
      * @param treeNode The tree node to be evaluated
      * @param context The evaluation context
      */
-    evaluateNodeLazily(treeNode, context) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (treeNode.identity.value == '&') {
-                return this.evaluateLogicalOperatorLazily(treeNode.children, context, true);
-            }
-            else if (treeNode.identity.value == '|') {
-                return this.evaluateLogicalOperatorLazily(treeNode.children, context, false);
-            }
-            return this.evaluateNodeGreedily(treeNode, context);
-        });
+    async evaluateNodeLazily(treeNode, context) {
+        if (treeNode.identity.value == '&') {
+            return this.evaluateLogicalOperatorLazily(treeNode.children, context, true);
+        }
+        else if (treeNode.identity.value == '|') {
+            return this.evaluateLogicalOperatorLazily(treeNode.children, context, false);
+        }
+        return this.evaluateNodeGreedily(treeNode, context);
     }
     /**
      * Evaluates all the subnodes first and then calculates the node value. This is not for AtomNodes.
      * @param treeNode The tree node to be evaluated
      * @param context The evaluation context
      */
-    evaluateNodeGreedily(treeNode, context) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (treeNode.type == _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.Atom) {
-                throw new Error('Cannot evaluate an atom node greedily. Use EvaluatedTreeNode.evaluate instead.');
-            }
-            // The only node that can't be evaluated using a standard greedy execution is a conditional node
-            const nodeType = treeNode.type;
-            const tokenValue = treeNode.identity.value;
-            if (nodeType == _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.Operator && ['?', 'if'].includes(tokenValue)) {
-                return this.evaluateConditionalOperatorLazily(treeNode.children, context);
-            }
-            // This is a greedy evaluation so we can calculate all the children first
-            // and then the parent value. The order of evaluation is important (eg. because of variables)
-            // but all nodes will use the same context, as there's no speculative execution here.
-            const values = [];
-            for (const child of treeNode.children) {
-                const value = yield this.evaluateNode(child, context);
-                values.push(value);
-            }
-            switch (nodeType) {
-                case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.Operator:
-                    return this.calculateOperatorNodeResult(tokenValue, values);
-                case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.Assignment:
-                    return this.calculateAssignmentResult(context, values);
-                case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.IndexAssignment:
-                    return this.calculateIndexAssignmentResult(values);
-                case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.ArrayIndexing:
-                    return this.calculateArrayIndexingResult(values);
-                case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.FunctionCall:
-                    return yield this.calculateFunctionCallResult(context, tokenValue, values);
-                case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.ArrayDefinition:
-                    return this.calculateArrayDefinitionResult(values);
-            }
-            // If we got here, the node type is not supported
-            throw new Error(`Unsupported node type: ${nodeType}`);
-        });
+    async evaluateNodeGreedily(treeNode, context) {
+        if (treeNode.type == _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.Atom) {
+            throw new Error('Cannot evaluate an atom node greedily. Use EvaluatedTreeNode.evaluate instead.');
+        }
+        // The only node that can't be evaluated using a standard greedy execution is a conditional node
+        const nodeType = treeNode.type;
+        const tokenValue = treeNode.identity.value;
+        if (nodeType == _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.Operator && ['?', 'if'].includes(tokenValue)) {
+            return this.evaluateConditionalOperatorLazily(treeNode.children, context);
+        }
+        // This is a greedy evaluation so we can calculate all the children first
+        // and then the parent value. The order of evaluation is important (eg. because of variables)
+        // but all nodes will use the same context, as there's no speculative execution here.
+        const values = [];
+        for (const child of treeNode.children) {
+            const value = await this.evaluateNode(child, context);
+            values.push(value);
+        }
+        switch (nodeType) {
+            case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.Operator:
+                return this.calculateOperatorNodeResult(tokenValue, values);
+            case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.Assignment:
+                return this.calculateAssignmentResult(context, values);
+            case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.IndexAssignment:
+                return this.calculateIndexAssignmentResult(values);
+            case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.ArrayIndexing:
+                return this.calculateArrayIndexingResult(values);
+            case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.FunctionCall:
+                return await this.calculateFunctionCallResult(context, tokenValue, values);
+            case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.ArrayDefinition:
+                return this.calculateArrayDefinitionResult(values);
+        }
+        // If we got here, the node type is not supported
+        throw new Error(`Unsupported node type: ${nodeType}`);
     }
     /**
      * Evaluates a tree node corresponding to a logical AND or OR operator.
@@ -1067,57 +1037,55 @@ class NodeEvaluator {
      * @param neutralElement A neutral element of the logical operation (true for AND, false for OR)
      * @returns A promise representing the result of the logical operation
      */
-    evaluateLogicalOperatorLazily(operands, context, neutralElement) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return new Promise((resolve, reject) => {
-                const lastOperand = operands[operands.length - 1];
-                let wasResolved = false;
-                let hasUndefined = false;
-                let lastIterationPromise = Promise.resolve();
-                for (const operand of operands) {
-                    lastIterationPromise = lastIterationPromise.then(() => this.evaluateNode(operand, context).then((value) => {
-                        if (value.isUndefined) {
-                            // We don't really want to treat undefined as true or false
-                            // It's just an undefined value
-                            hasUndefined = true;
-                        }
-                        // The non-neutral operand value is returned as-is if it's not last
-                        // eg. (0 & true) == 0 but (true & 0) == false
-                        // eg. (1 | false) == 1 but (false | 1) == true
-                        if (operand == lastOperand) {
-                            if (!wasResolved) {
-                                const lastValue = value.asBoolean();
-                                if (hasUndefined && value.isTruthy() === neutralElement) {
-                                    resolve(_value_Value_js__WEBPACK_IMPORTED_MODULE_1__.Value.Undefined);
-                                }
-                                else {
-                                    resolve(lastValue);
-                                }
-                            }
-                            wasResolved = true;
-                        }
-                        else if (value.isTruthy() !== neutralElement && value.dataType !== _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Undefined) {
-                            // Undefined never resolves the node
-                            // Resolve the whole node, but still keep evaluating other operands
-                            if (!wasResolved)
-                                resolve(value);
-                            wasResolved = true;
-                            // Create a new evaluation context, so that the subsequent operands will not
-                            // tamper with variable values
-                            context = context.createChildContext();
-                        }
-                    })).catch((e) => {
-                        // Explicitly propagate the error
-                        // It breaks the evaluation but errors should not happen
-                        // during evaluation of syntax tree
-                        console.error(e);
+    async evaluateLogicalOperatorLazily(operands, context, neutralElement) {
+        return new Promise((resolve, reject) => {
+            const lastOperand = operands[operands.length - 1];
+            let wasResolved = false;
+            let hasUndefined = false;
+            let lastIterationPromise = Promise.resolve();
+            for (const operand of operands) {
+                lastIterationPromise = lastIterationPromise.then(() => this.evaluateNode(operand, context).then((value) => {
+                    if (value.isUndefined) {
+                        // We don't really want to treat undefined as true or false
+                        // It's just an undefined value
+                        hasUndefined = true;
+                    }
+                    // The non-neutral operand value is returned as-is if it's not last
+                    // eg. (0 & true) == 0 but (true & 0) == false
+                    // eg. (1 | false) == 1 but (false | 1) == true
+                    if (operand == lastOperand) {
                         if (!wasResolved) {
-                            wasResolved = true;
-                            reject(e);
+                            const lastValue = value.asBoolean();
+                            if (hasUndefined && value.isTruthy() === neutralElement) {
+                                resolve(_value_Value_js__WEBPACK_IMPORTED_MODULE_1__.Value.Undefined);
+                            }
+                            else {
+                                resolve(lastValue);
+                            }
                         }
-                    });
-                }
-            });
+                        wasResolved = true;
+                    }
+                    else if (value.isTruthy() !== neutralElement && value.dataType !== _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Undefined) {
+                        // Undefined never resolves the node
+                        // Resolve the whole node, but still keep evaluating other operands
+                        if (!wasResolved)
+                            resolve(value);
+                        wasResolved = true;
+                        // Create a new evaluation context, so that the subsequent operands will not
+                        // tamper with variable values
+                        context = context.createChildContext();
+                    }
+                })).catch((e) => {
+                    // Explicitly propagate the error
+                    // It breaks the evaluation but errors should not happen
+                    // during evaluation of syntax tree
+                    console.error(e);
+                    if (!wasResolved) {
+                        wasResolved = true;
+                        reject(e);
+                    }
+                });
+            }
         });
     }
     /**
@@ -1129,28 +1097,26 @@ class NodeEvaluator {
      * @param context The evaluation context to use for this evaluation
      * @returns A promise representing the result of the conditional operation
      */
-    evaluateConditionalOperatorLazily(operands, context) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const condition = operands[0];
-            const ifTrue = operands[1];
-            const ifFalse = (operands.length > 2) ? operands[2] : null;
-            const conditionValue = yield this.evaluateNode(condition, context);
-            const childContext = context.createChildContext();
-            // Evaluate both branches, but one in a speculative mode
-            if (conditionValue.isTruthy()) {
-                if (ifFalse !== null) {
-                    this.evaluateNode(ifFalse, childContext);
-                }
-                return yield this.evaluateNode(ifTrue, context);
+    async evaluateConditionalOperatorLazily(operands, context) {
+        const condition = operands[0];
+        const ifTrue = operands[1];
+        const ifFalse = (operands.length > 2) ? operands[2] : null;
+        const conditionValue = await this.evaluateNode(condition, context);
+        const childContext = context.createChildContext();
+        // Evaluate both branches, but one in a speculative mode
+        if (conditionValue.isTruthy()) {
+            if (ifFalse !== null) {
+                this.evaluateNode(ifFalse, childContext);
             }
-            else {
-                this.evaluateNode(ifTrue, childContext);
-                if (ifFalse === null) {
-                    return _value_Value_js__WEBPACK_IMPORTED_MODULE_1__.Value.Null;
-                }
-                return yield this.evaluateNode(ifFalse, context);
+            return await this.evaluateNode(ifTrue, context);
+        }
+        else {
+            this.evaluateNode(ifTrue, childContext);
+            if (ifFalse === null) {
+                return _value_Value_js__WEBPACK_IMPORTED_MODULE_1__.Value.Null;
             }
-        });
+            return await this.evaluateNode(ifFalse, context);
+        }
     }
     /**
      * Accepts a set of already computed values for the operator's operands
@@ -1273,10 +1239,8 @@ class NodeEvaluator {
      * @param values Function arguments
      * @returns The function call result
      */
-    calculateFunctionCallResult(context, func, values) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.functionExecutor.executeFunction(func, context, values);
-        });
+    async calculateFunctionCallResult(context, func, values) {
+        return this.functionExecutor.executeFunction(func, context, values);
     }
     /**
      * Creates a new array value from the provided values.
@@ -2818,15 +2782,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   LocalFunctionExecutor: () => (/* binding */ LocalFunctionExecutor)
 /* harmony export */ });
 /* harmony import */ var _AbuseFilterFunctions_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(17);
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 
 /**
  * Function executor that looks a function up in the local function registry
@@ -2835,14 +2790,12 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
  * Uses functions defined in the AbuseFilterFunctions class.
  */
 class LocalFunctionExecutor {
-    executeFunction(functionName, context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const func = _AbuseFilterFunctions_js__WEBPACK_IMPORTED_MODULE_0__.AbuseFilterFunctions.getFunction(functionName);
-            if (func === undefined) {
-                throw new Error(`Function ${functionName} is unknown or cannot be executed locally`);
-            }
-            return func(context, args);
-        });
+    async executeFunction(functionName, context, args) {
+        const func = _AbuseFilterFunctions_js__WEBPACK_IMPORTED_MODULE_0__.AbuseFilterFunctions.getFunction(functionName);
+        if (func === undefined) {
+            throw new Error(`Function ${functionName} is unknown or cannot be executed locally`);
+        }
+        return func(context, args);
     }
 }
 
@@ -2861,15 +2814,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
 /* harmony import */ var _value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
 /* harmony import */ var _value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(15);
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 
 
 
@@ -2885,421 +2829,361 @@ class AbuseFilterFunctions {
         return AbuseFilterFunctions.functions.get(name);
     }
     /** Converts the input text to the lowercase */
-    static lcase(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'lcase');
-            if (args[0].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, args[0].asString().value.toLowerCase());
-        });
+    static async lcase(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'lcase');
+        if (args[0].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, args[0].asString().value.toLowerCase());
     }
     /** Converts the input text to the uppercase */
-    static ucase(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'ucase');
-            if (args[0].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, args[0].asString().value.toUpperCase());
-        });
+    static async ucase(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'ucase');
+        if (args[0].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, args[0].asString().value.toUpperCase());
     }
     /** Returns the length of the input text or number of elements in an array */
-    static lengthFunc(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'length');
-            const input = args[0];
-            if (input.isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            if (input.dataType === _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Array) {
-                return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, input.value.length);
-            }
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, input.asString().value.length);
-        });
+    static async lengthFunc(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'length');
+        const input = args[0];
+        if (input.isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        if (input.dataType === _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Array) {
+            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, input.value.length);
+        }
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, input.asString().value.length);
     }
     /** Converts the input to a string */
-    static string(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'string');
-            return args[0].asString();
-        });
+    static async string(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'string');
+        return args[0].asString();
     }
     /** Converts the input to an integer */
-    static int(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'int');
-            return args[0].asInt();
-        });
+    static async int(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'int');
+        return args[0].asInt();
     }
     /** Converts the input to a float */
-    static float(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'float');
-            return args[0].asFloat();
-        });
+    static async float(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'float');
+        return args[0].asFloat();
     }
     /** Converts the input to a boolean */
-    static bool(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'bool');
-            return args[0].asBoolean();
-        });
+    static async bool(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'bool');
+        return args[0].asBoolean();
     }
     /** Normalizes the input string using multiple AbuseFilter functions */
-    static norm(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'norm');
-            if (args[0].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            throw new Error('Not implemented');
-            // TODO: requires ccnorm
-        });
+    static async norm(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'norm');
+        if (args[0].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        throw new Error('Not implemented');
+        // TODO: requires ccnorm
     }
     /** Normalizes the input string, replacing confusible characters by a class representant */
-    static ccnorm(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'ccnorm');
-            if (args[0].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            throw new Error('Not implemented');
-            // TODO: requires ccnorm
-        });
+    static async ccnorm(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'ccnorm');
+        if (args[0].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        throw new Error('Not implemented');
+        // TODO: requires ccnorm
     }
     /** Checks if the first string contains any of the subsequent ones. All arguments are cc-normalized */
-    static ccnorm_contains_any(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ccnorm_contains_any');
-            throw new Error('Not implemented');
-            // TODO: requires ccnorm
-        });
+    static async ccnorm_contains_any(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ccnorm_contains_any');
+        throw new Error('Not implemented');
+        // TODO: requires ccnorm
     }
     /** Checks if the first string contains all of the subsequent ones. All arguments are cc-normalized */
-    static ccnorm_contains_all(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ccnorm_contains_all');
-            throw new Error('Not implemented');
-            // TODO: requires ccnorm
-        });
+    static async ccnorm_contains_all(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ccnorm_contains_all');
+        throw new Error('Not implemented');
+        // TODO: requires ccnorm
     }
     /** Returns the number of non-alphanumeric characters divided by the total number of characters in the argument */
-    static specialratio(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'specialratio');
-            if (args[0].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            const input = args[0].asString().value;
-            if (input.length === 0) {
-                return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Float, 0);
-            }
-            const inputNoSpecials = AbuseFilterFunctions.removeSpecialCharacters(input);
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Float, 1 - (inputNoSpecials.length / input.length));
-        });
+    static async specialratio(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'specialratio');
+        if (args[0].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const input = args[0].asString().value;
+        if (input.length === 0) {
+            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Float, 0);
+        }
+        const inputNoSpecials = AbuseFilterFunctions.removeSpecialCharacters(input);
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Float, 1 - (inputNoSpecials.length / input.length));
     }
     /** Removes all non-alphanumeric characters from the input */
-    static rmspecials(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmspecials');
-            if (args[0].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, AbuseFilterFunctions.removeSpecialCharacters(args[0].asString().value));
-        });
+    static async rmspecials(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmspecials');
+        if (args[0].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, AbuseFilterFunctions.removeSpecialCharacters(args[0].asString().value));
     }
     /** Removes repeating characters from the input */
-    static rmdoubles(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmdoubles');
-            if (args[0].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, AbuseFilterFunctions.removeRepeatingCharacters(args[0].asString().value));
-        });
+    static async rmdoubles(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmdoubles');
+        if (args[0].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, AbuseFilterFunctions.removeRepeatingCharacters(args[0].asString().value));
     }
     /** Removes whitespace characters from the input */
-    static rmwhitespace(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmwhitespace');
-            if (args[0].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, AbuseFilterFunctions.removeWhitespaces(args[0].asString().value));
-        });
+    static async rmwhitespace(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'rmwhitespace');
+        if (args[0].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, AbuseFilterFunctions.removeWhitespaces(args[0].asString().value));
     }
     /**
      * Returns the number of occurrences of the first string in the second one.
      * If a single argument is given, it's split by commas and the number of elements is returned
      */
-    static count(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, [1, 2], 'count');
-            if (args[0].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            const needle = args[0].asString().value;
-            if (args.length === 1) {
-                if (args[0].dataType === _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Array) {
-                    return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, args[0].value.length);
-                }
-                return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, needle.split(',').length);
+    static async count(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, [1, 2], 'count');
+        if (args[0].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const needle = args[0].asString().value;
+        if (args.length === 1) {
+            if (args[0].dataType === _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Array) {
+                return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, args[0].value.length);
             }
-            if (needle.length === 0) {
-                return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, 0);
-            }
-            if (args[1].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            const haystack = args[1].asString().value;
-            let count = 0;
-            let index = 0;
-            while ((index = haystack.indexOf(needle, index)) !== -1) {
-                index += needle.length; // So that "aa" is contained once in "aaa"
-                count++;
-            }
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, count);
-        });
+            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, needle.split(',').length);
+        }
+        if (needle.length === 0) {
+            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, 0);
+        }
+        if (args[1].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const haystack = args[1].asString().value;
+        let count = 0;
+        let index = 0;
+        while ((index = haystack.indexOf(needle, index)) !== -1) {
+            index += needle.length; // So that "aa" is contained once in "aaa"
+            count++;
+        }
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, count);
     }
     /**
      * Returns the number of occurrences of the pattern in the second string.
      * If a single argument is given, it's split by commas and the number of elements is returned
      */
-    static rcount(context, args) {
+    static async rcount(context, args) {
         var _a;
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, [1, 2], 'rcount');
-            if (args[0].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            const pattern = args[0].asString().value;
-            if (args.length === 1) {
-                return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, pattern.split(',').length);
-            }
-            if (args[1].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            const input = args[1].asString().value;
-            const regex = _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_3__.RegexUtils.toEcmaRegex(pattern, { g: true, u: true });
-            const matches = input.match(regex);
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, (_a = matches === null || matches === void 0 ? void 0 : matches.length) !== null && _a !== void 0 ? _a : 0);
-        });
+        AbuseFilterFunctions.assertArgumentCount(args, [1, 2], 'rcount');
+        if (args[0].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const pattern = args[0].asString().value;
+        if (args.length === 1) {
+            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, pattern.split(',').length);
+        }
+        if (args[1].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const input = args[1].asString().value;
+        const regex = _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_3__.RegexUtils.toEcmaRegex(pattern, { g: true, u: true });
+        const matches = input.match(regex);
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, (_a = matches === null || matches === void 0 ? void 0 : matches.length) !== null && _a !== void 0 ? _a : 0);
     }
     /**
      * Returns an array of all matches of the pattern in the input string.
      * If the pattern is not found, an empty array is returned.
      */
-    static get_matches(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 2, 'get_matches');
-            if (args[0].isUndefined || args[1].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            const pattern = args[0].asString().value;
-            const input = args[1].asString().value;
-            const regex = _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_3__.RegexUtils.parse(pattern);
-            const nativeRegex = _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_3__.RegexUtils.toEcmaRegex(regex, { u: true });
-            let matches = input.match(nativeRegex);
-            matches !== null && matches !== void 0 ? matches : (matches = Array(1 + regex.countContainedCapturingGroups()).fill(undefined));
-            // Now we need to convert the array of strings to an array of Values
-            // However, if a group did not match, it will be `undefined` in the array and we replace it into false
-            const matchesValues = matches.map(m => m !== undefined ? new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, m) : _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.False);
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Array, matchesValues);
-        });
+    static async get_matches(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 2, 'get_matches');
+        if (args[0].isUndefined || args[1].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const pattern = args[0].asString().value;
+        const input = args[1].asString().value;
+        const regex = _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_3__.RegexUtils.parse(pattern);
+        const nativeRegex = _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_3__.RegexUtils.toEcmaRegex(regex, { u: true });
+        let matches = input.match(nativeRegex);
+        matches !== null && matches !== void 0 ? matches : (matches = Array(1 + regex.countContainedCapturingGroups()).fill(undefined));
+        // Now we need to convert the array of strings to an array of Values
+        // However, if a group did not match, it will be `undefined` in the array and we replace it into false
+        const matchesValues = matches.map(m => m !== undefined ? new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, m) : _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.False);
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Array, matchesValues);
     }
     /** Checks if the IP address is in the specified range */
-    static ip_in_range(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 2, 'ip_in_range');
-            return AbuseFilterFunctions.ip_in_ranges(context, args);
-        });
+    static async ip_in_range(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 2, 'ip_in_range');
+        return AbuseFilterFunctions.ip_in_ranges(context, args);
     }
     /** Checks if the IP address is in any of the specified ranges */
-    static ip_in_ranges(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ip_in_ranges');
-            if (args[0].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            // We want to silence errors from mismatched IP versions being compared
-            // and treat such a case as an ordinary "not in range"
-            const ip = args[0].asString().value;
-            let hasUndefined = false;
-            for (let i = 1; i < args.length; i++) {
-                if (args[i].isUndefined) {
-                    hasUndefined = true;
-                    continue;
-                }
-                try {
-                    const range = args[i].asString().value;
-                    if (_utils_IPUtils_js__WEBPACK_IMPORTED_MODULE_2__.IPUtils.isInRange(ip, range)) {
-                        return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.True;
-                    }
-                }
-                catch (e) {
-                    // Ignore, go to the next range
+    static async ip_in_ranges(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'ip_in_ranges');
+        if (args[0].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        // We want to silence errors from mismatched IP versions being compared
+        // and treat such a case as an ordinary "not in range"
+        const ip = args[0].asString().value;
+        let hasUndefined = false;
+        for (let i = 1; i < args.length; i++) {
+            if (args[i].isUndefined) {
+                hasUndefined = true;
+                continue;
+            }
+            try {
+                const range = args[i].asString().value;
+                if (_utils_IPUtils_js__WEBPACK_IMPORTED_MODULE_2__.IPUtils.isInRange(ip, range)) {
+                    return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.True;
                 }
             }
-            return !hasUndefined ? _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.False : _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-        });
+            catch (e) {
+                // Ignore, go to the next range
+            }
+        }
+        return !hasUndefined ? _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.False : _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
     }
     /** Checks if the first string contains any of the subsequent ones */
-    static contains_any(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'contains_any');
-            const input = args[0];
-            let hasUndefined = false;
-            for (let i = 1; i < args.length; i++) {
-                const contains = _value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_4__.ValueStringOperations.contains(input, args[i]);
-                if (contains.isUndefined) {
-                    hasUndefined = true;
-                }
-                else if (contains.isTruthy()) {
-                    return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.True;
-                }
+    static async contains_any(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'contains_any');
+        const input = args[0];
+        let hasUndefined = false;
+        for (let i = 1; i < args.length; i++) {
+            const contains = _value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_4__.ValueStringOperations.contains(input, args[i]);
+            if (contains.isUndefined) {
+                hasUndefined = true;
             }
-            return !hasUndefined ? _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.False : _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-        });
+            else if (contains.isTruthy()) {
+                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.True;
+            }
+        }
+        return !hasUndefined ? _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.False : _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
     }
     /** Checks if the first string contains all of the subsequent ones */
-    static contains_all(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'contains_all');
-            const input = args[0];
-            let hasUndefined = false;
-            for (let i = 1; i < args.length; i++) {
-                const contains = _value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_4__.ValueStringOperations.contains(input, args[i]);
-                if (contains.isUndefined) {
-                    hasUndefined = true;
-                }
-                else if (!contains.isTruthy()) {
-                    return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.False;
-                }
+    static async contains_all(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'contains_all');
+        const input = args[0];
+        let hasUndefined = false;
+        for (let i = 1; i < args.length; i++) {
+            const contains = _value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_4__.ValueStringOperations.contains(input, args[i]);
+            if (contains.isUndefined) {
+                hasUndefined = true;
             }
-            return !hasUndefined ? _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.True : _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-        });
+            else if (!contains.isTruthy()) {
+                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.False;
+            }
+        }
+        return !hasUndefined ? _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.True : _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
     }
     /** Checks if the first element is equal to any of the subsequent ones */
-    static equals_to_any(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'equals_to_any');
-            const input = args[0];
-            let hasUndefined = false;
-            for (let i = 1; i < args.length; i++) {
-                const areEqual = _value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_5__.ValueComparer.isStrictlyEqualTo(input, args[i]);
-                if (areEqual.isUndefined) {
-                    hasUndefined = true;
-                }
-                else if (areEqual.isTruthy()) {
-                    return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.True;
-                }
+    static async equals_to_any(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, [2, Infinity], 'equals_to_any');
+        const input = args[0];
+        let hasUndefined = false;
+        for (let i = 1; i < args.length; i++) {
+            const areEqual = _value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_5__.ValueComparer.isStrictlyEqualTo(input, args[i]);
+            if (areEqual.isUndefined) {
+                hasUndefined = true;
             }
-            return !hasUndefined ? _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.False : _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-        });
+            else if (areEqual.isTruthy()) {
+                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.True;
+            }
+        }
+        return !hasUndefined ? _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.False : _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
     }
     /** Returns a substring of the input string */
-    static substr(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, [2, 3], 'substr');
-            if (args[0].isUndefined || args[1].isUndefined)
+    static async substr(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, [2, 3], 'substr');
+        if (args[0].isUndefined || args[1].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const input = args[0].asString().value;
+        const start = args[1].asInt().value;
+        if (args.length === 2) {
+            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, input.substring(start));
+        }
+        else {
+            if (args[2].isUndefined)
                 return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            const input = args[0].asString().value;
-            const start = args[1].asInt().value;
-            if (args.length === 2) {
-                return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, input.substring(start));
-            }
-            else {
-                if (args[2].isUndefined)
-                    return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-                const length = args[2].asInt().value;
-                const end = Math.min(start + length, input.length);
-                return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, input.substring(start, end));
-            }
-        });
+            const length = args[2].asInt().value;
+            const end = Math.min(start + length, input.length);
+            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, input.substring(start, end));
+        }
     }
     /** Returns the position of the first occurrence of the pattern in the input string */
-    static strpos(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, [2, 3], 'strpos');
-            if (args[0].isUndefined || args[1].isUndefined)
+    static async strpos(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, [2, 3], 'strpos');
+        if (args[0].isUndefined || args[1].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const input = args[0].asString().value;
+        const pattern = args[1].asString().value;
+        let offset = 0;
+        if (args.length === 3) {
+            if (args[2].isUndefined)
                 return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            const input = args[0].asString().value;
-            const pattern = args[1].asString().value;
-            let offset = 0;
-            if (args.length === 3) {
-                if (args[2].isUndefined)
-                    return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-                offset = args[2].asInt().value;
-            }
-            if (pattern.length === 0) {
-                return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, -1);
-            }
-            if (offset >= input.length) {
-                return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, -1);
-            }
-            const index = input.indexOf(pattern, offset);
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, index);
-        });
+            offset = args[2].asInt().value;
+        }
+        if (pattern.length === 0) {
+            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, -1);
+        }
+        if (offset >= input.length) {
+            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, -1);
+        }
+        const index = input.indexOf(pattern, offset);
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer, index);
     }
     /** Replaces all occurrences of the pattern in the input string with the replacement */
-    static str_replace(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 3, 'str_replace');
-            if (args.some(v => v.isUndefined))
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            const input = args[0].asString().value;
-            const pattern = args[1].asString().value;
-            const replacement = args[2].asString().value;
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, input.replaceAll(pattern, replacement));
-        });
+    static async str_replace(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 3, 'str_replace');
+        if (args.some(v => v.isUndefined))
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const input = args[0].asString().value;
+        const pattern = args[1].asString().value;
+        const replacement = args[2].asString().value;
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, input.replaceAll(pattern, replacement));
     }
     /** Replaces all occurrences of the regex pattern in the input string with the replacement */
-    static str_replace_regexp(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 3, 'str_replace_regexp');
-            if (args.some(v => v.isUndefined))
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            const input = args[0].asString().value;
-            const pattern = args[1].asString().value;
-            const replacement = args[2].asString().value;
-            const regex = _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_3__.RegexUtils.toEcmaRegex(pattern, { g: true, u: true });
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, input.replace(regex, replacement));
-        });
+    static async str_replace_regexp(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 3, 'str_replace_regexp');
+        if (args.some(v => v.isUndefined))
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const input = args[0].asString().value;
+        const pattern = args[1].asString().value;
+        const replacement = args[2].asString().value;
+        const regex = _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_3__.RegexUtils.toEcmaRegex(pattern, { g: true, u: true });
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, input.replace(regex, replacement));
     }
     /** Escapes the special characters in the input string */
-    static rescape(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'rescape');
-            if (args[0].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            const escaped = _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_3__.RegexUtils.escape(args[0].asString().value);
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, escaped);
-        });
+    static async rescape(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'rescape');
+        if (args[0].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const escaped = _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_3__.RegexUtils.escape(args[0].asString().value);
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, escaped);
     }
     /** Sets the variable in the context */
-    static set(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 2, 'set');
-            const value = args[1];
-            if (!args[0].isUndefined) {
-                const variableName = args[0].asString().value;
-                context.setVariable(variableName, value);
-            }
-            return value;
-        });
+    static async set(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 2, 'set');
+        const value = args[1];
+        if (!args[0].isUndefined) {
+            const variableName = args[0].asString().value;
+            context.setVariable(variableName, value);
+        }
+        return value;
     }
     /** Sanitizes the input string */
-    static sanitize(context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            AbuseFilterFunctions.assertArgumentCount(args, 1, 'sanitize');
-            if (args[0].isUndefined)
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            const input = args[0].asString().value;
-            // Replicate PHP html_entity_decode() behavior
-            const sanitized = input.replace(/&(#\d+|#x[0-9a-f]+|quot|amp|lt|gt);/gi, function (match, charCodeRaw) {
-                switch (charCodeRaw) {
-                    case 'quot': return '"';
-                    case 'amp': return '&';
-                    case 'lt': return '<';
-                    case 'gt': return '>';
-                }
-                let charCode;
-                if (charCodeRaw.startsWith('#x')) {
-                    charCode = parseInt(charCodeRaw.slice(2), 16);
-                }
-                else {
-                    charCode = parseInt(charCodeRaw.slice(1), 10);
-                }
-                return String.fromCharCode(charCode);
-            });
-            return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, sanitized);
+    static async sanitize(context, args) {
+        AbuseFilterFunctions.assertArgumentCount(args, 1, 'sanitize');
+        if (args[0].isUndefined)
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        const input = args[0].asString().value;
+        // Replicate PHP html_entity_decode() behavior
+        const sanitized = input.replace(/&(#\d+|#x[0-9a-f]+|quot|amp|lt|gt);/gi, function (match, charCodeRaw) {
+            switch (charCodeRaw) {
+                case 'quot': return '"';
+                case 'amp': return '&';
+                case 'lt': return '<';
+                case 'gt': return '>';
+            }
+            let charCode;
+            if (charCodeRaw.startsWith('#x')) {
+                charCode = parseInt(charCodeRaw.slice(2), 16);
+            }
+            else {
+                charCode = parseInt(charCodeRaw.slice(1), 10);
+            }
+            return String.fromCharCode(charCode);
         });
+        return new _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String, sanitized);
     }
     //! Utility functions for other functions
     static removeSpecialCharacters(s) {
@@ -3590,15 +3474,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   MultiFunctionExecutor: () => (/* binding */ MultiFunctionExecutor)
 /* harmony export */ });
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 /**
  * A compound function executor that tries to execute a function using a list of executors.
  * The first executor that can execute the function is used. Executors are tried in the order
@@ -3609,20 +3484,18 @@ class MultiFunctionExecutor {
     constructor(executors) {
         this.executors = executors;
     }
-    executeFunction(functionName, context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const errors = [];
-            for (const executor of this.executors) {
-                try {
-                    return yield executor.executeFunction(functionName, context, args);
-                }
-                catch (e) {
-                    // Try the next executor
-                    errors.push(e);
-                }
+    async executeFunction(functionName, context, args) {
+        const errors = [];
+        for (const executor of this.executors) {
+            try {
+                return await executor.executeFunction(functionName, context, args);
             }
-            throw new Error(`Function ${functionName} is unknown or cannot be executed: ${errors.map(e => '' + e).join(', ')}`);
-        });
+            catch (e) {
+                // Try the next executor
+                errors.push(e);
+            }
+        }
+        throw new Error(`Function ${functionName} is unknown or cannot be executed: ${errors.map(e => '' + e).join(', ')}`);
     }
 }
 
@@ -3636,15 +3509,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   RemoteFunctionExecutor: () => (/* binding */ RemoteFunctionExecutor)
 /* harmony export */ });
 /* harmony import */ var _value_Value_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 
 /**
  * Function executor that delegates the execution to the API.
@@ -3680,44 +3544,42 @@ class RemoteFunctionExecutor {
         }
         catch (e) { /* Catches errors in node.js, where there's no sessionStorage */ }
     }
-    executeFunction(functionName, context, args) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // 'Undefined' does not exist in the API, so we need to handle it separately here
-            if (args.some(arg => arg.isUndefined)) {
-                return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
-            }
-            const functionExpression = `${functionName}(${args.map(arg => arg.toLiteral()).join(', ')})`;
-            if (this.cache.has(functionExpression)) {
-                return this.cache.get(functionExpression);
-            }
-            const apiParams = new FormData();
-            apiParams.set('action', 'abusefilterevalexpression');
-            apiParams.set('format', 'json');
-            apiParams.set('expression', functionExpression);
-            const apiUrl = '/w/api.php';
-            const response = yield fetch(apiUrl, {
-                method: 'POST',
-                headers: new Headers({
-                    'Api-User-Agent': 'abusefilter-analyzer (User:Msz2001)',
-                }),
-                body: apiParams
-            });
-            let result;
-            try {
-                result = (yield response.json());
-            }
-            catch (e) {
-                throw new Error('Server response is not a valid JSON object');
-            }
-            if (result.error) {
-                throw new Error('Server error: ' + result.error.info);
-            }
-            const value = result.abusefilterevalexpression.result;
-            const reifiedValue = _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.fromNative(value);
-            this.cache.set(functionExpression, reifiedValue);
-            this.scheduleSessionCacheUpdate();
-            return reifiedValue;
+    async executeFunction(functionName, context, args) {
+        // 'Undefined' does not exist in the API, so we need to handle it separately here
+        if (args.some(arg => arg.isUndefined)) {
+            return _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.Undefined;
+        }
+        const functionExpression = `${functionName}(${args.map(arg => arg.toLiteral()).join(', ')})`;
+        if (this.cache.has(functionExpression)) {
+            return this.cache.get(functionExpression);
+        }
+        const apiParams = new FormData();
+        apiParams.set('action', 'abusefilterevalexpression');
+        apiParams.set('format', 'json');
+        apiParams.set('expression', functionExpression);
+        const apiUrl = '/w/api.php';
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: new Headers({
+                'Api-User-Agent': 'abusefilter-analyzer (User:Msz2001)',
+            }),
+            body: apiParams
         });
+        let result;
+        try {
+            result = await response.json();
+        }
+        catch (e) {
+            throw new Error('Server response is not a valid JSON object');
+        }
+        if (result.error) {
+            throw new Error('Server error: ' + result.error.info);
+        }
+        const value = result.abusefilterevalexpression.result;
+        const reifiedValue = _value_Value_js__WEBPACK_IMPORTED_MODULE_0__.Value.fromNative(value);
+        this.cache.set(functionExpression, reifiedValue);
+        this.scheduleSessionCacheUpdate();
+        return reifiedValue;
     }
     scheduleSessionCacheUpdate() {
         // Do the updates at most every 5 seconds
@@ -4944,15 +4806,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AbuseFilterApi: () => (/* binding */ AbuseFilterApi)
 /* harmony export */ });
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __await = (undefined && undefined.__await) || function (v) { return this instanceof __await ? (this.v = v, this) : new __await(v); }
 var __asyncGenerator = (undefined && undefined.__asyncGenerator) || function (thisArg, _arguments, generator) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
@@ -4967,47 +4820,43 @@ var __asyncGenerator = (undefined && undefined.__asyncGenerator) || function (th
     function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
 };
 class AbuseFilterApi {
-    static fetchAbuseFilterText(filterId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let api = this.getApi();
-            if (filterId.toString().startsWith('global-')) {
-                filterId = filterId.toString().replace('global-', '');
-                api = new mw.ForeignApi('https://meta.wikimedia.org/w/api.php');
-            }
-            const response = yield api.get({
-                action: 'query',
-                list: 'abusefilters',
-                abfprop: 'id|pattern',
-                abfstartid: filterId,
-                abflimit: 1
-            });
-            const filterObject = response.query.abusefilters[0];
-            if (filterObject.id == filterId) {
-                if (filterObject.pattern)
-                    return filterObject.pattern;
-                throw new Error('You don\'t have permission to view this filter');
-            }
-            throw new Error(`Filter ${filterId} not found`);
+    static async fetchAbuseFilterText(filterId) {
+        let api = this.getApi();
+        if (filterId.toString().startsWith('global-')) {
+            filterId = filterId.toString().replace('global-', '');
+            api = new mw.ForeignApi('https://meta.wikimedia.org/w/api.php');
+        }
+        const response = await api.get({
+            action: 'query',
+            list: 'abusefilters',
+            abfprop: 'id|pattern',
+            abfstartid: filterId,
+            abflimit: 1
         });
+        const filterObject = response.query.abusefilters[0];
+        if (filterObject.id == filterId) {
+            if (filterObject.pattern)
+                return filterObject.pattern;
+            throw new Error('You don\'t have permission to view this filter');
+        }
+        throw new Error(`Filter ${filterId} not found`);
     }
-    static fetchAbuseLogEntry(logId) {
+    static async fetchAbuseLogEntry(logId) {
         var _a, _b;
-        return __awaiter(this, void 0, void 0, function* () {
-            const api = this.getApi();
-            const response = yield api.get({
-                action: 'query',
-                list: 'abuselog',
-                afllogid: logId,
-                aflprop: 'ids|details',
-                maxage: 3600, // log entries don't change, so we can cache them for a long time
-                smaxage: 43200,
-            });
-            const logObject = (_b = (_a = response === null || response === void 0 ? void 0 : response.query) === null || _a === void 0 ? void 0 : _a.abuselog) === null || _b === void 0 ? void 0 : _b[0];
-            if (logObject !== undefined) {
-                return logObject;
-            }
-            throw new Error('Log entry does not exist or you have no permissions to view it');
+        const api = this.getApi();
+        const response = await api.get({
+            action: 'query',
+            list: 'abuselog',
+            afllogid: logId,
+            aflprop: 'ids|details',
+            maxage: 3600, // log entries don't change, so we can cache them for a long time
+            smaxage: 43200,
         });
+        const logObject = (_b = (_a = response === null || response === void 0 ? void 0 : response.query) === null || _a === void 0 ? void 0 : _a.abuselog) === null || _b === void 0 ? void 0 : _b[0];
+        if (logObject !== undefined) {
+            return logObject;
+        }
+        throw new Error('Log entry does not exist or you have no permissions to view it');
     }
     static fetchAbuseLogEntries(filterId, limit) {
         var _a, _b, _c;
@@ -6046,15 +5895,6 @@ __webpack_require__.r(__webpack_exports__);
  * a specific log entry. The gadget will display the syntax tree, along with the
  * values of all the nodes in it.
  */
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 
 mw.hook('userjs.abuseFilter').add((abuseFilter) => {
     // Run only on the AbuseLog special page
@@ -6066,38 +5906,36 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
     if (logId) {
         displayOnLogEntryPage(logId);
     }
-    function displayOnLogEntryPage(logId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const fieldset = document.querySelector('#mw-content-text > fieldset');
-            if (!fieldset)
-                return;
-            const referenceHeader = fieldset.querySelector('h3');
-            if (!referenceHeader)
-                return;
-            const treeHeader = document.createElement('h3');
-            treeHeader.textContent = 'Filter evaluation tree';
-            fieldset.insertBefore(treeHeader, referenceHeader);
-            const rootElement = document.createElement('div');
-            rootElement.textContent = 'Loading...';
-            fieldset.insertBefore(rootElement, referenceHeader);
-            try {
-                const filter = yield abuseFilter.createFromLogId(logId);
-                filter.flattenAssociativeOperators();
-                const impactingBoolFilter = new abuseFilter.gui.filters.ImpactingBoolFilter(filter.defaultContext);
-                const filters = [
-                    impactingBoolFilter,
-                ];
-                filter.renderInto(rootElement, {
-                    treeFilters: filters,
-                    viewFactory: new _ViewFactoryWithAugmented_js__WEBPACK_IMPORTED_MODULE_0__.ViewFactoryWithAugmented(filter.defaultContext),
-                });
-                yield filter.evaluate();
-            }
-            catch (error) {
-                const errorMessage = (error instanceof Error) ? error.message : ('' + error);
-                rootElement.textContent = `Can't load the abuse filter: ${errorMessage}`;
-            }
-        });
+    async function displayOnLogEntryPage(logId) {
+        const fieldset = document.querySelector('#mw-content-text > fieldset');
+        if (!fieldset)
+            return;
+        const referenceHeader = fieldset.querySelector('h3');
+        if (!referenceHeader)
+            return;
+        const treeHeader = document.createElement('h3');
+        treeHeader.textContent = 'Filter evaluation tree';
+        fieldset.insertBefore(treeHeader, referenceHeader);
+        const rootElement = document.createElement('div');
+        rootElement.textContent = 'Loading...';
+        fieldset.insertBefore(rootElement, referenceHeader);
+        try {
+            const filter = await abuseFilter.createFromLogId(logId);
+            filter.flattenAssociativeOperators();
+            const impactingBoolFilter = new abuseFilter.gui.filters.ImpactingBoolFilter(filter.defaultContext);
+            const filters = [
+                impactingBoolFilter,
+            ];
+            filter.renderInto(rootElement, {
+                treeFilters: filters,
+                viewFactory: new _ViewFactoryWithAugmented_js__WEBPACK_IMPORTED_MODULE_0__.ViewFactoryWithAugmented(filter.defaultContext),
+            });
+            await filter.evaluate();
+        }
+        catch (error) {
+            const errorMessage = (error instanceof Error) ? error.message : ('' + error);
+            rootElement.textContent = `Can't load the abuse filter: ${errorMessage}`;
+        }
     }
 });
 
@@ -6328,15 +6166,6 @@ class PatternExplorerPopup {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NodeValueFrequencyView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(52);
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
     var m = o[Symbol.asyncIterator], i;
@@ -6412,66 +6241,64 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
             });
         });
     }
-    function displayFrequencyAnalysis(rootElement, filterId, count, progressCallback) {
+    async function displayFrequencyAnalysis(rootElement, filterId, count, progressCallback) {
         var _a, e_1, _b, _c;
-        return __awaiter(this, void 0, void 0, function* () {
-            progressCallback === null || progressCallback === void 0 ? void 0 : progressCallback(0);
-            const nodeFactory = new abuseFilter.evaluator.nodes.EvaluableNodeFactory();
-            const tokenizer = new abuseFilter.parser.Tokenizer();
-            const parser = new abuseFilter.parser.Parser(nodeFactory);
-            const filterText = yield abuseFilter.api.fetchAbuseFilterText(filterId);
-            const tokens = tokenizer.tokenize(filterText);
-            let rootNode = parser.parse(tokens);
-            const transformer = new abuseFilter.transform.FlattenAssociativeOpsTransformer();
-            rootNode = transformer.transform(rootNode, nodeFactory);
-            const gui = new abuseFilter.gui.AbuseFilterGUI(rootElement);
-            const viewFactory = new abuseFilter.gui.treeViews.ViewFactory();
-            viewFactory.addDataViewFactory(
-            // check if node is IEvaluableTreeNode - only these have values
-            (node) => 'getValue' in node
-                ? new _NodeValueFrequencyView_js__WEBPACK_IMPORTED_MODULE_0__.NodeValueFrequencyView(node)
-                : null);
-            gui.renderSyntaxTree(rootNode, viewFactory);
-            const functionExecutor = new abuseFilter.evaluator.functions.MultiFunctionExecutor([
-                new abuseFilter.evaluator.functions.LocalFunctionExecutor(),
-                new abuseFilter.evaluator.functions.RemoteFunctionExecutor()
-            ]);
-            const evaluator = new abuseFilter.evaluator.NodeEvaluator(functionExecutor);
+        progressCallback === null || progressCallback === void 0 ? void 0 : progressCallback(0);
+        const nodeFactory = new abuseFilter.evaluator.nodes.EvaluableNodeFactory();
+        const tokenizer = new abuseFilter.parser.Tokenizer();
+        const parser = new abuseFilter.parser.Parser(nodeFactory);
+        const filterText = await abuseFilter.api.fetchAbuseFilterText(filterId);
+        const tokens = tokenizer.tokenize(filterText);
+        let rootNode = parser.parse(tokens);
+        const transformer = new abuseFilter.transform.FlattenAssociativeOpsTransformer();
+        rootNode = transformer.transform(rootNode, nodeFactory);
+        const gui = new abuseFilter.gui.AbuseFilterGUI(rootElement);
+        const viewFactory = new abuseFilter.gui.treeViews.ViewFactory();
+        viewFactory.addDataViewFactory(
+        // check if node is IEvaluableTreeNode - only these have values
+        (node) => 'getValue' in node
+            ? new _NodeValueFrequencyView_js__WEBPACK_IMPORTED_MODULE_0__.NodeValueFrequencyView(node)
+            : null);
+        gui.renderSyntaxTree(rootNode, viewFactory);
+        const functionExecutor = new abuseFilter.evaluator.functions.MultiFunctionExecutor([
+            new abuseFilter.evaluator.functions.LocalFunctionExecutor(),
+            new abuseFilter.evaluator.functions.RemoteFunctionExecutor()
+        ]);
+        const evaluator = new abuseFilter.evaluator.NodeEvaluator(functionExecutor);
+        try {
+            let processedCount = 0;
             try {
-                let processedCount = 0;
-                try {
-                    for (var _d = true, _e = __asyncValues(abuseFilter.api.fetchAbuseLogEntries(filterId, count)), _f; _f = yield _e.next(), _a = _f.done, !_a; _d = true) {
-                        _c = _f.value;
-                        _d = false;
-                        const logEntry = _c;
-                        try {
-                            const evaluationContext = new abuseFilter.evaluator.EvaluationContext();
-                            const variables = logEntry.details;
-                            for (const [key, value] of Object.entries(variables)) {
-                                evaluationContext.setVariable(key, abuseFilter.evaluator.value.Value.fromNative(value));
-                            }
-                            yield evaluator.evaluateNode(rootNode, evaluationContext);
-                            progressCallback === null || progressCallback === void 0 ? void 0 : progressCallback(++processedCount, logEntry.timestamp);
-                        }
-                        catch (error) {
-                            // TODO: Display somehow
-                            console.error('Error evaluating log entry:', error);
-                        }
-                    }
-                }
-                catch (e_1_1) { e_1 = { error: e_1_1 }; }
-                finally {
+                for (var _d = true, _e = __asyncValues(abuseFilter.api.fetchAbuseLogEntries(filterId, count)), _f; _f = await _e.next(), _a = _f.done, !_a; _d = true) {
+                    _c = _f.value;
+                    _d = false;
+                    const logEntry = _c;
                     try {
-                        if (!_d && !_a && (_b = _e.return)) yield _b.call(_e);
+                        const evaluationContext = new abuseFilter.evaluator.EvaluationContext();
+                        const variables = logEntry.details;
+                        for (const [key, value] of Object.entries(variables)) {
+                            evaluationContext.setVariable(key, abuseFilter.evaluator.value.Value.fromNative(value));
+                        }
+                        await evaluator.evaluateNode(rootNode, evaluationContext);
+                        progressCallback === null || progressCallback === void 0 ? void 0 : progressCallback(++processedCount, logEntry.timestamp);
                     }
-                    finally { if (e_1) throw e_1.error; }
+                    catch (error) {
+                        // TODO: Display somehow
+                        console.error('Error evaluating log entry:', error);
+                    }
                 }
             }
-            catch (error) {
-                const errorMessage = (error instanceof Error) ? error.message : ('' + error);
-                rootElement.textContent = `Can't load the abuse filter: ${errorMessage}`;
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (!_d && !_a && (_b = _e.return)) await _b.call(_e);
+                }
+                finally { if (e_1) throw e_1.error; }
             }
-        });
+        }
+        catch (error) {
+            const errorMessage = (error instanceof Error) ? error.message : ('' + error);
+            rootElement.textContent = `Can't load the abuse filter: ${errorMessage}`;
+        }
     }
 });
 
