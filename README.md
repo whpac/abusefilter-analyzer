@@ -22,9 +22,7 @@ As the AbuseFilter API does not provide options to inspect the data flow during 
 
 The most basic application of this library is to help abuse filter editors to debug the filters. However, since it's designed to be highly extensible, gadget creators can reuse this library to perform other tasks related to abuse filters.
 
-Since this library is (almost*) completely run in the user browser, it's not limited by any rate limits or insufficient priviledges that a user could be normally subject to. Thus, it can be exploited for instance to prepare a frequency analysis of which rules are the most commonly matched (which in turn, could help optimize the filters).
-
-*Almost all actions are run in the browser – only the `ccnorm` function family is deferred to the MediaWiki server. The original character substitution table comprises of almost 10k rules that, expessed as code, weighs around 100kB of unnecessary burden. This behavior will eventually change, but for now these functions are run on the server. This means that only users with enough priviledges on the wiki can run them.
+Since this library is completely run in the user browser, it's not limited by any rate limits or insufficient priviledges that a user could be normally subject to. Thus, it can be exploited for instance to prepare a frequency analysis of which rules are the most commonly matched (which in turn, could help optimize the filters).
 
 ### Features
 
