@@ -50,7 +50,9 @@ build:
         - npm run build --if-present
         - cp upstream/equivset.json dist
         # Temporary, for as long as we can't load .json directly
-        - echo -n "window.__equivset = " | cat - dist/equivset.json > dist/equivset.js
+        - echo -n "mw.hook('userjs.abuseFilter.equivset').fire(" > dist/equivset.js
+        - cat dist/equivset.json >> dist/equivset.js
+        - echo -n ");" >> dist/equivset.js
     artifacts:
         paths:
             - ./dist/*

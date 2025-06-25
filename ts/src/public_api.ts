@@ -115,17 +115,20 @@ const _abuseFilter = {
 
 class WorkaroundCCNormProvider extends CCNormProvider {
     protected async loadConversionTable(url: string): Promise<Map<string, string>> {
-        await mw.loader.using(url);
+        mw.loader.load(url);
 
-        //@ts-expect-error Because CORS prevents us from directly reading the JSON, we load JS and use a global field
-        const table = window.__equivset;
-        //@ts-expect-error as above
-        delete window.__equivset;
+        return new Promise((resolve, reject) => {
+            const handler = (table: Record<string, string>) => {
+                if (typeof table !== 'object' || !table) {
+                    reject(new Error(`Invalid conversion table format in ${url}`));
+                } else {
+                    resolve(new Map(Object.entries(table)));
+                }
+                mw.hook('userjs.abuseFilter.equivset').remove(handler);
+            };
 
-        if (typeof table !== 'object' || !table) {
-            throw new Error(`Invalid conversion table format in ${url}`);
-        }
-        return new Map(Object.entries(table));
+            mw.hook('userjs.abuseFilter.equivset').add(handler);
+        });
     }
 }
 
