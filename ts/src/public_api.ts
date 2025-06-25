@@ -113,8 +113,24 @@ const _abuseFilter = {
     },
 };
 
-AbuseFilterFunctions.ccnormProvider = new CCNormProvider(
-    'https://gitlab-content.toolforge.org/msz2001/abusefilter-analyzer/-/raw/deploy/equivset.json?mime=application/json&maxage=3600'
+class WorkaroundCCNormProvider extends CCNormProvider {
+    protected async loadConversionTable(url: string): Promise<Map<string, string>> {
+        await mw.loader.using(url);
+
+        //@ts-expect-error Because CORS prevents us from directly reading the JSON, we load JS and use a global field
+        const table = window.__equivset;
+        //@ts-expect-error as above
+        delete window.__equivset;
+
+        if (typeof table !== 'object' || !table) {
+            throw new Error(`Invalid conversion table format in ${url}`);
+        }
+        return new Map(Object.entries(table));
+    }
+}
+
+AbuseFilterFunctions.ccnormProvider = new WorkaroundCCNormProvider(
+    'https://gitlab-content.toolforge.org/msz2001/abusefilter-analyzer/-/raw/deploy/equivset.js?mime=text/javascript&maxage=3600'
 );
 mw.libs.abuseFilter = _abuseFilter;
 mw.hook('userjs.abuseFilter').fire(_abuseFilter);
