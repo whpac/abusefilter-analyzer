@@ -614,7 +614,38 @@ class Value {
         if (Array.isArray(value)) {
             return new Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Array, value.map(v => Value.fromNative(v)));
         }
+        if (typeof value === 'object') {
+            return Value.fromNativeSparseArray(value);
+        }
         throw new Error(`Cannot create a value from native value ${value}`);
+    }
+    static fromNativeSparseArray(value) {
+        const keys = Object.keys(value);
+        if (keys.length === 0) {
+            return new Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Array, []);
+        }
+        // First, check if all keys are natural numbers
+        const isSparseArray = keys.every(key => {
+            const numKey = Number(key);
+            return !isNaN(numKey) && Number.isInteger(numKey) && numKey >= 0;
+        });
+        if (!isSparseArray) {
+            throw new Error(`Cannot create a sparse array from object with non-numeric keys: ${JSON.stringify(value)}`);
+        }
+        // Then convert it to an array of Values
+        const array = [];
+        for (const key of keys) {
+            const index = parseInt(key, 10);
+            if (isNaN(index) || index < 0) {
+                throw new Error(`Invalid index in sparse array: ${key}`);
+            }
+            // Ensure the array is large enough
+            while (array.length <= index) {
+                array.push(Value.Null);
+            }
+            array[index] = Value.fromNative(value[key]);
+        }
+        return new Value(_model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Array, array);
     }
     /** Returns true if the stored value corresponds to the declared data type */
     isValid() {
