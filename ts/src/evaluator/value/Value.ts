@@ -89,7 +89,43 @@ export class Value<TValue = unknown> implements IValue<TValue> {
             return new Value(ValueDataType.Array, value.map(v => Value.fromNative(v)));
         }
 
+        if (typeof value === 'object') {
+            return Value.fromNativeSparseArray(value as Record<string | number, unknown>);
+        }
+
         throw new Error(`Cannot create a value from native value ${value}`);
+    }
+
+    private static fromNativeSparseArray(value: Record<string | number, unknown>): Value {
+        const keys = Object.keys(value);
+        if (keys.length === 0) {
+            return new Value(ValueDataType.Array, []);
+        }
+        
+        // First, check if all keys are natural numbers
+        const isSparseArray = keys.every(key => {
+            const numKey = Number(key);
+            return !isNaN(numKey) && Number.isInteger(numKey) && numKey >= 0;
+        });
+        if (!isSparseArray) {
+            throw new Error(`Cannot create a sparse array from object with non-numeric keys: ${JSON.stringify(value)}`);
+        }
+
+        // Then convert it to an array of Values
+        const array: IValue[] = [];
+        for (const key of keys) {
+            const index = parseInt(key, 10);
+            if (isNaN(index) || index < 0) {
+                throw new Error(`Invalid index in sparse array: ${key}`);
+            }
+            // Ensure the array is large enough
+            while (array.length <= index) {
+                array.push(Value.Null);
+            }
+            array[index] = Value.fromNative(value[key]);
+        }
+
+        return new Value(ValueDataType.Array, array);
     }
 
     /** Returns true if the stored value corresponds to the declared data type */
