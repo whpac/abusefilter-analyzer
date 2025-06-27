@@ -1,4 +1,4 @@
-NOTE: This repository is being developed at [Wikimedia GitLab](https://gitlab.wikimedia.org/msz2001/abusefilter-analyzer). If you're seeing this on GitHub and would like to create a new issue, please navigate to GitLab.
+NOTE: Issues for this repository can be filed on [GitHub](https://github.com/whpac/abusefilter-analyzer/issues). If you're seeing this on Wikimedia GitLab and would like to create a new issue, please navigate to GitHub.
 
 # MediaWiki AbuseFilter library for client-side use
 
