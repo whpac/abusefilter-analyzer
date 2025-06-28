@@ -1,6 +1,7 @@
 import { IValue } from '../../model/value/IValue.js';
 import { ValueDataType } from '../../model/value/ValueDataType.js';
 import { ValueFormatter } from '../../gui/value/ValueFormatter.js';
+import { i18n } from '../../i18n/i18n.js';
 
 export class ValueFrequencyPopup {
 
@@ -32,7 +33,7 @@ export class ValueFrequencyPopup {
                 $floatableContainer: $anchor,
                 anchor: !!attachToNode,
                 head: true,
-                label: 'Value frequency',
+                label: i18n('afa-masscheck-frequency-header'),
             });
             
             $(document.body).append(popup.$element);
@@ -44,7 +45,8 @@ export class ValueFrequencyPopup {
         const container = document.createElement('ul');
         for (const entry of valueFrequencies) {
             const value = document.createElement('li');
-            value.append(`${entry.count} times: `);
+            value.append(i18n('afa-masscheck-frequency-times', entry.count));
+            value.append(' ');
             value.appendChild(ValueFormatter.formatValue(entry.value, 200));
             container.appendChild(value);
         }
@@ -54,7 +56,7 @@ export class ValueFrequencyPopup {
 
     protected makeErrorContent(errors: Error[]): HTMLElement {
         const container = document.createElement('div');
-        container.append(`Errors (${errors.length}): `);
+        container.append(i18n('afa-masscheck-frequency-errors', errors.length));
 
         const list = document.createElement('ul');
         container.appendChild(list);

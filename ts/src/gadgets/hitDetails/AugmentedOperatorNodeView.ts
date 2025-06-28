@@ -1,6 +1,7 @@
 import { IView } from '../../gui/IView.js';
 import { INodeView } from '../../gui/treeViews/INodeView.js';
 import { OperatorNodeView } from '../../gui/treeViews/OperatorNodeView.js';
+import { i18n } from '../../i18n/i18n.js';
 import { IEvaluationContext } from '../../model/IEvaluationContext.js';
 import { IEvaluableTreeNode } from '../../model/nodes/IEvaluableTreeNode.js';
 import { IValue } from '../../model/value/IValue.js';
@@ -24,7 +25,7 @@ export class AugmentedOperatorNodeView extends OperatorNodeView {
         }
         element.append(token);
 
-        const buttonTitle = 'Click to see details of the match';
+        const buttonTitle = i18n('afa-hitdetails-operatortooltip');
         // Enable the button only if the node matched anything in the current context
         element.disabled = treeNode.getValue(this.evaluationContext).isTruthy() !== true;
         if (!element.disabled) {

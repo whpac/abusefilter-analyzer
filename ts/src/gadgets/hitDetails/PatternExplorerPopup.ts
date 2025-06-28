@@ -1,5 +1,6 @@
 import { Match, ValueStringOperations } from '../../evaluator/value/ValueStringOperations.js';
 import { ValueFormatter } from '../../gui/value/ValueFormatter.js';
+import { i18n } from '../../i18n/i18n.js';
 import { IValue } from '../../model/value/IValue.js';
 
 export type MatchingMode = 'regex' | 'regex-i' | 'glob' | 'substring';
@@ -39,7 +40,7 @@ export class PatternExplorerPopup {
                 $floatableContainer: $anchor,
                 anchor: !!attachToNode,
                 head: true,
-                label: 'Match details',
+                label: i18n('afa-hitdetails-patternexplorer-header'),
             });
             
             $(document.body).append(popup.$element);
@@ -49,7 +50,8 @@ export class PatternExplorerPopup {
 
     protected makePatternBlock(): HTMLElement {
         const patternBlock = document.createElement('p');
-        patternBlock.append('Pattern: ');
+        patternBlock.append(i18n('afa-hitdetails-patternexplorer-pattern'));
+        patternBlock.append(' ');
         patternBlock.append(ValueFormatter.formatValue(this.pattern, 100));
         return patternBlock;
     }
@@ -67,7 +69,7 @@ export class PatternExplorerPopup {
         if (match === null) {
             console.log(`PatternExplorerPopup: No match found for pattern "${this.pattern.asString().value}" in subject "${this.subject.asString().value}". Matching mode: ${this.matchingMode}`);
             const noMatchBlock = document.createElement('p');
-            noMatchBlock.textContent = 'No match found';
+            noMatchBlock.textContent = i18n('afa-hitdetails-patternexplorer-nomatch');
             return noMatchBlock;
         }
 

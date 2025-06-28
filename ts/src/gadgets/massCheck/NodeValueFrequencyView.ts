@@ -6,6 +6,7 @@ import { IView } from '../../gui/IView.js';
 import { NodeValueViewBase } from '../../gui/value/NodeValueViewBase.js';
 import { ValueFormatter } from '../../gui/value/ValueFormatter.js';
 import { ValueFrequencyPopup, ValueFrequencies } from './ValueFrequencyPopup.js';
+import { i18n } from '../../i18n/i18n.js';
 
 /**
  * A view for displaying the most frequent values of a node at multiple evaluations.
@@ -28,7 +29,7 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
         this.element = document.createElement('button');
         this.element.classList.add('afa-silent-button');
         this.element.type = 'button';
-        this.element.title = 'Click to see the value frequency';
+        this.element.title = i18n('afa-masscheck-value-tooltip');
         this.element.textContent = '...';
 
         this.listenToChanges(node);
@@ -114,7 +115,7 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
 
         if (frequency < 0.3) {
             const message = document.createElement('span');
-            message.textContent = 'multiple values';
+            message.textContent = i18n('afa-masscheck-value-multiple');
             this.setViewContent(message, null);
             return;
         }
@@ -135,14 +136,21 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
 
         this.element.appendChild(value);
 
+        if (this.errors.length == 0 && frequency === null) {
+            return;
+        }
+
         if (frequency !== null) {
             // Floor so that we don't display 100% for e.g. 99.5%
             frequency = Math.floor(frequency * 100);
-            this.element.append(` (${frequency}%)`);
         }
 
-        if (this.errors.length > 0) {
-            this.element.append(`, ${this.errors.length} errors`);
+        if (frequency !== null && this.errors.length === 0) {
+            this.element.append(' ' + i18n('afa-masscheck-value-frequency', frequency));
+        } else if (frequency !== null) {
+            this.element.append(' ' + i18n('afa-masscheck-value-frequencyerrors', frequency, this.errors.length));
+        } else {
+            this.element.append(' ' + i18n('afa-masscheck-value-errors', this.errors.length));
         }
     }
 }

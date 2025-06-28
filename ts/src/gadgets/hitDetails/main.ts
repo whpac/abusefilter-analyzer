@@ -6,6 +6,7 @@
  * values of all the nodes in it.
  */
 
+import { i18n } from '../../i18n/i18n.js';
 import { ViewFactoryWithAugmented } from './ViewFactoryWithAugmented.js';
 
 mw.hook('userjs.abuseFilter').add((abuseFilter: typeof mw.libs.abuseFilter) => {
@@ -28,11 +29,11 @@ mw.hook('userjs.abuseFilter').add((abuseFilter: typeof mw.libs.abuseFilter) => {
         if (!referenceHeader) return;
     
         const treeHeader = document.createElement('h3');
-        treeHeader.textContent = 'Filter evaluation tree';
+        treeHeader.textContent = i18n('afa-hitdetails-header');
         fieldset.insertBefore(treeHeader, referenceHeader);
     
         const rootElement = document.createElement('div');
-        rootElement.textContent = 'Loading...';
+        rootElement.textContent = i18n('afa-loading');
         fieldset.insertBefore(rootElement, referenceHeader);
     
         try {
@@ -49,8 +50,8 @@ mw.hook('userjs.abuseFilter').add((abuseFilter: typeof mw.libs.abuseFilter) => {
             });
             await filter.evaluate();
         } catch (error: unknown) {
-            const errorMessage = (error instanceof Error) ? error.message : ('' + error);
-            rootElement.textContent = `Can't load the abuse filter: ${errorMessage}`;
+            const errorMessage = (error instanceof Error) ? error.message : error;
+            rootElement.textContent = i18n('afa-cantload', errorMessage);
         }
     }
 });

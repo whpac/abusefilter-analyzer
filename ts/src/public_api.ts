@@ -32,6 +32,7 @@ import { NodeValueView } from './gui/value/NodeValueView.js';
 import { NodeValueViewBase } from './gui/value/NodeValueViewBase.js';
 import { ProcessedDataView } from './gui/value/ProcessedDataView.js';
 import { ValueFormatter } from './gui/value/ValueFormatter.js';
+import { initializeTranslations } from './i18n/i18n.js';
 import { AbuseFilterApi } from './mediawiki/AbuseFilterApi.js';
 import { TreeNode } from './parser/nodes/TreeNode.js';
 import { TreeNodeFactory } from './parser/nodes/TreeNodeFactory.js';
@@ -135,6 +136,7 @@ class WorkaroundCCNormProvider extends CCNormProvider {
 AbuseFilterFunctions.ccnormProvider = new WorkaroundCCNormProvider(
     'https://gitlab-content.toolforge.org/msz2001/abusefilter-analyzer/-/raw/deploy/equivset.js?mime=text/javascript&maxage=3600'
 );
+initializeTranslations();
 mw.libs.abuseFilter = _abuseFilter;
 mw.hook('userjs.abuseFilter').fire(_abuseFilter);
 
