@@ -1,3 +1,4 @@
+import { i18n } from '../../i18n/i18n.js';
 import { BlockNodeView } from './BlockNodeView.js';
 
 export class OperatorNodeView extends BlockNodeView {
@@ -45,17 +46,18 @@ export class OperatorNodeView extends BlockNodeView {
         const element = document.createElement('span');
 
         if (operator === ';') {
-            element.append('Statement sequence');
+            element.append(i18n('afa-gui-node-sequence'));
         } else {
             const isKeyword = /^[a-z]+$/i.test(operator);
             const nodeClass = isKeyword ? 'afa-keyword' : 'afa-operator';
-            element.append('Operator ');
+            element.append(i18n('afa-gui-node-operator'), ' ');
             element.append(this.createTokenNode(operator, [nodeClass]));
         }
         return element;
     }
 
     protected getBlockHints(): string[] {
+        // TODO: Similarly to FunctionNodeView, should these be localized?
         const operator = this.treeNode.identity.value;
         switch (operator) {
             case 'in':

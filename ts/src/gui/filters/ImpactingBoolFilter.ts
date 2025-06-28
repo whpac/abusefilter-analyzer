@@ -1,3 +1,4 @@
+import { i18n } from '../../i18n/i18n.js';
 import { IEvaluationContext } from '../../model/IEvaluationContext.js';
 import { IEvaluableTreeNode } from '../../model/nodes/IEvaluableTreeNode.js';
 import { TreeNodeType } from '../../model/nodes/TreeNodeType.js';
@@ -10,10 +11,12 @@ import { ITreeFilter } from './ITreeFilter.js';
  * For example, for (true & true & false), only the last will be shown.
  */
 export class ImpactingBoolFilter implements ITreeFilter {
-    public readonly name = 'Show only impacting booleans';
-    public readonly description = 'Hides most operands of AND that evaluate to true and of OR that ' +
-        'evaluate to false. The resulting tree will be shorter and will contain only rules affecting ' +
-        'the final result.';
+    public get name() {
+        return i18n('afa-gui-filter-bool-name');
+    }
+    public get description() {
+        return i18n('afa-gui-filter-bool-desc');
+    }
 
     protected readonly relevantEvaluationContext: IEvaluationContext;
 

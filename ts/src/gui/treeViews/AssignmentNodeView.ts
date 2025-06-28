@@ -1,3 +1,4 @@
+import { i18n } from '../../i18n/i18n.js';
 import { ITreeNode } from '../../model/nodes/ITreeNode.js';
 import { TreeNodeType } from '../../model/nodes/TreeNodeType.js';
 import { IView } from '../IView.js';
@@ -41,12 +42,12 @@ export class AssignmentNodeView extends BlockNodeView {
         const isArrayAssign = this.treeNode.type === TreeNodeType.IndexAssignment;
         if (isArrayAssign) {
             if (this.children.length === 3) {
-                element.append('Assignment to array index');
+                element.append(i18n('afa-gui-node-indexassign'));
             } else {
-                element.append('Append to array');
+                element.append(i18n('afa-gui-node-arrayappend'));
             }
         } else {
-            element.append('Assignment');
+            element.append(i18n('afa-gui-node-assign'));
         }
         return element;
     }

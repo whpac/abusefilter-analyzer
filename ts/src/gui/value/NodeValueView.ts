@@ -1,3 +1,4 @@
+import { i18n } from '../../i18n/i18n.js';
 import { IEvaluationContext } from '../../model/IEvaluationContext.js';
 import { IEvaluableTreeNode } from '../../model/nodes/IEvaluableTreeNode.js';
 import { IValue } from '../../model/value/IValue.js';
@@ -46,11 +47,11 @@ export class NodeValueView extends NodeValueViewBase implements IView {
 
         const shortText = document.createElement('span');
         shortText.classList.add('afa-data-error');
-        shortText.textContent = 'Errors: ' + errors.length;
+        shortText.textContent = i18n('afa-gui-value-error', errors.length);
 
         if (context.isSpeculative) {
             shortText.classList.add('afa-data-error-speculative');
-            shortText.textContent += ' (speculative)';
+            shortText.textContent = i18n('afa-gui-value-errorspeculative', errors.length);
         }
 
         const longText = document.createElement('span');

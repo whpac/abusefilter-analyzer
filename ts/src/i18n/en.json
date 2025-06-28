@@ -24,5 +24,22 @@
     "afa-masscheck-value-errors": "($1 errors)",
     "afa-masscheck-frequency-header": "Value frequency",
     "afa-masscheck-frequency-times": "$1 times:",
-    "afa-masscheck-frequency-errors": "Errors ($1):"
+    "afa-masscheck-frequency-errors": "Errors ($1):",
+    "afa-gui-expandall": "Expand/Collapse all",
+    "afa-gui-options": "Options:",
+    "afa-gui-value-error": "Errors: $1",
+    "afa-gui-value-errorspeculative": "Errors: $1 (speculative)",
+    "afa-gui-value-unknowntoken": "Unknown token type: $1",
+    "afa-gui-value-expand": "Show the whole value ($1 characters)",
+    "afa-gui-value-collapse": "Collapse the value",
+    "afa-gui-filter-bool-name": "Show only impacting booleans",
+    "afa-gui-filter-bool-desc": "Hides most operands of AND that evaluate to true and of OR that evaluate to false. The resulting tree will be shorter and will contain only rules affecting the final result.",
+    "afa-gui-node-arraydef": "Array definition",
+    "afa-gui-node-assign": "Assignment",
+    "afa-gui-node-indexassign": "Assignment to array index",
+    "afa-gui-node-arrayappend": "Append to array",
+    "afa-gui-node-funccall": "Call function",
+    "afa-gui-node-index": "Get element at index",
+    "afa-gui-node-sequence": "Statement sequence",
+    "afa-gui-node-operator": "Operator"
 }

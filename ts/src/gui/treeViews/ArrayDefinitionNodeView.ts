@@ -1,3 +1,4 @@
+import { i18n } from '../../i18n/i18n.js';
 import { BlockNodeView } from './BlockNodeView.js';
 
 export class ArrayDefinitionNodeView extends BlockNodeView {
@@ -21,7 +22,7 @@ export class ArrayDefinitionNodeView extends BlockNodeView {
 
     protected renderBlockHeader(): HTMLElement {
         const element = document.createElement('span');
-        element.textContent = 'Array definition';
+        element.textContent = i18n('afa-gui-node-arraydef');
         return element;
     }
 

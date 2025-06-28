@@ -1,3 +1,4 @@
+import { i18n } from '../../i18n/i18n.js';
 import { BlockNodeView } from './BlockNodeView.js';
 
 export class IndexNodeView extends BlockNodeView {
@@ -15,7 +16,7 @@ export class IndexNodeView extends BlockNodeView {
 
     protected renderBlockHeader(): HTMLElement {
         const element = document.createElement('span');
-        element.textContent = 'Get element at index';
+        element.textContent = i18n('afa-gui-node-index');
         return element;
     }
 

@@ -1,3 +1,4 @@
+import { i18n } from '../i18n/i18n.js';
 import { ITreeNode } from '../model/nodes/ITreeNode.js';
 import { ITreeFilter } from './filters/ITreeFilter.js';
 import { INodeView } from './treeViews/INodeView.js';
@@ -46,7 +47,7 @@ export class AbuseFilterGUI {
 
     private displayExpandCollapseButton(wrapperElement: HTMLElement): void {
         const button = document.createElement('button');
-        button.textContent = 'Expand/Collapse all';
+        button.textContent = i18n('afa-gui-expandall');
         button.style.float = 'left';
         button.style.marginRight = '1em';
         button.addEventListener('click', () => {
@@ -72,7 +73,7 @@ export class AbuseFilterGUI {
     private displayFilterCheckboxes(filterWrapper: HTMLElement): void {
         if (this.filters.length === 0) return;
 
-        filterWrapper.append('Options: ');
+        filterWrapper.append(i18n('afa-gui-options'), ' ');
         for (const filter of this.filters) {
             const filterKey = filter.constructor.name;
 

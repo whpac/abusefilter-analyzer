@@ -1,3 +1,4 @@
+import { i18n } from '../../i18n/i18n.js';
 import { IToken } from '../../model/tokens/IToken.js';
 import { TokenType } from '../../model/tokens/TokenType.js';
 import { IValue } from '../../model/value/IValue.js';
@@ -44,7 +45,7 @@ export class ValueFormatter {
             case TokenType.Keyword:
                 return ValueFormatter.formatKeyword(token.value);
         }
-        throw new Error('Unknown token type');
+        throw new Error(i18n('afa-gui-value-unknowntoken', token.type));
     }
 
     private static makeWrapper(dataType: string): HTMLElement {
@@ -87,14 +88,14 @@ export class ValueFormatter {
                 expandButton.style.display = 'none';
                 collapseButton.style.display = '';
             });
-            expandButton.title = `Show the whole value (${escapedValue.length} characters)`;
+            expandButton.title = i18n('afa-gui-value-expand', escapedValue.length);
             const collapseButton = this.createInlayButton('←', () => {
                 contentTextNode.textContent = truncatedValue;
                 expandButton.style.display = '';
                 collapseButton.style.display = 'none';
             });
             collapseButton.style.display = 'none';
-            collapseButton.title = 'Collapse the value';
+            collapseButton.title = i18n('afa-gui-value-collapse');
 
             wrapper.appendChild(expandButton);
             wrapper.append('"');
