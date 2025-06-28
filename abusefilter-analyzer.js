@@ -18,7 +18,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AbuseFilter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony import */ var _evaluator_functions_AbuseFilterFunctions_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(17);
-/* harmony import */ var _evaluator_functions_CCNormProvider_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(42);
+/* harmony import */ var _evaluator_functions_CCNormProvider_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(45);
 /* harmony import */ var _evaluator_functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(16);
 /* harmony import */ var _evaluator_NodeEvaluator_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(9);
 /* harmony import */ var _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(20);
@@ -32,30 +32,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _evaluator_value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(12);
 /* harmony import */ var _evaluator_value_VariableValue_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(4);
 /* harmony import */ var _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(22);
-/* harmony import */ var _gui_filters_ImpactingBoolFilter_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(43);
-/* harmony import */ var _gui_treeViews_ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(25);
-/* harmony import */ var _gui_treeViews_AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(28);
-/* harmony import */ var _gui_treeViews_AtomNodeView_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(29);
-/* harmony import */ var _gui_treeViews_BlockNodeView_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(26);
-/* harmony import */ var _gui_treeViews_FunctionNodeView_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(31);
-/* harmony import */ var _gui_treeViews_IndexNodeView_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(32);
-/* harmony import */ var _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(33);
-/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(23);
-/* harmony import */ var _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(34);
-/* harmony import */ var _gui_value_NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(35);
-/* harmony import */ var _gui_value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(24);
-/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(30);
-/* harmony import */ var _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(36);
-/* harmony import */ var _parser_nodes_TreeNode_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(44);
-/* harmony import */ var _parser_nodes_TreeNodeFactory_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(45);
-/* harmony import */ var _parser_Parser_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(37);
-/* harmony import */ var _parser_ParserException_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(38);
-/* harmony import */ var _parser_Token_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(39);
-/* harmony import */ var _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(40);
-/* harmony import */ var _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(41);
+/* harmony import */ var _gui_filters_ImpactingBoolFilter_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(46);
+/* harmony import */ var _gui_treeViews_ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(28);
+/* harmony import */ var _gui_treeViews_AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(31);
+/* harmony import */ var _gui_treeViews_AtomNodeView_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(32);
+/* harmony import */ var _gui_treeViews_BlockNodeView_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(29);
+/* harmony import */ var _gui_treeViews_FunctionNodeView_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(34);
+/* harmony import */ var _gui_treeViews_IndexNodeView_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(35);
+/* harmony import */ var _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(36);
+/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(26);
+/* harmony import */ var _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(37);
+/* harmony import */ var _gui_value_NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(38);
+/* harmony import */ var _gui_value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(27);
+/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(33);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(23);
+/* harmony import */ var _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(39);
+/* harmony import */ var _parser_nodes_TreeNode_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(47);
+/* harmony import */ var _parser_nodes_TreeNodeFactory_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(48);
+/* harmony import */ var _parser_Parser_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(40);
+/* harmony import */ var _parser_ParserException_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(41);
+/* harmony import */ var _parser_Token_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(42);
+/* harmony import */ var _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(43);
+/* harmony import */ var _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(44);
 // This file imports all the necessary AbuseFilter modules and
 // makes them available in the global scope so as to enable
 // usage in the MediaWiki manner.
+
 
 
 
@@ -98,19 +100,19 @@ const _abuseFilter = {
     createFromFilterId: _AbuseFilter_js__WEBPACK_IMPORTED_MODULE_0__.AbuseFilter.createFromFilterId,
     createFromLogId: _AbuseFilter_js__WEBPACK_IMPORTED_MODULE_0__.AbuseFilter.createFromLogId,
     AbuseFilter: _AbuseFilter_js__WEBPACK_IMPORTED_MODULE_0__.AbuseFilter,
-    api: _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_30__.AbuseFilterApi,
+    api: _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_31__.AbuseFilterApi,
     parser: {
-        Parser: _parser_Parser_js__WEBPACK_IMPORTED_MODULE_33__.Parser,
-        ParserException: _parser_ParserException_js__WEBPACK_IMPORTED_MODULE_34__.ParserException,
-        Token: _parser_Token_js__WEBPACK_IMPORTED_MODULE_35__.Token,
-        Tokenizer: _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_36__.Tokenizer,
+        Parser: _parser_Parser_js__WEBPACK_IMPORTED_MODULE_34__.Parser,
+        ParserException: _parser_ParserException_js__WEBPACK_IMPORTED_MODULE_35__.ParserException,
+        Token: _parser_Token_js__WEBPACK_IMPORTED_MODULE_36__.Token,
+        Tokenizer: _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_37__.Tokenizer,
         nodes: {
-            TreeNode: _parser_nodes_TreeNode_js__WEBPACK_IMPORTED_MODULE_31__.TreeNode,
-            TreeNodeFactory: _parser_nodes_TreeNodeFactory_js__WEBPACK_IMPORTED_MODULE_32__.TreeNodeFactory,
+            TreeNode: _parser_nodes_TreeNode_js__WEBPACK_IMPORTED_MODULE_32__.TreeNode,
+            TreeNodeFactory: _parser_nodes_TreeNodeFactory_js__WEBPACK_IMPORTED_MODULE_33__.TreeNodeFactory,
         },
     },
     transform: {
-        FlattenAssociativeOpsTransformer: _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_37__.FlattenAssociativeOpsTransformer,
+        FlattenAssociativeOpsTransformer: _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_38__.FlattenAssociativeOpsTransformer,
     },
     evaluator: {
         EvaluationContext: _evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_1__.EvaluationContext,
@@ -178,6 +180,7 @@ class WorkaroundCCNormProvider extends _evaluator_functions_CCNormProvider_js__W
     }
 }
 _evaluator_functions_AbuseFilterFunctions_js__WEBPACK_IMPORTED_MODULE_2__.AbuseFilterFunctions.ccnormProvider = new WorkaroundCCNormProvider('https://gitlab-content.toolforge.org/msz2001/abusefilter-analyzer/-/raw/deploy/equivset.js?mime=text/javascript&maxage=3600');
+(0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_30__.initializeTranslations)();
 mw.libs.abuseFilter = _abuseFilter;
 mw.hook('userjs.abuseFilter').fire(_abuseFilter);
 // TODO: put this to the GUI package
@@ -359,12 +362,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(20);
 /* harmony import */ var _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
 /* harmony import */ var _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(22);
-/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(23);
-/* harmony import */ var _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(34);
-/* harmony import */ var _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(36);
-/* harmony import */ var _parser_Parser_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(37);
-/* harmony import */ var _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(40);
-/* harmony import */ var _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(41);
+/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(26);
+/* harmony import */ var _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(37);
+/* harmony import */ var _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(39);
+/* harmony import */ var _parser_Parser_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(40);
+/* harmony import */ var _parser_Tokenizer_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(43);
+/* harmony import */ var _transform_FlattenAssociativeOpsTransformer_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(44);
 
 
 
@@ -3654,7 +3657,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AbuseFilterGUI: () => (/* binding */ AbuseFilterGUI)
 /* harmony export */ });
-/* harmony import */ var _treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(26);
+
 
 class AbuseFilterGUI {
     constructor(wrapperElement, filters = []) {
@@ -3673,7 +3678,7 @@ class AbuseFilterGUI {
      * @param viewFactory The factory to use to create views for the nodes
      */
     renderSyntaxTree(rootNode, viewFactory) {
-        viewFactory !== null && viewFactory !== void 0 ? viewFactory : (viewFactory = new _treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_0__.ViewFactory());
+        viewFactory !== null && viewFactory !== void 0 ? viewFactory : (viewFactory = new _treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_1__.ViewFactory());
         this.rootNodeView = viewFactory.createView(rootNode);
         const rootNodeElement = this.rootNodeView.render();
         if (rootNodeElement.tagName === 'DETAILS') {
@@ -3693,7 +3698,7 @@ class AbuseFilterGUI {
     }
     displayExpandCollapseButton(wrapperElement) {
         const button = document.createElement('button');
-        button.textContent = 'Expand/Collapse all';
+        button.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-expandall');
         button.style.float = 'left';
         button.style.marginRight = '1em';
         button.addEventListener('click', () => {
@@ -3719,7 +3724,7 @@ class AbuseFilterGUI {
         var _a;
         if (this.filters.length === 0)
             return;
-        filterWrapper.append('Options: ');
+        filterWrapper.append((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-options'), ' ');
         for (const filter of this.filters) {
             const filterKey = filter.constructor.name;
             const filterCheckbox = document.createElement('input');
@@ -3813,17 +3818,62 @@ class AbuseFilterGUI {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   i18n: () => (/* binding */ i18n),
+/* harmony export */   initializeTranslations: () => (/* binding */ initializeTranslations)
+/* harmony export */ });
+/* harmony import */ var _en_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
+/* harmony import */ var _pl_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(25);
+// Load here all the supported languages
+
+
+function i18n(key, ...args) {
+    return mw.message(key, ...args).text();
+}
+function initializeTranslations() {
+    // Always load the English messages, optionally override them later on load
+    mw.messages.set(_en_json__WEBPACK_IMPORTED_MODULE_0__);
+    // Store the supported languages here, but skip English which is loaded
+    // by default, regardless of the user's language settings.
+    const supportedLanguages = {
+        pl: _pl_json__WEBPACK_IMPORTED_MODULE_1__
+    };
+    const userLanguage = mw.config.get('wgUserLanguage');
+    if (userLanguage in supportedLanguages) {
+        // Load the user's language messages if available
+        mw.messages.set(supportedLanguages[userLanguage]);
+    }
+}
+
+
+/***/ }),
+/* 24 */
+/***/ ((module) => {
+
+module.exports = /*#__PURE__*/JSON.parse('{"afa-loading":"Loading...","afa-cantload":"Can\'t load the abuse filter: $1","afa-hitdetails-header":"Filter evaluation tree","afa-hitdetails-patternexplorer-header":"Match details","afa-hitdetails-patternexplorer-pattern":"Pattern:","afa-hitdetails-patternexplorer-nomatch":"No match found","afa-hitdetails-operatortooltip":"Click to see details of the match","afa-masscheck-header":"Check filter on recent log entries","afa-masscheck-description":"You can use this tool to evaluate the filter on a specified number of recent log entries. This may be useful to see what conditions are triggered and how many times.","afa-masscheck-form-numberlabel":"Number of log entries to check:","afa-masscheck-form-submitlabel":"Start","afa-masscheck-form-negative":"Please enter a valid positive number.","afa-masscheck-form-errorlog":"Error log","afa-masscheck-progress":"Processed $1 / $2 log entries.","afa-masscheck-progress-finishedall":"Processed all $1 log entries.","afa-masscheck-progress-finishedsome":"Processed $1 log entries – no more were available.","afa-masscheck-progress-date":"The oldest log entry is from $1.","afa-masscheck-evaluationerror":"Unknown error during evaluation: $1","afa-masscheck-value-tooltip":"Click to see the value frequency","afa-masscheck-value-multiple":"multiple values","afa-masscheck-value-frequency":"($1%)","afa-masscheck-value-frequencyerrors":"($1%, $2 errors)","afa-masscheck-value-errors":"($1 errors)","afa-masscheck-frequency-header":"Value frequency","afa-masscheck-frequency-times":"$1 times:","afa-masscheck-frequency-errors":"Errors ($1):","afa-gui-expandall":"Expand/Collapse all","afa-gui-options":"Options:","afa-gui-value-error":"Errors: $1","afa-gui-value-errorspeculative":"Errors: $1 (speculative)","afa-gui-value-unknowntoken":"Unknown token type: $1","afa-gui-value-expand":"Show the whole value ($1 characters)","afa-gui-value-collapse":"Collapse the value","afa-gui-filter-bool-name":"Show only impacting booleans","afa-gui-filter-bool-desc":"Hides most operands of AND that evaluate to true and of OR that evaluate to false. The resulting tree will be shorter and will contain only rules affecting the final result.","afa-gui-node-arraydef":"Array definition","afa-gui-node-assign":"Assignment","afa-gui-node-indexassign":"Assignment to array index","afa-gui-node-arrayappend":"Append to array","afa-gui-node-funccall":"Call function","afa-gui-node-index":"Get element at index","afa-gui-node-sequence":"Statement sequence","afa-gui-node-operator":"Operator"}');
+
+/***/ }),
+/* 25 */
+/***/ ((module) => {
+
+module.exports = /*#__PURE__*/JSON.parse('{"afa-loading":"Wczytywanie...","afa-cantload":"Nie udało się załadować filtra nadużyć: $1","afa-hitdetails-header":"Drzewo obliczania filtra","afa-hitdetails-patternexplorer-header":"Szczegóły dopasowania","afa-hitdetails-patternexplorer-pattern":"Wzorzec:","afa-hitdetails-patternexplorer-nomatch":"Nie znaleziono dopasowania","afa-hitdetails-operatortooltip":"Kliknij, aby zobaczyć szczegóły dopasowania","afa-masscheck-header":"Sprawdź filtr na ostatnich wpisach w rejestrze","afa-masscheck-description":"Możesz użyć tego narzędzia, aby obliczyć filtr na określonej liczbie ostatnich wpisów w rejestrze. Może to być przydatne, jeśli chcesz zobaczyć, które warunki są spełniane i ile razy.","afa-masscheck-form-numberlabel":"Liczba wpisów rejestru do sprawdzenia:","afa-masscheck-form-submitlabel":"Rozpocznij","afa-masscheck-form-negative":"Wprowadź poprawną, dodatnią liczbę.","afa-masscheck-form-errorlog":"Rejestr błędów","afa-masscheck-progress":"Przetworzono $1 / $2 wpisów rejestru.","afa-masscheck-progress-finishedall":"Przetworzono $1 wpisów rejestru.","afa-masscheck-progress-finishedsome":"Przetworzono $1 wpisów rejestru – więcej nie było dostępne.","afa-masscheck-progress-date":"Najstarszy wpis pochodzi z $1.","afa-masscheck-evaluationerror":"Nieznany błąd podczas obliczania: $1","afa-masscheck-value-tooltip":"Kliknij, aby zobaczyć częstość wartości","afa-masscheck-value-multiple":"wiele wartości","afa-masscheck-value-frequency":"($1%)","afa-masscheck-value-frequencyerrors":"($1%, $2 błędów)","afa-masscheck-value-errors":"($1 błędów)","afa-masscheck-frequency-header":"Częstość wartości","afa-masscheck-frequency-times":"$1 razy:","afa-masscheck-frequency-errors":"Błędy ($1):","afa-gui-expandall":"Rozwiń/Zwiń wszystko","afa-gui-options":"Opcje:","afa-gui-value-error":"Błędy: $1","afa-gui-value-errorspeculative":"Błędy: $1 (spekulatywnie)","afa-gui-value-unknowntoken":"Nieznany typ tokenu: $1","afa-gui-value-expand":"Pokaż całą wartość ($1 znaków)","afa-gui-value-collapse":"Zwiń wartość","afa-gui-filter-bool-name":"Tylko istotne wartości logiczne","afa-gui-filter-bool-desc":"Ukrywa większość operandów AND, które są prawdziwe, oraz OR, które są fałszywe. Powstałe drzewo będzie krótsze i będzie zawierać tylko reguły wpływające na ostateczny wynik.","afa-gui-node-arraydef":"Definicja tablicy","afa-gui-node-assign":"Przypisanie","afa-gui-node-indexassign":"Przypisanie do indeksu tablicy","afa-gui-node-arrayappend":"Dopisanie na koniec tablicy","afa-gui-node-funccall":"Wywołanie funkcji","afa-gui-node-index":"Pobranie elementu spod indeksu","afa-gui-node-sequence":"Sekwencja instrukcji","afa-gui-node-operator":"Operator"}');
+
+/***/ }),
+/* 26 */
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ViewFactory: () => (/* binding */ ViewFactory)
 /* harmony export */ });
 /* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
-/* harmony import */ var _value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
-/* harmony import */ var _ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(25);
-/* harmony import */ var _AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(28);
-/* harmony import */ var _AtomNodeView_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(29);
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(26);
-/* harmony import */ var _FunctionNodeView_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(31);
-/* harmony import */ var _IndexNodeView_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(32);
-/* harmony import */ var _OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(33);
+/* harmony import */ var _value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(27);
+/* harmony import */ var _ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(28);
+/* harmony import */ var _AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(31);
+/* harmony import */ var _AtomNodeView_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(32);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(29);
+/* harmony import */ var _FunctionNodeView_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(34);
+/* harmony import */ var _IndexNodeView_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(35);
+/* harmony import */ var _OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(36);
 
 
 
@@ -3905,7 +3955,7 @@ class ViewFactory {
 
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -3934,16 +3984,18 @@ class ProcessedDataView {
 
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ArrayDefinitionNodeView: () => (/* binding */ ArrayDefinitionNodeView)
 /* harmony export */ });
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
 
-class ArrayDefinitionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.BlockNodeView {
+
+class ArrayDefinitionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__.BlockNodeView {
     constructor() {
         super(...arguments);
         this.canInline = true;
@@ -3963,7 +4015,7 @@ class ArrayDefinitionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE
     }
     renderBlockHeader() {
         const element = document.createElement('span');
-        element.textContent = 'Array definition';
+        element.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-node-arraydef');
         return element;
     }
     getBlockHints() {
@@ -3984,14 +4036,14 @@ class ArrayDefinitionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE
 
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   BlockNodeView: () => (/* binding */ BlockNodeView)
 /* harmony export */ });
-/* harmony import */ var _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
+/* harmony import */ var _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(30);
 
 /**
  * Base class for views of nodes with children.
@@ -4104,7 +4156,7 @@ class BlockNodeView extends _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_0__.BaseNo
 
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4141,28 +4193,30 @@ class BaseNodeView {
 
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AssignmentNodeView: () => (/* binding */ AssignmentNodeView)
 /* harmony export */ });
-/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(26);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(29);
 
 
-class AssignmentNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__.BlockNodeView {
+
+class AssignmentNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_2__.BlockNodeView {
     constructor(node, childViews, dataView) {
         // For index assignment, change the order to make it more natural
-        if (node.type === _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.IndexAssignment && childViews.length === 3) {
+        if (node.type === _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__.TreeNodeType.IndexAssignment && childViews.length === 3) {
             childViews = [childViews[0], childViews[2], childViews[1]];
         }
         super(node, childViews, dataView);
         this.canInline = true;
     }
     renderAsInline() {
-        const isIndexAssignment = this.treeNode.type === _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.IndexAssignment;
+        const isIndexAssignment = this.treeNode.type === _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__.TreeNodeType.IndexAssignment;
         const isArrayAppend = isIndexAssignment && this.children.length === 2;
         const isArrayAssign = isIndexAssignment && this.children.length === 3;
         const element = document.createElement('span');
@@ -4181,25 +4235,25 @@ class AssignmentNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__.
     }
     renderBlockHeader() {
         const element = document.createElement('span');
-        const isArrayAssign = this.treeNode.type === _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.IndexAssignment;
+        const isArrayAssign = this.treeNode.type === _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__.TreeNodeType.IndexAssignment;
         if (isArrayAssign) {
             if (this.children.length === 3) {
-                element.append('Assignment to array index');
+                element.append((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-node-indexassign'));
             }
             else {
-                element.append('Append to array');
+                element.append((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-node-arrayappend'));
             }
         }
         else {
-            element.append('Assignment');
+            element.append((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-node-assign'));
         }
         return element;
     }
     getBlockHints() {
         switch (this.treeNode.type) {
-            case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.Assignment:
+            case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__.TreeNodeType.Assignment:
                 return ['variable', 'value'];
-            case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.IndexAssignment:
+            case _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__.TreeNodeType.IndexAssignment:
                 return this.children.length === 3 ?
                     ['array', 'index', 'value'] : ['array', 'value'];
             default:
@@ -4210,15 +4264,15 @@ class AssignmentNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__.
 
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AtomNodeView: () => (/* binding */ AtomNodeView)
 /* harmony export */ });
-/* harmony import */ var _value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(30);
-/* harmony import */ var _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(27);
+/* harmony import */ var _value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(33);
+/* harmony import */ var _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
 
 
 /**
@@ -4242,15 +4296,17 @@ class AtomNodeView extends _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_1__.BaseNod
 
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ValueFormatter: () => (/* binding */ ValueFormatter)
 /* harmony export */ });
-/* harmony import */ var _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
-/* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+/* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
+
 
 
 class ValueFormatter {
@@ -4262,37 +4318,37 @@ class ValueFormatter {
      */
     static formatValue(value, maxLength) {
         switch (value.dataType) {
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Undefined:
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Undefined:
                 return this.formatKeyword('undefined');
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Null:
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Null:
                 return this.formatKeyword('null');
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Boolean:
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Boolean:
                 return this.formatKeyword(value.isTruthy() ? 'true' : 'false');
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Integer:
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Float:
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Integer:
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Float:
                 return this.formatNumberLiteral(value.asString().value);
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String:
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.String:
                 return this.formatStringLiteral(value.value, maxLength);
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Array:
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Array:
                 return this.processArrayValue(value);
         }
     }
     static formatLiteral(token) {
         switch (token.type) {
-            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_0__.TokenType.Identifier: {
+            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.Identifier: {
                 const wrapper = this.makeWrapper('identifier');
                 wrapper.textContent = token.value;
                 return wrapper;
             }
-            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_0__.TokenType.StringLiteral:
+            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.StringLiteral:
                 return ValueFormatter.formatStringLiteral(token.value);
-            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_0__.TokenType.IntLiteral:
-            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_0__.TokenType.FloatLiteral:
+            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.IntLiteral:
+            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.FloatLiteral:
                 return ValueFormatter.formatNumberLiteral(token.value);
-            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_0__.TokenType.Keyword:
+            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.Keyword:
                 return ValueFormatter.formatKeyword(token.value);
         }
-        throw new Error('Unknown token type');
+        throw new Error((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-value-unknowntoken', token.type));
     }
     static makeWrapper(dataType) {
         const wrapper = document.createElement('span');
@@ -4328,14 +4384,14 @@ class ValueFormatter {
                 expandButton.style.display = 'none';
                 collapseButton.style.display = '';
             });
-            expandButton.title = `Show the whole value (${escapedValue.length} characters)`;
+            expandButton.title = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-value-expand', escapedValue.length);
             const collapseButton = this.createInlayButton('←', () => {
                 contentTextNode.textContent = truncatedValue;
                 expandButton.style.display = '';
                 collapseButton.style.display = 'none';
             });
             collapseButton.style.display = 'none';
-            collapseButton.title = 'Collapse the value';
+            collapseButton.title = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-value-collapse');
             wrapper.appendChild(expandButton);
             wrapper.append('"');
             wrapper.appendChild(collapseButton);
@@ -4380,16 +4436,18 @@ class ValueFormatter {
 
 
 /***/ }),
-/* 31 */
+/* 34 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   FunctionNodeView: () => (/* binding */ FunctionNodeView)
 /* harmony export */ });
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
 
-class FunctionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.BlockNodeView {
+
+class FunctionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__.BlockNodeView {
     constructor() {
         super(...arguments);
         this.canInline = true;
@@ -4413,13 +4471,14 @@ class FunctionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.Bl
     }
     renderBlockHeader() {
         const element = document.createElement('span');
-        element.append('Call function ');
+        element.append((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-node-funccall'), ' ');
         element.append(this.createTokenNode(this.treeNode.identity.value, ['afa-function']));
         return element;
     }
     getBlockHints() {
         // We only provide hints for functions with more than one argument.
         // Unary functions are usually self-explanatory.
+        // TODO: Should these be localized?
         const functionName = this.treeNode.identity.value;
         switch (functionName) {
             case 'ccnorm_contains_any':
@@ -4466,16 +4525,18 @@ class FunctionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.Bl
 
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   IndexNodeView: () => (/* binding */ IndexNodeView)
 /* harmony export */ });
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
 
-class IndexNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.BlockNodeView {
+
+class IndexNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__.BlockNodeView {
     constructor() {
         super(...arguments);
         this.canInline = true;
@@ -4490,7 +4551,7 @@ class IndexNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.Block
     }
     renderBlockHeader() {
         const element = document.createElement('span');
-        element.textContent = 'Get element at index';
+        element.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-node-index');
         return element;
     }
     getBlockHints() {
@@ -4500,16 +4561,18 @@ class IndexNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.Block
 
 
 /***/ }),
-/* 33 */
+/* 36 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   OperatorNodeView: () => (/* binding */ OperatorNodeView)
 /* harmony export */ });
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
 
-class OperatorNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.BlockNodeView {
+
+class OperatorNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__.BlockNodeView {
     constructor() {
         super(...arguments);
         this.canInline = true;
@@ -4549,17 +4612,18 @@ class OperatorNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.Bl
         const operator = this.treeNode.identity.value;
         const element = document.createElement('span');
         if (operator === ';') {
-            element.append('Statement sequence');
+            element.append((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-node-sequence'));
         }
         else {
             const isKeyword = /^[a-z]+$/i.test(operator);
             const nodeClass = isKeyword ? 'afa-keyword' : 'afa-operator';
-            element.append('Operator ');
+            element.append((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-node-operator'), ' ');
             element.append(this.createTokenNode(operator, [nodeClass]));
         }
         return element;
     }
     getBlockHints() {
+        // TODO: Similarly to FunctionNodeView, should these be localized?
         const operator = this.treeNode.identity.value;
         switch (operator) {
             case 'in':
@@ -4583,21 +4647,23 @@ class OperatorNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_0__.Bl
 
 
 /***/ }),
-/* 34 */
+/* 37 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   NodeValueView: () => (/* binding */ NodeValueView)
 /* harmony export */ });
-/* harmony import */ var _NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(35);
-/* harmony import */ var _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(38);
+/* harmony import */ var _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(33);
+
 
 
 /**
  * A view for displaying the value of a node when it's ready.
  */
-class NodeValueView extends _NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_0__.NodeValueViewBase {
+class NodeValueView extends _NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_1__.NodeValueViewBase {
     /**
      * @param node The node for which to display the value.
      * @param evaluationContext The context for which to fetch the value.
@@ -4614,7 +4680,7 @@ class NodeValueView extends _NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_0__.N
             return;
         this.element.textContent = '';
         const maxLength = 15;
-        const formattedValue = _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__.ValueFormatter.formatValue(value);
+        const formattedValue = _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__.ValueFormatter.formatValue(value);
         if (formattedValue.textContent.length <= maxLength) {
             this.setViewContent(formattedValue, null);
         }
@@ -4628,10 +4694,10 @@ class NodeValueView extends _NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_0__.N
             return;
         const shortText = document.createElement('span');
         shortText.classList.add('afa-data-error');
-        shortText.textContent = 'Errors: ' + errors.length;
+        shortText.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-value-error', errors.length);
         if (context.isSpeculative) {
             shortText.classList.add('afa-data-error-speculative');
-            shortText.textContent += ' (speculative)';
+            shortText.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-value-errorspeculative', errors.length);
         }
         const longText = document.createElement('span');
         longText.textContent = errors.map(e => e.message).join('\n');
@@ -4651,7 +4717,7 @@ class NodeValueView extends _NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_0__.N
 
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4660,7 +4726,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
-/* harmony import */ var _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(30);
+/* harmony import */ var _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(33);
 
 
 
@@ -4723,7 +4789,7 @@ class NodeValueViewBase {
 
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4734,7 +4800,7 @@ var __await = (undefined && undefined.__await) || function (v) { return this ins
 var __asyncGenerator = (undefined && undefined.__asyncGenerator) || function (thisArg, _arguments, generator) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
     var g = generator.apply(thisArg, _arguments || []), i, q = [];
-    return i = {}, verb("next"), verb("throw"), verb("return", awaitReturn), i[Symbol.asyncIterator] = function () { return this; }, i;
+    return i = Object.create((typeof AsyncIterator === "function" ? AsyncIterator : Object).prototype), verb("next"), verb("throw"), verb("return", awaitReturn), i[Symbol.asyncIterator] = function () { return this; }, i;
     function awaitReturn(f) { return function (v) { return Promise.resolve(v).then(f, reject); }; }
     function verb(n, f) { if (g[n]) { i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; if (f) i[n] = f(i[n]); } }
     function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
@@ -4783,8 +4849,8 @@ class AbuseFilterApi {
         throw new Error('Log entry does not exist or you have no permissions to view it');
     }
     static fetchAbuseLogEntries(filterId, limit) {
-        var _a, _b, _c;
         return __asyncGenerator(this, arguments, function* fetchAbuseLogEntries_1() {
+            var _a, _b, _c;
             const api = this.getApi();
             let remaining = limit;
             let aflStart = 'now';
@@ -4822,15 +4888,15 @@ class AbuseFilterApi {
 
 
 /***/ }),
-/* 37 */
+/* 40 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Parser: () => (/* binding */ Parser)
 /* harmony export */ });
-/* harmony import */ var _ParserException_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(38);
-/* harmony import */ var _Token_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(39);
+/* harmony import */ var _ParserException_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(41);
+/* harmony import */ var _Token_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(42);
 /* harmony import */ var _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
 /* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(10);
 
@@ -5276,7 +5342,7 @@ Parsing levels:
 
 
 /***/ }),
-/* 38 */
+/* 41 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -5299,7 +5365,7 @@ class ParserException extends Error {
 
 
 /***/ }),
-/* 39 */
+/* 42 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -5345,14 +5411,14 @@ Token.EOF = '';
 
 
 /***/ }),
-/* 40 */
+/* 43 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Tokenizer: () => (/* binding */ Tokenizer)
 /* harmony export */ });
-/* harmony import */ var _Token_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(39);
+/* harmony import */ var _Token_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(42);
 /* harmony import */ var _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
 
 
@@ -5606,7 +5672,7 @@ Tokenizer.keywords = new Set([
 
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -5649,7 +5715,7 @@ class FlattenAssociativeOpsTransformer {
 
 
 /***/ }),
-/* 42 */
+/* 45 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -5716,14 +5782,16 @@ class CCNormProvider {
 
 
 /***/ }),
-/* 43 */
+/* 46 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ImpactingBoolFilter: () => (/* binding */ ImpactingBoolFilter)
 /* harmony export */ });
-/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
+
 
 /**
  * Implements a node view filter that hides nodes with boolean values
@@ -5731,11 +5799,13 @@ __webpack_require__.r(__webpack_exports__);
  * For example, for (true & true & false), only the last will be shown.
  */
 class ImpactingBoolFilter {
+    get name() {
+        return (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-filter-bool-name');
+    }
+    get description() {
+        return (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-filter-bool-desc');
+    }
     constructor(evaluationContext) {
-        this.name = 'Show only impacting booleans';
-        this.description = 'Hides most operands of AND that evaluate to true and of OR that ' +
-            'evaluate to false. The resulting tree will be shorter and will contain only rules affecting ' +
-            'the final result.';
         this.relevantEvaluationContext = evaluationContext;
     }
     initialize(nodeView, reapply) {
@@ -5772,7 +5842,7 @@ class ImpactingBoolFilter {
     hideInsignificantChildren(node, view) {
         const nodeType = node.type;
         const nodeToken = node.identity;
-        if (nodeType != _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__.TreeNodeType.Operator)
+        if (nodeType != _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__.TreeNodeType.Operator)
             return;
         switch (nodeToken.value) {
             case '&':
@@ -5832,7 +5902,7 @@ class ImpactingBoolFilter {
 
 
 /***/ }),
-/* 44 */
+/* 47 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -5854,14 +5924,14 @@ class TreeNode {
 
 
 /***/ }),
-/* 45 */
+/* 48 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   TreeNodeFactory: () => (/* binding */ TreeNodeFactory)
 /* harmony export */ });
-/* harmony import */ var _TreeNode_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(44);
+/* harmony import */ var _TreeNode_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
 
 /**
  * A simple tree node factory that produces `TreeNode` instances.
@@ -5874,11 +5944,12 @@ class TreeNodeFactory {
 
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ViewFactoryWithAugmented_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _ViewFactoryWithAugmented_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(50);
 /**
  * Hit Details gadget for AbuseFilter
  * It presents the filter evaluation tree for a given log entry.
@@ -5886,6 +5957,7 @@ __webpack_require__.r(__webpack_exports__);
  * a specific log entry. The gadget will display the syntax tree, along with the
  * values of all the nodes in it.
  */
+
 
 mw.hook('userjs.abuseFilter').add((abuseFilter) => {
     // Run only on the AbuseLog special page
@@ -5905,10 +5977,10 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
         if (!referenceHeader)
             return;
         const treeHeader = document.createElement('h3');
-        treeHeader.textContent = 'Filter evaluation tree';
+        treeHeader.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-hitdetails-header');
         fieldset.insertBefore(treeHeader, referenceHeader);
         const rootElement = document.createElement('div');
-        rootElement.textContent = 'Loading...';
+        rootElement.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-loading');
         fieldset.insertBefore(rootElement, referenceHeader);
         try {
             const filter = await abuseFilter.createFromLogId(logId);
@@ -5919,29 +5991,29 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
             ];
             filter.renderInto(rootElement, {
                 treeFilters: filters,
-                viewFactory: new _ViewFactoryWithAugmented_js__WEBPACK_IMPORTED_MODULE_0__.ViewFactoryWithAugmented(filter.defaultContext),
+                viewFactory: new _ViewFactoryWithAugmented_js__WEBPACK_IMPORTED_MODULE_1__.ViewFactoryWithAugmented(filter.defaultContext),
             });
             await filter.evaluate();
         }
         catch (error) {
-            const errorMessage = (error instanceof Error) ? error.message : ('' + error);
-            rootElement.textContent = `Can't load the abuse filter: ${errorMessage}`;
+            const errorMessage = (error instanceof Error) ? error.message : error;
+            rootElement.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-cantload', errorMessage);
         }
     }
 });
 
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ViewFactoryWithAugmented: () => (/* binding */ ViewFactoryWithAugmented)
 /* harmony export */ });
-/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
 /* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
-/* harmony import */ var _AugmentedOperatorNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48);
+/* harmony import */ var _AugmentedOperatorNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(51);
 
 
 
@@ -5966,15 +6038,17 @@ class ViewFactoryWithAugmented extends _gui_treeViews_ViewFactory_js__WEBPACK_IM
 
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AugmentedOperatorNodeView: () => (/* binding */ AugmentedOperatorNodeView)
 /* harmony export */ });
-/* harmony import */ var _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(33);
-/* harmony import */ var _PatternExplorerPopup_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(49);
+/* harmony import */ var _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(36);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(23);
+/* harmony import */ var _PatternExplorerPopup_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(52);
+
 
 
 class AugmentedOperatorNodeView extends _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_0__.OperatorNodeView {
@@ -5990,7 +6064,7 @@ class AugmentedOperatorNodeView extends _gui_treeViews_OperatorNodeView_js__WEBP
             element.classList.add(...classes);
         }
         element.append(token);
-        const buttonTitle = 'Click to see details of the match';
+        const buttonTitle = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_1__.i18n)('afa-hitdetails-operatortooltip');
         // Enable the button only if the node matched anything in the current context
         element.disabled = treeNode.getValue(this.evaluationContext).isTruthy() !== true;
         if (!element.disabled) {
@@ -6013,7 +6087,7 @@ class AugmentedOperatorNodeView extends _gui_treeViews_OperatorNodeView_js__WEBP
         const children = this.treeNode.children;
         const argValues = children.map(child => child.getValue(this.evaluationContext));
         const args = this.interpretArguments(argValues, this.treeNode.identity.value);
-        const popup = new _PatternExplorerPopup_js__WEBPACK_IMPORTED_MODULE_1__.PatternExplorerPopup(args.pattern, args.subject, args.mode);
+        const popup = new _PatternExplorerPopup_js__WEBPACK_IMPORTED_MODULE_2__.PatternExplorerPopup(args.pattern, args.subject, args.mode);
         popup.display(anchor);
     }
     /**
@@ -6051,7 +6125,7 @@ class AugmentedOperatorNodeView extends _gui_treeViews_OperatorNodeView_js__WEBP
 
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -6059,7 +6133,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   PatternExplorerPopup: () => (/* binding */ PatternExplorerPopup)
 /* harmony export */ });
 /* harmony import */ var _evaluator_value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
-/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
+/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(33);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(23);
+
 
 
 class PatternExplorerPopup {
@@ -6090,7 +6166,7 @@ class PatternExplorerPopup {
                 $floatableContainer: $anchor,
                 anchor: !!attachToNode,
                 head: true,
-                label: 'Match details',
+                label: (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__.i18n)('afa-hitdetails-patternexplorer-header'),
             });
             $(document.body).append(popup.$element);
             popup.toggle(true);
@@ -6098,7 +6174,8 @@ class PatternExplorerPopup {
     }
     makePatternBlock() {
         const patternBlock = document.createElement('p');
-        patternBlock.append('Pattern: ');
+        patternBlock.append((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__.i18n)('afa-hitdetails-patternexplorer-pattern'));
+        patternBlock.append(' ');
         patternBlock.append(_gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__.ValueFormatter.formatValue(this.pattern, 100));
         return patternBlock;
     }
@@ -6116,7 +6193,7 @@ class PatternExplorerPopup {
         if (match === null) {
             console.log(`PatternExplorerPopup: No match found for pattern "${this.pattern.asString().value}" in subject "${this.subject.asString().value}". Matching mode: ${this.matchingMode}`);
             const noMatchBlock = document.createElement('p');
-            noMatchBlock.textContent = 'No match found';
+            noMatchBlock.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__.i18n)('afa-hitdetails-patternexplorer-nomatch');
             return noMatchBlock;
         }
         // This intentionally does not format the subject as usual, because it it
@@ -6152,11 +6229,12 @@ class PatternExplorerPopup {
 
 
 /***/ }),
-/* 50 */
+/* 53 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _NodeValueFrequencyView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _NodeValueFrequencyView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(54);
 var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
     var m = o[Symbol.asyncIterator], i;
@@ -6164,6 +6242,15 @@ var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
     function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
+/**
+ * Mass Check gadget for AbuseFilter
+ * It allows users to perform a bulk analysis of recent hits of a given filter.
+ * It can be invoked from the Special:AbuseLog page, in a view where only hits
+ * from a specific filter are shown. The user can then spefify the number of
+ * log entries to check, and the gadget will display the filter syntax tree
+ * along with the value distribution in each tree node.
+ */
+
 
 mw.hook('userjs.abuseFilter').add((abuseFilter) => {
     // Run only on the AbuseLog special page
@@ -6185,16 +6272,15 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
         const rootElement = document.createElement('div');
         contentElement.insertBefore(rootElement, summaryElement.nextSibling);
         const treeHeader = document.createElement('h3');
-        treeHeader.textContent = 'Check filter on recent log entries';
+        treeHeader.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-masscheck-header');
         contentElement.insertBefore(treeHeader, summaryElement.nextSibling);
         const par1 = document.createElement('p');
-        par1.textContent = 'You can use this tool to evaluate the filter on a specified number of recent log entries. ' +
-            'This may be useful to see what conditions are triggered and how many times.';
+        par1.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-masscheck-description');
         rootElement.appendChild(par1);
         const form = document.createElement('form');
         rootElement.appendChild(form);
         const par2 = document.createElement('p');
-        par2.textContent = 'Number of log entries to check: ';
+        par2.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-masscheck-form-numberlabel') + ' ';
         form.appendChild(par2);
         const input = document.createElement('input');
         input.type = 'number';
@@ -6205,21 +6291,21 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
         par2.appendChild(input);
         const button = document.createElement('button');
         button.type = 'submit';
-        button.textContent = 'Start';
+        button.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-masscheck-form-submitlabel');
         par2.appendChild(button);
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             e.stopImmediatePropagation();
             const count = parseInt(input.value, 10);
             if (isNaN(count) || count < 1) {
-                alert('Please enter a valid positive number.');
+                alert((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-masscheck-form-negative'));
                 return;
             }
             par1.remove();
             const errorContainer = document.createElement('details');
             errorContainer.style.display = 'none'; // Hide if no errors
             const errorSummary = document.createElement('summary');
-            errorSummary.textContent = 'Error log';
+            errorSummary.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-masscheck-form-errorlog');
             errorContainer.appendChild(errorSummary);
             const errorList = document.createElement('ul');
             errorContainer.appendChild(errorList);
@@ -6228,18 +6314,19 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
             rootElement.appendChild(treeRootElement);
             displayFrequencyAnalysis(treeRootElement, filterId, count, (processed, isFinished, logTimestamp) => {
                 if (!isFinished) {
-                    par2.textContent = 'Processed ' + processed + ' / ' + count + ' log entries.';
+                    par2.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-masscheck-progress', processed, count);
                 }
                 else {
                     if (processed == count) {
-                        par2.textContent = 'Processed all ' + count + ' log entries.';
+                        par2.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-masscheck-progress-finishedall', processed);
                     }
                     else {
-                        par2.textContent = 'Processed ' + processed + ' log entries – no more were available.';
+                        par2.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-masscheck-progress-finishedsome', processed);
                     }
                     if (logTimestamp) {
                         const logDate = new Date(logTimestamp);
-                        par2.textContent += ' The oldest log entry is from ' + logDate.toLocaleString() + '.';
+                        par2.textContent += ' ';
+                        par2.textContent += (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-masscheck-progress-date', logDate.toLocaleDateString());
                     }
                 }
             }, (error) => {
@@ -6266,7 +6353,7 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
         viewFactory.addDataViewFactory(
         // check if node is IEvaluableTreeNode - only these have values
         (node) => 'getValue' in node
-            ? new _NodeValueFrequencyView_js__WEBPACK_IMPORTED_MODULE_0__.NodeValueFrequencyView(node)
+            ? new _NodeValueFrequencyView_js__WEBPACK_IMPORTED_MODULE_1__.NodeValueFrequencyView(node)
             : null);
         gui.renderSyntaxTree(rootNode, viewFactory);
         const functionExecutor = new abuseFilter.evaluator.functions.LocalFunctionExecutor();
@@ -6288,7 +6375,8 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
                         await evaluator.evaluateNode(rootNode, evaluationContext);
                     }
                     catch (error) {
-                        errorCallback === null || errorCallback === void 0 ? void 0 : errorCallback(error instanceof Error ? error : new Error('Unknown error during evaluation: ' + error));
+                        errorCallback === null || errorCallback === void 0 ? void 0 : errorCallback(error instanceof Error ? error
+                            : new Error((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-masscheck-evaluationerror', error)));
                     }
                     // Run also for failed items, so that the total number is reported correctly
                     processedCount++;
@@ -6306,15 +6394,15 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
             progressCallback === null || progressCallback === void 0 ? void 0 : progressCallback(processedCount, true, lastTimestamp);
         }
         catch (error) {
-            const errorMessage = (error instanceof Error) ? error.message : ('' + error);
-            rootElement.textContent = `Can't load the abuse filter: ${errorMessage}`;
+            const errorMessage = (error instanceof Error) ? error.message : error;
+            rootElement.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-cantload', errorMessage);
         }
     }
 });
 
 
 /***/ }),
-/* 51 */
+/* 54 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -6322,9 +6410,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   NodeValueFrequencyView: () => (/* binding */ NodeValueFrequencyView)
 /* harmony export */ });
 /* harmony import */ var _evaluator_value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
-/* harmony import */ var _gui_value_NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(35);
-/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(30);
-/* harmony import */ var _ValueFrequencyPopup_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(52);
+/* harmony import */ var _gui_value_NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(38);
+/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(33);
+/* harmony import */ var _ValueFrequencyPopup_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(55);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(23);
+
 
 
 
@@ -6348,7 +6438,7 @@ class NodeValueFrequencyView extends _gui_value_NodeValueViewBase_js__WEBPACK_IM
         this.element = document.createElement('button');
         this.element.classList.add('afa-silent-button');
         this.element.type = 'button';
-        this.element.title = 'Click to see the value frequency';
+        this.element.title = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_4__.i18n)('afa-masscheck-value-tooltip');
         this.element.textContent = '...';
         this.listenToChanges(node);
         // For the initial render, display the value immediately as we are sure that there's
@@ -6416,7 +6506,7 @@ class NodeValueFrequencyView extends _gui_value_NodeValueViewBase_js__WEBPACK_IM
         const frequency = mostFrequent.count / this.totalEvaluationsCount;
         if (frequency < 0.3) {
             const message = document.createElement('span');
-            message.textContent = 'multiple values';
+            message.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_4__.i18n)('afa-masscheck-value-multiple');
             this.setViewContent(message, null);
             return;
         }
@@ -6433,20 +6523,28 @@ class NodeValueFrequencyView extends _gui_value_NodeValueViewBase_js__WEBPACK_IM
     setViewContent(value, frequency) {
         this.element.textContent = '';
         this.element.appendChild(value);
+        if (this.errors.length == 0 && frequency === null) {
+            return;
+        }
         if (frequency !== null) {
             // Floor so that we don't display 100% for e.g. 99.5%
             frequency = Math.floor(frequency * 100);
-            this.element.append(` (${frequency}%)`);
         }
-        if (this.errors.length > 0) {
-            this.element.append(`, ${this.errors.length} errors`);
+        if (frequency !== null && this.errors.length === 0) {
+            this.element.append(' ' + (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_4__.i18n)('afa-masscheck-value-frequency', frequency));
+        }
+        else if (frequency !== null) {
+            this.element.append(' ' + (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_4__.i18n)('afa-masscheck-value-frequencyerrors', frequency, this.errors.length));
+        }
+        else {
+            this.element.append(' ' + (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_4__.i18n)('afa-masscheck-value-errors', this.errors.length));
         }
     }
 }
 
 
 /***/ }),
-/* 52 */
+/* 55 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -6454,7 +6552,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ValueFrequencyPopup: () => (/* binding */ ValueFrequencyPopup)
 /* harmony export */ });
 /* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
-/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
+/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(33);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(23);
+
 
 
 class ValueFrequencyPopup {
@@ -6481,7 +6581,7 @@ class ValueFrequencyPopup {
                 $floatableContainer: $anchor,
                 anchor: !!attachToNode,
                 head: true,
-                label: 'Value frequency',
+                label: (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__.i18n)('afa-masscheck-frequency-header'),
             });
             $(document.body).append(popup.$element);
             popup.toggle(true);
@@ -6491,7 +6591,8 @@ class ValueFrequencyPopup {
         const container = document.createElement('ul');
         for (const entry of valueFrequencies) {
             const value = document.createElement('li');
-            value.append(`${entry.count} times: `);
+            value.append((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__.i18n)('afa-masscheck-frequency-times', entry.count));
+            value.append(' ');
             value.appendChild(_gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__.ValueFormatter.formatValue(entry.value, 200));
             container.appendChild(value);
         }
@@ -6499,7 +6600,7 @@ class ValueFrequencyPopup {
     }
     makeErrorContent(errors) {
         const container = document.createElement('div');
-        container.append(`Errors (${errors.length}): `);
+        container.append((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__.i18n)('afa-masscheck-frequency-errors', errors.length));
         const list = document.createElement('ul');
         container.appendChild(list);
         for (const entry of errors) {
@@ -6591,8 +6692,8 @@ var __webpack_exports__ = {};
 (() => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _public_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _gadgets_hitDetails_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(46);
-/* harmony import */ var _gadgets_massCheck_main_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(50);
+/* harmony import */ var _gadgets_hitDetails_main_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(49);
+/* harmony import */ var _gadgets_massCheck_main_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(53);
 // Import the whole AbuseFilter Analyzer library
 
 // And then include the gadgets
