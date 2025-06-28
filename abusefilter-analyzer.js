@@ -6216,25 +6216,43 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
                 return;
             }
             par1.remove();
+            const errorContainer = document.createElement('details');
+            errorContainer.style.display = 'none'; // Hide if no errors
+            const errorSummary = document.createElement('summary');
+            errorSummary.textContent = 'Error log';
+            errorContainer.appendChild(errorSummary);
+            const errorList = document.createElement('ul');
+            errorContainer.appendChild(errorList);
+            rootElement.appendChild(errorContainer);
             const treeRootElement = document.createElement('div');
             rootElement.appendChild(treeRootElement);
-            displayFrequencyAnalysis(treeRootElement, filterId, count, (processed, logTimestamp) => {
-                if (processed < count) {
+            displayFrequencyAnalysis(treeRootElement, filterId, count, (processed, isFinished, logTimestamp) => {
+                if (!isFinished) {
                     par2.textContent = 'Processed ' + processed + ' / ' + count + ' log entries.';
                 }
                 else {
-                    par2.textContent = 'Processed all ' + count + ' log entries.';
+                    if (processed == count) {
+                        par2.textContent = 'Processed all ' + count + ' log entries.';
+                    }
+                    else {
+                        par2.textContent = 'Processed ' + processed + ' log entries – no more were available.';
+                    }
                     if (logTimestamp) {
                         const logDate = new Date(logTimestamp);
                         par2.textContent += ' The oldest log entry is from ' + logDate.toLocaleString() + '.';
                     }
                 }
+            }, (error) => {
+                const errorItem = document.createElement('li');
+                errorItem.textContent = error.message;
+                errorList.appendChild(errorItem);
+                errorContainer.style.display = 'block';
             });
         });
     }
-    async function displayFrequencyAnalysis(rootElement, filterId, count, progressCallback) {
+    async function displayFrequencyAnalysis(rootElement, filterId, count, progressCallback, errorCallback) {
         var _a, e_1, _b, _c;
-        progressCallback === null || progressCallback === void 0 ? void 0 : progressCallback(0);
+        progressCallback === null || progressCallback === void 0 ? void 0 : progressCallback(0, false);
         const nodeFactory = new abuseFilter.evaluator.nodes.EvaluableNodeFactory();
         const tokenizer = new abuseFilter.parser.Tokenizer();
         const parser = new abuseFilter.parser.Parser(nodeFactory);
@@ -6255,6 +6273,7 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
         const evaluator = new abuseFilter.evaluator.NodeEvaluator(functionExecutor);
         try {
             let processedCount = 0;
+            let lastTimestamp;
             try {
                 for (var _d = true, _e = __asyncValues(abuseFilter.api.fetchAbuseLogEntries(filterId, count)), _f; _f = await _e.next(), _a = _f.done, !_a; _d = true) {
                     _c = _f.value;
@@ -6267,12 +6286,14 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
                             evaluationContext.setVariable(key, abuseFilter.evaluator.value.Value.fromNative(value));
                         }
                         await evaluator.evaluateNode(rootNode, evaluationContext);
-                        progressCallback === null || progressCallback === void 0 ? void 0 : progressCallback(++processedCount, logEntry.timestamp);
                     }
                     catch (error) {
-                        // TODO: Display somehow
-                        console.error('Error evaluating log entry:', error);
+                        errorCallback === null || errorCallback === void 0 ? void 0 : errorCallback(error instanceof Error ? error : new Error('Unknown error during evaluation: ' + error));
                     }
+                    // Run also for failed items, so that the total number is reported correctly
+                    processedCount++;
+                    lastTimestamp = logEntry.timestamp;
+                    progressCallback === null || progressCallback === void 0 ? void 0 : progressCallback(processedCount, false, lastTimestamp);
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -6282,6 +6303,7 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
                 }
                 finally { if (e_1) throw e_1.error; }
             }
+            progressCallback === null || progressCallback === void 0 ? void 0 : progressCallback(processedCount, true, lastTimestamp);
         }
         catch (error) {
             const errorMessage = (error instanceof Error) ? error.message : ('' + error);
