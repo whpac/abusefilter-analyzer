@@ -155,6 +155,11 @@ mw.hook('userjs.abuseFilter').add((abuseFilter: typeof mw.libs.abuseFilter) => {
                         evaluationContext.setVariable(key, abuseFilter.evaluator.value.Value.fromNative(value));
                     }
 
+                    evaluationContext.setLogId(logEntry.id);
+                    if (logEntry.timestamp) {
+                        evaluationContext.setLogDate(logEntry.timestamp);
+                    }
+
                     await evaluator.evaluateNode(rootNode, evaluationContext);
                 } catch (error) {
                     errorCallback?.(error instanceof Error ? error

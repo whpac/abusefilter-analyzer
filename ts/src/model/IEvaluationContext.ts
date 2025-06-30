@@ -26,6 +26,16 @@ export interface IEvaluationContext {
     get isSpeculative(): boolean;
 
     /**
+     * Returns any optional metadata that can be associated with this context.
+     * Implementations can store here any additional information that can be useful
+     * to determine e.g. the source of data.
+     * 
+     * It is up to the implementation to decide what pieces of information are
+     * inherited from the parent context and what are not.
+     */
+    get metadata(): Map<string, unknown>;
+
+    /**
      * Returns the value of a variable. If the variable is not found in this context,
      * it will look up in its parent.
      * If the variable is not found in the parent, a null value will be returned.
