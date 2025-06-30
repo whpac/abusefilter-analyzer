@@ -48,7 +48,7 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
         });
     }
 
-    protected override onValueSet(value: IValue): void {
+    protected override onValueSet(value: IValue, context: IEvaluationContext): void {
         this.totalEvaluationsCount++;
 
         let found = false;
@@ -57,13 +57,14 @@ export class NodeValueFrequencyView extends NodeValueViewBase implements IView {
             // and here we want to treat them as equal
             if (ValueComparer.areEqual(entry.value, value, true) || (entry.value.isUndefined && value.isUndefined)) {
                 entry.count++;
+                entry.contexts.push(context);
                 found = true;
                 break;
             }
         }
 
         if (!found) {
-            this.values.push({ value, count: 1 });
+            this.values.push({ value, count: 1, contexts: [context] });
         }
 
         this.scheduleViewUpdate();

@@ -273,6 +273,13 @@ mw.util.addCSS(`
     margin-left: 0.2em;
 }
 
+.afa-masscheck-frequency-loglinks {
+    font-size: 0.9em;
+    padding-left: 0.4em;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
 summary {
     width: fit-content;
 }

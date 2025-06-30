@@ -24,6 +24,7 @@
     "afa-masscheck-value-errors": "($1 błędów)",
     "afa-masscheck-frequency-header": "Częstość wartości",
     "afa-masscheck-frequency-times": "$1 razy:",
+    "afa-masscheck-frequency-times-tooltip": "Kliknij, aby sprawdzić, w których wpisach rejestru nadużyć ta wartość wystąpiła",
     "afa-masscheck-frequency-errors": "Błędy ($1):",
     "afa-gui-expandall": "Rozwiń/Zwiń wszystko",
     "afa-gui-options": "Opcje:",

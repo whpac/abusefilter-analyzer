@@ -24,6 +24,7 @@
     "afa-masscheck-value-errors": "($1 errors)",
     "afa-masscheck-frequency-header": "Value frequency",
     "afa-masscheck-frequency-times": "$1 times:",
+    "afa-masscheck-frequency-times-tooltip": "Click to see, in which abuse log entries this value appeared",
     "afa-masscheck-frequency-errors": "Errors ($1):",
     "afa-gui-expandall": "Expand/Collapse all",
     "afa-gui-options": "Options:",
