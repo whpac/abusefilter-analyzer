@@ -17,35 +17,35 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AbuseFilter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _evaluator_functions_AbuseFilterFunctions_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(17);
+/* harmony import */ var _evaluator_functions_AbuseFilterFunctions_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(21);
 /* harmony import */ var _evaluator_functions_CCNormProvider_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(45);
-/* harmony import */ var _evaluator_functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(16);
-/* harmony import */ var _evaluator_NodeEvaluator_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(9);
-/* harmony import */ var _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(20);
-/* harmony import */ var _evaluator_nodes_EvaluableTreeNode_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(21);
-/* harmony import */ var _evaluator_utils_IPAddress_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(19);
-/* harmony import */ var _evaluator_utils_IPUtils_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(18);
-/* harmony import */ var _evaluator_utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(13);
+/* harmony import */ var _evaluator_functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(20);
+/* harmony import */ var _evaluator_NodeEvaluator_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(13);
+/* harmony import */ var _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(24);
+/* harmony import */ var _evaluator_nodes_EvaluableTreeNode_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(25);
+/* harmony import */ var _evaluator_utils_IPAddress_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(23);
+/* harmony import */ var _evaluator_utils_IPUtils_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(22);
+/* harmony import */ var _evaluator_utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(17);
 /* harmony import */ var _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(5);
-/* harmony import */ var _evaluator_value_ValueCalculator_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(11);
-/* harmony import */ var _evaluator_value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(15);
-/* harmony import */ var _evaluator_value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(12);
+/* harmony import */ var _evaluator_value_ValueCalculator_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(15);
+/* harmony import */ var _evaluator_value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(19);
+/* harmony import */ var _evaluator_value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(16);
 /* harmony import */ var _evaluator_value_VariableValue_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(4);
-/* harmony import */ var _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(22);
+/* harmony import */ var _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(26);
 /* harmony import */ var _gui_filters_ImpactingBoolFilter_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(46);
-/* harmony import */ var _gui_treeViews_ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(28);
-/* harmony import */ var _gui_treeViews_AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(31);
-/* harmony import */ var _gui_treeViews_AtomNodeView_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(32);
-/* harmony import */ var _gui_treeViews_BlockNodeView_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(29);
+/* harmony import */ var _gui_treeViews_ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(29);
+/* harmony import */ var _gui_treeViews_AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(32);
+/* harmony import */ var _gui_treeViews_AtomNodeView_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(33);
+/* harmony import */ var _gui_treeViews_BlockNodeView_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(30);
 /* harmony import */ var _gui_treeViews_FunctionNodeView_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(34);
 /* harmony import */ var _gui_treeViews_IndexNodeView_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(35);
 /* harmony import */ var _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(36);
-/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(26);
+/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(27);
 /* harmony import */ var _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(37);
 /* harmony import */ var _gui_value_NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(38);
-/* harmony import */ var _gui_value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(27);
-/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(33);
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(23);
+/* harmony import */ var _gui_value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(28);
+/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(9);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(10);
 /* harmony import */ var _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(39);
 /* harmony import */ var _parser_nodes_TreeNode_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(47);
 /* harmony import */ var _parser_nodes_TreeNodeFactory_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(48);
@@ -365,12 +365,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AbuseFilter: () => (/* binding */ AbuseFilter)
 /* harmony export */ });
 /* harmony import */ var _evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _evaluator_NodeEvaluator_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
-/* harmony import */ var _evaluator_functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(16);
-/* harmony import */ var _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(20);
+/* harmony import */ var _evaluator_NodeEvaluator_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony import */ var _evaluator_functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(20);
+/* harmony import */ var _evaluator_nodes_EvaluableNodeFactory_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(24);
 /* harmony import */ var _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
-/* harmony import */ var _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(22);
-/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(26);
+/* harmony import */ var _gui_AbuseFilterGUI_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(26);
+/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(27);
 /* harmony import */ var _gui_value_NodeValueView_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(37);
 /* harmony import */ var _mediawiki_AbuseFilterApi_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(39);
 /* harmony import */ var _parser_Parser_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(40);
@@ -592,6 +592,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
 /* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
 /* harmony import */ var _ValueConverter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);
+/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
+
 
 
 
@@ -776,12 +778,7 @@ class Value {
                 return this.asString().value;
             case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.String: {
                 let val = this.value;
-                val = val.replace(/\\/g, '\\\\');
-                val = val.replace(/"/g, '\\"');
-                val = val.replace(/\n/g, '\\n');
-                val = val.replace(/\r/g, '\\r');
-                val = val.replace(/\t/g, '\\t');
-                // TODO: Are there any other? eg. \0, \x00
+                val = _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_3__.ValueFormatter.escapeString(val);
                 return '"' + val + '"';
             }
             case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__.ValueDataType.Array:
@@ -993,17 +990,204 @@ class ValueConverter {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ValueFormatter: () => (/* binding */ ValueFormatter)
+/* harmony export */ });
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
+/* harmony import */ var _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+/* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
+
+
+
+class ValueFormatter {
+    /**
+     * Prepares a value to be displayed in the GUI. For some data types, a maximum length can be specified.
+     * Values that are too long will be truncated an a button to expand the value will be shown.
+     * @param value The value to pretty-print
+     * @param maxLength The maximum length of the string to be displayed.
+     */
+    static formatValue(value, maxLength) {
+        switch (value.dataType) {
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Undefined:
+                return this.formatKeyword('undefined');
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Null:
+                return this.formatKeyword('null');
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Boolean:
+                return this.formatKeyword(value.isTruthy() ? 'true' : 'false');
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Integer:
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Float:
+                return this.formatNumberLiteral(value.asString().value);
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.String:
+                return this.formatStringLiteral(value.value, maxLength);
+            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Array:
+                return this.processArrayValue(value);
+        }
+    }
+    static formatLiteral(token) {
+        switch (token.type) {
+            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.Identifier: {
+                const wrapper = this.makeWrapper('identifier');
+                wrapper.textContent = token.value;
+                return wrapper;
+            }
+            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.StringLiteral:
+                return ValueFormatter.formatStringLiteral(token.value);
+            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.IntLiteral:
+            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.FloatLiteral:
+                return ValueFormatter.formatNumberLiteral(token.value);
+            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.Keyword:
+                return ValueFormatter.formatKeyword(token.value);
+        }
+        throw new Error((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-value-unknowntoken', token.type));
+    }
+    static makeWrapper(dataType) {
+        const wrapper = document.createElement('span');
+        wrapper.classList.add('afa-value', 'afa-value-' + dataType);
+        return wrapper;
+    }
+    static formatKeyword(value) {
+        const wrapper = this.makeWrapper('keyword');
+        wrapper.textContent = value;
+        if (value === 'true') {
+            wrapper.classList.add('afa-value-bool', 'afa-value-true');
+        }
+        else if (value === 'false') {
+            wrapper.classList.add('afa-value-bool', 'afa-value-false');
+        }
+        return wrapper;
+    }
+    static formatNumberLiteral(value) {
+        const wrapper = this.makeWrapper('number');
+        wrapper.textContent = value;
+        return wrapper;
+    }
+    static formatStringLiteral(value, maxLength) {
+        const wrapper = this.makeWrapper('string');
+        const escapedValue = this.escapeString(value);
+        if (maxLength !== undefined && value.length > maxLength) {
+            wrapper.append('"');
+            const truncatedValue = escapedValue.substring(0, maxLength);
+            const contentTextNode = document.createTextNode(truncatedValue);
+            wrapper.appendChild(contentTextNode);
+            const expandButton = this.createInlayButton('»', () => {
+                contentTextNode.textContent = escapedValue;
+                expandButton.style.display = 'none';
+                collapseButton.style.display = '';
+            });
+            expandButton.title = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-value-expand', escapedValue.length);
+            const collapseButton = this.createInlayButton('←', () => {
+                contentTextNode.textContent = truncatedValue;
+                expandButton.style.display = '';
+                collapseButton.style.display = 'none';
+            });
+            collapseButton.style.display = 'none';
+            collapseButton.title = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-value-collapse');
+            wrapper.appendChild(expandButton);
+            wrapper.append('"');
+            wrapper.appendChild(collapseButton);
+        }
+        else {
+            wrapper.textContent = `"${escapedValue}"`;
+        }
+        return wrapper;
+    }
+    static processArrayValue(value) {
+        const wrapper = this.makeWrapper(value.dataType);
+        wrapper.appendChild(document.createTextNode('['));
+        const array = value.value;
+        for (let i = 0; i < array.length; i++) {
+            if (i > 0) {
+                wrapper.appendChild(document.createTextNode(', '));
+            }
+            wrapper.appendChild(this.formatValue(array[i]));
+        }
+        wrapper.appendChild(document.createTextNode(']'));
+        return wrapper;
+    }
+    static createInlayButton(caption, clickHandler) {
+        const button = document.createElement('button');
+        button.classList.add('afa-value-inlay-button');
+        button.textContent = caption;
+        button.addEventListener('click', (event) => {
+            event.stopPropagation();
+            clickHandler();
+        });
+        return button;
+    }
+    /** Escapes special characters in a string for display in double quotes */
+    static escapeString(value) {
+        return value
+            .replace(/\\/g, '\\\\')
+            .replace(/"/g, '\\"')
+            .replace(/\t/g, '\\t')
+            .replace(/\n/g, '\\n')
+            .replace(/\r/g, '\\r');
+        // TODO: Are there any other? eg. \0, \x00
+    }
+}
+
+
+/***/ }),
+/* 10 */
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   i18n: () => (/* binding */ i18n),
+/* harmony export */   initializeTranslations: () => (/* binding */ initializeTranslations)
+/* harmony export */ });
+/* harmony import */ var _en_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
+/* harmony import */ var _pl_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
+// Load here all the supported languages
+
+
+function i18n(key, ...args) {
+    return mw.message(key, ...args).text();
+}
+function initializeTranslations() {
+    // Always load the English messages, optionally override them later on load
+    mw.messages.set(_en_json__WEBPACK_IMPORTED_MODULE_0__);
+    // Store the supported languages here, but skip English which is loaded
+    // by default, regardless of the user's language settings.
+    const supportedLanguages = {
+        pl: _pl_json__WEBPACK_IMPORTED_MODULE_1__
+    };
+    const userLanguage = mw.config.get('wgUserLanguage');
+    if (userLanguage in supportedLanguages) {
+        // Load the user's language messages if available
+        mw.messages.set(supportedLanguages[userLanguage]);
+    }
+}
+
+
+/***/ }),
+/* 11 */
+/***/ ((module) => {
+
+module.exports = /*#__PURE__*/JSON.parse('{"afa-loading":"Loading...","afa-cantload":"Can\'t load the abuse filter: $1","afa-hitdetails-header":"Filter evaluation tree","afa-hitdetails-patternexplorer-header":"Match details","afa-hitdetails-patternexplorer-pattern":"Pattern:","afa-hitdetails-patternexplorer-nomatch":"No match found","afa-hitdetails-operatortooltip":"Click to see details of the match","afa-masscheck-header":"Check filter on recent log entries","afa-masscheck-description":"You can use this tool to evaluate the filter on a specified number of recent log entries. This may be useful to see what conditions are triggered and how many times.","afa-masscheck-form-numberlabel":"Number of log entries to check:","afa-masscheck-form-submitlabel":"Start","afa-masscheck-form-negative":"Please enter a valid positive number.","afa-masscheck-form-errorlog":"Error log","afa-masscheck-progress":"Processed $1 / $2 log entries.","afa-masscheck-progress-finishedall":"Processed all $1 log entries.","afa-masscheck-progress-finishedsome":"Processed $1 log entries – no more were available.","afa-masscheck-progress-date":"The oldest log entry is from $1.","afa-masscheck-evaluationerror":"Unknown error during evaluation: $1","afa-masscheck-value-tooltip":"Click to see the value frequency","afa-masscheck-value-multiple":"multiple values","afa-masscheck-value-frequency":"($1%)","afa-masscheck-value-frequencyerrors":"($1%, $2 errors)","afa-masscheck-value-errors":"($1 errors)","afa-masscheck-frequency-header":"Value frequency","afa-masscheck-frequency-times":"$1 times:","afa-masscheck-frequency-times-tooltip":"Click to see, in which abuse log entries this value appeared","afa-masscheck-frequency-errors":"Errors ($1):","afa-masscheck-frequency-loglinks-showmore":"Show more","afa-gui-expandall":"Expand/Collapse all","afa-gui-options":"Options:","afa-gui-value-error":"Errors: $1","afa-gui-value-errorspeculative":"Errors: $1 (speculative)","afa-gui-value-unknowntoken":"Unknown token type: $1","afa-gui-value-expand":"Show the whole value ($1 characters)","afa-gui-value-collapse":"Collapse the value","afa-gui-filter-bool-name":"Show only impacting booleans","afa-gui-filter-bool-desc":"Hides most operands of AND that evaluate to true and of OR that evaluate to false. The resulting tree will be shorter and will contain only rules affecting the final result.","afa-gui-node-arraydef":"Array definition","afa-gui-node-assign":"Assignment","afa-gui-node-indexassign":"Assignment to array index","afa-gui-node-arrayappend":"Append to array","afa-gui-node-funccall":"Call function","afa-gui-node-index":"Get element at index","afa-gui-node-sequence":"Statement sequence","afa-gui-node-operator":"Operator"}');
+
+/***/ }),
+/* 12 */
+/***/ ((module) => {
+
+module.exports = /*#__PURE__*/JSON.parse('{"afa-loading":"Wczytywanie...","afa-cantload":"Nie udało się załadować filtra nadużyć: $1","afa-hitdetails-header":"Drzewo obliczania filtra","afa-hitdetails-patternexplorer-header":"Szczegóły dopasowania","afa-hitdetails-patternexplorer-pattern":"Wzorzec:","afa-hitdetails-patternexplorer-nomatch":"Nie znaleziono dopasowania","afa-hitdetails-operatortooltip":"Kliknij, aby zobaczyć szczegóły dopasowania","afa-masscheck-header":"Sprawdź filtr na ostatnich wpisach w rejestrze","afa-masscheck-description":"Możesz użyć tego narzędzia, aby obliczyć filtr na określonej liczbie ostatnich wpisów w rejestrze. Może to być przydatne, jeśli chcesz zobaczyć, które warunki są spełniane i ile razy.","afa-masscheck-form-numberlabel":"Liczba wpisów rejestru do sprawdzenia:","afa-masscheck-form-submitlabel":"Rozpocznij","afa-masscheck-form-negative":"Wprowadź poprawną, dodatnią liczbę.","afa-masscheck-form-errorlog":"Rejestr błędów","afa-masscheck-progress":"Przetworzono $1 / $2 wpisów rejestru.","afa-masscheck-progress-finishedall":"Przetworzono $1 wpisów rejestru.","afa-masscheck-progress-finishedsome":"Przetworzono $1 wpisów rejestru – więcej nie było dostępne.","afa-masscheck-progress-date":"Najstarszy wpis pochodzi z $1.","afa-masscheck-evaluationerror":"Nieznany błąd podczas obliczania: $1","afa-masscheck-value-tooltip":"Kliknij, aby zobaczyć częstość wartości","afa-masscheck-value-multiple":"wiele wartości","afa-masscheck-value-frequency":"($1%)","afa-masscheck-value-frequencyerrors":"($1%, $2 błędów)","afa-masscheck-value-errors":"($1 błędów)","afa-masscheck-frequency-header":"Częstość wartości","afa-masscheck-frequency-times":"$1 razy:","afa-masscheck-frequency-times-tooltip":"Kliknij, aby sprawdzić, w których wpisach rejestru nadużyć ta wartość wystąpiła","afa-masscheck-frequency-errors":"Błędy ($1):","afa-masscheck-frequency-loglinks-showmore":"Pokaż więcej","afa-gui-expandall":"Rozwiń/Zwiń wszystko","afa-gui-options":"Opcje:","afa-gui-value-error":"Błędy: $1","afa-gui-value-errorspeculative":"Błędy: $1 (spekulatywnie)","afa-gui-value-unknowntoken":"Nieznany typ tokenu: $1","afa-gui-value-expand":"Pokaż całą wartość ($1 znaków)","afa-gui-value-collapse":"Zwiń wartość","afa-gui-filter-bool-name":"Tylko istotne wartości logiczne","afa-gui-filter-bool-desc":"Ukrywa większość operandów AND, które są prawdziwe, oraz OR, które są fałszywe. Powstałe drzewo będzie krótsze i będzie zawierać tylko reguły wpływające na ostateczny wynik.","afa-gui-node-arraydef":"Definicja tablicy","afa-gui-node-assign":"Przypisanie","afa-gui-node-indexassign":"Przypisanie do indeksu tablicy","afa-gui-node-arrayappend":"Dopisanie na koniec tablicy","afa-gui-node-funccall":"Wywołanie funkcji","afa-gui-node-index":"Pobranie elementu spod indeksu","afa-gui-node-sequence":"Sekwencja instrukcji","afa-gui-node-operator":"Operator"}');
+
+/***/ }),
+/* 13 */
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   NodeEvaluator: () => (/* binding */ NodeEvaluator)
 /* harmony export */ });
-/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
+/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(14);
 /* harmony import */ var _value_Value_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
 /* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
 /* harmony import */ var _value_VariableValue_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
 /* harmony import */ var _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(6);
-/* harmony import */ var _value_ValueCalculator_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(11);
-/* harmony import */ var _value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(12);
-/* harmony import */ var _value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(15);
-/* harmony import */ var _functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(16);
+/* harmony import */ var _value_ValueCalculator_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(15);
+/* harmony import */ var _value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(16);
+/* harmony import */ var _value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(19);
+/* harmony import */ var _functions_LocalFunctionExecutor_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(20);
 
 
 
@@ -1342,7 +1526,7 @@ class NodeEvaluator {
 
 
 /***/ }),
-/* 10 */
+/* 14 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -1392,7 +1576,7 @@ var TreeNodeType;
 
 
 /***/ }),
-/* 11 */
+/* 15 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -1567,7 +1751,7 @@ class ValueCalculator {
 
 
 /***/ }),
-/* 12 */
+/* 16 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -1576,7 +1760,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
 /* harmony import */ var _Value_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
-/* harmony import */ var _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
+/* harmony import */ var _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(17);
 
 
 
@@ -1676,14 +1860,14 @@ class ValueStringOperations {
 
 
 /***/ }),
-/* 13 */
+/* 17 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   RegexUtils: () => (/* binding */ RegexUtils)
 /* harmony export */ });
-/* harmony import */ var _PcreParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(14);
+/* harmony import */ var _PcreParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(18);
 
 /**
  * Utility class for processing PCRE regular expressions
@@ -1748,7 +1932,7 @@ class RegexUtils {
 
 
 /***/ }),
-/* 14 */
+/* 18 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -2676,7 +2860,7 @@ class PcreInternalOption {
 
 
 /***/ }),
-/* 15 */
+/* 19 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -2862,14 +3046,14 @@ var ComparisonResult;
 
 
 /***/ }),
-/* 16 */
+/* 20 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   LocalFunctionExecutor: () => (/* binding */ LocalFunctionExecutor)
 /* harmony export */ });
-/* harmony import */ var _AbuseFilterFunctions_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(17);
+/* harmony import */ var _AbuseFilterFunctions_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
 
 /**
  * Function executor that looks a function up in the local function registry
@@ -2889,7 +3073,7 @@ class LocalFunctionExecutor {
 
 
 /***/ }),
-/* 17 */
+/* 21 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -2898,10 +3082,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _value_Value_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
-/* harmony import */ var _utils_IPUtils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(18);
-/* harmony import */ var _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
-/* harmony import */ var _value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
-/* harmony import */ var _value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(15);
+/* harmony import */ var _utils_IPUtils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(22);
+/* harmony import */ var _utils_regex_RegexUtils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(17);
+/* harmony import */ var _value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(16);
+/* harmony import */ var _value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(19);
 
 
 
@@ -3379,14 +3563,14 @@ AbuseFilterFunctions.functions = new Map([
 
 
 /***/ }),
-/* 18 */
+/* 22 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   IPUtils: () => (/* binding */ IPUtils)
 /* harmony export */ });
-/* harmony import */ var _IPAddress_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
+/* harmony import */ var _IPAddress_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
 
 /**
  * Provides operations on IP addresses and ranges.
@@ -3495,7 +3679,7 @@ class IPUtils {
 
 
 /***/ }),
-/* 19 */
+/* 23 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -3596,14 +3780,14 @@ class IPAddress {
 
 
 /***/ }),
-/* 20 */
+/* 24 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   EvaluableNodeFactory: () => (/* binding */ EvaluableNodeFactory)
 /* harmony export */ });
-/* harmony import */ var _EvaluableTreeNode_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
+/* harmony import */ var _EvaluableTreeNode_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(25);
 
 /**
  * Factory class that produces instances of EvaluableTreeNode.
@@ -3616,7 +3800,7 @@ class EvaluableNodeFactory {
 
 
 /***/ }),
-/* 21 */
+/* 25 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -3688,15 +3872,15 @@ class EvaluableTreeNode {
 
 
 /***/ }),
-/* 22 */
+/* 26 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AbuseFilterGUI: () => (/* binding */ AbuseFilterGUI)
 /* harmony export */ });
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
-/* harmony import */ var _treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(26);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
+/* harmony import */ var _treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(27);
 
 
 class AbuseFilterGUI {
@@ -3851,64 +4035,19 @@ class AbuseFilterGUI {
 
 
 /***/ }),
-/* 23 */
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   i18n: () => (/* binding */ i18n),
-/* harmony export */   initializeTranslations: () => (/* binding */ initializeTranslations)
-/* harmony export */ });
-/* harmony import */ var _en_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
-/* harmony import */ var _pl_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(25);
-// Load here all the supported languages
-
-
-function i18n(key, ...args) {
-    return mw.message(key, ...args).text();
-}
-function initializeTranslations() {
-    // Always load the English messages, optionally override them later on load
-    mw.messages.set(_en_json__WEBPACK_IMPORTED_MODULE_0__);
-    // Store the supported languages here, but skip English which is loaded
-    // by default, regardless of the user's language settings.
-    const supportedLanguages = {
-        pl: _pl_json__WEBPACK_IMPORTED_MODULE_1__
-    };
-    const userLanguage = mw.config.get('wgUserLanguage');
-    if (userLanguage in supportedLanguages) {
-        // Load the user's language messages if available
-        mw.messages.set(supportedLanguages[userLanguage]);
-    }
-}
-
-
-/***/ }),
-/* 24 */
-/***/ ((module) => {
-
-module.exports = /*#__PURE__*/JSON.parse('{"afa-loading":"Loading...","afa-cantload":"Can\'t load the abuse filter: $1","afa-hitdetails-header":"Filter evaluation tree","afa-hitdetails-patternexplorer-header":"Match details","afa-hitdetails-patternexplorer-pattern":"Pattern:","afa-hitdetails-patternexplorer-nomatch":"No match found","afa-hitdetails-operatortooltip":"Click to see details of the match","afa-masscheck-header":"Check filter on recent log entries","afa-masscheck-description":"You can use this tool to evaluate the filter on a specified number of recent log entries. This may be useful to see what conditions are triggered and how many times.","afa-masscheck-form-numberlabel":"Number of log entries to check:","afa-masscheck-form-submitlabel":"Start","afa-masscheck-form-negative":"Please enter a valid positive number.","afa-masscheck-form-errorlog":"Error log","afa-masscheck-progress":"Processed $1 / $2 log entries.","afa-masscheck-progress-finishedall":"Processed all $1 log entries.","afa-masscheck-progress-finishedsome":"Processed $1 log entries – no more were available.","afa-masscheck-progress-date":"The oldest log entry is from $1.","afa-masscheck-evaluationerror":"Unknown error during evaluation: $1","afa-masscheck-value-tooltip":"Click to see the value frequency","afa-masscheck-value-multiple":"multiple values","afa-masscheck-value-frequency":"($1%)","afa-masscheck-value-frequencyerrors":"($1%, $2 errors)","afa-masscheck-value-errors":"($1 errors)","afa-masscheck-frequency-header":"Value frequency","afa-masscheck-frequency-times":"$1 times:","afa-masscheck-frequency-times-tooltip":"Click to see, in which abuse log entries this value appeared","afa-masscheck-frequency-errors":"Errors ($1):","afa-masscheck-frequency-loglinks-showmore":"Show more","afa-gui-expandall":"Expand/Collapse all","afa-gui-options":"Options:","afa-gui-value-error":"Errors: $1","afa-gui-value-errorspeculative":"Errors: $1 (speculative)","afa-gui-value-unknowntoken":"Unknown token type: $1","afa-gui-value-expand":"Show the whole value ($1 characters)","afa-gui-value-collapse":"Collapse the value","afa-gui-filter-bool-name":"Show only impacting booleans","afa-gui-filter-bool-desc":"Hides most operands of AND that evaluate to true and of OR that evaluate to false. The resulting tree will be shorter and will contain only rules affecting the final result.","afa-gui-node-arraydef":"Array definition","afa-gui-node-assign":"Assignment","afa-gui-node-indexassign":"Assignment to array index","afa-gui-node-arrayappend":"Append to array","afa-gui-node-funccall":"Call function","afa-gui-node-index":"Get element at index","afa-gui-node-sequence":"Statement sequence","afa-gui-node-operator":"Operator"}');
-
-/***/ }),
-/* 25 */
-/***/ ((module) => {
-
-module.exports = /*#__PURE__*/JSON.parse('{"afa-loading":"Wczytywanie...","afa-cantload":"Nie udało się załadować filtra nadużyć: $1","afa-hitdetails-header":"Drzewo obliczania filtra","afa-hitdetails-patternexplorer-header":"Szczegóły dopasowania","afa-hitdetails-patternexplorer-pattern":"Wzorzec:","afa-hitdetails-patternexplorer-nomatch":"Nie znaleziono dopasowania","afa-hitdetails-operatortooltip":"Kliknij, aby zobaczyć szczegóły dopasowania","afa-masscheck-header":"Sprawdź filtr na ostatnich wpisach w rejestrze","afa-masscheck-description":"Możesz użyć tego narzędzia, aby obliczyć filtr na określonej liczbie ostatnich wpisów w rejestrze. Może to być przydatne, jeśli chcesz zobaczyć, które warunki są spełniane i ile razy.","afa-masscheck-form-numberlabel":"Liczba wpisów rejestru do sprawdzenia:","afa-masscheck-form-submitlabel":"Rozpocznij","afa-masscheck-form-negative":"Wprowadź poprawną, dodatnią liczbę.","afa-masscheck-form-errorlog":"Rejestr błędów","afa-masscheck-progress":"Przetworzono $1 / $2 wpisów rejestru.","afa-masscheck-progress-finishedall":"Przetworzono $1 wpisów rejestru.","afa-masscheck-progress-finishedsome":"Przetworzono $1 wpisów rejestru – więcej nie było dostępne.","afa-masscheck-progress-date":"Najstarszy wpis pochodzi z $1.","afa-masscheck-evaluationerror":"Nieznany błąd podczas obliczania: $1","afa-masscheck-value-tooltip":"Kliknij, aby zobaczyć częstość wartości","afa-masscheck-value-multiple":"wiele wartości","afa-masscheck-value-frequency":"($1%)","afa-masscheck-value-frequencyerrors":"($1%, $2 błędów)","afa-masscheck-value-errors":"($1 błędów)","afa-masscheck-frequency-header":"Częstość wartości","afa-masscheck-frequency-times":"$1 razy:","afa-masscheck-frequency-times-tooltip":"Kliknij, aby sprawdzić, w których wpisach rejestru nadużyć ta wartość wystąpiła","afa-masscheck-frequency-errors":"Błędy ($1):","afa-masscheck-frequency-loglinks-showmore":"Pokaż więcej","afa-gui-expandall":"Rozwiń/Zwiń wszystko","afa-gui-options":"Opcje:","afa-gui-value-error":"Błędy: $1","afa-gui-value-errorspeculative":"Błędy: $1 (spekulatywnie)","afa-gui-value-unknowntoken":"Nieznany typ tokenu: $1","afa-gui-value-expand":"Pokaż całą wartość ($1 znaków)","afa-gui-value-collapse":"Zwiń wartość","afa-gui-filter-bool-name":"Tylko istotne wartości logiczne","afa-gui-filter-bool-desc":"Ukrywa większość operandów AND, które są prawdziwe, oraz OR, które są fałszywe. Powstałe drzewo będzie krótsze i będzie zawierać tylko reguły wpływające na ostateczny wynik.","afa-gui-node-arraydef":"Definicja tablicy","afa-gui-node-assign":"Przypisanie","afa-gui-node-indexassign":"Przypisanie do indeksu tablicy","afa-gui-node-arrayappend":"Dopisanie na koniec tablicy","afa-gui-node-funccall":"Wywołanie funkcji","afa-gui-node-index":"Pobranie elementu spod indeksu","afa-gui-node-sequence":"Sekwencja instrukcji","afa-gui-node-operator":"Operator"}');
-
-/***/ }),
-/* 26 */
+/* 27 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ViewFactory: () => (/* binding */ ViewFactory)
 /* harmony export */ });
-/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
-/* harmony import */ var _value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(27);
-/* harmony import */ var _ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(28);
-/* harmony import */ var _AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(31);
-/* harmony import */ var _AtomNodeView_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(32);
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(29);
+/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(14);
+/* harmony import */ var _value_ProcessedDataView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(28);
+/* harmony import */ var _ArrayDefinitionNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(29);
+/* harmony import */ var _AssignmentNodeView_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(32);
+/* harmony import */ var _AtomNodeView_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(33);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(30);
 /* harmony import */ var _FunctionNodeView_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(34);
 /* harmony import */ var _IndexNodeView_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(35);
 /* harmony import */ var _OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(36);
@@ -3993,7 +4132,7 @@ class ViewFactory {
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4022,15 +4161,15 @@ class ProcessedDataView {
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ArrayDefinitionNodeView: () => (/* binding */ ArrayDefinitionNodeView)
 /* harmony export */ });
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
 
 
 class ArrayDefinitionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__.BlockNodeView {
@@ -4074,14 +4213,14 @@ class ArrayDefinitionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   BlockNodeView: () => (/* binding */ BlockNodeView)
 /* harmony export */ });
-/* harmony import */ var _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(30);
+/* harmony import */ var _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(31);
 
 /**
  * Base class for views of nodes with children.
@@ -4194,7 +4333,7 @@ class BlockNodeView extends _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_0__.BaseNo
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4231,16 +4370,16 @@ class BaseNodeView {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AssignmentNodeView: () => (/* binding */ AssignmentNodeView)
 /* harmony export */ });
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
-/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(29);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
+/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(30);
 
 
 
@@ -4302,15 +4441,15 @@ class AssignmentNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_2__.
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AtomNodeView: () => (/* binding */ AtomNodeView)
 /* harmony export */ });
-/* harmony import */ var _value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(33);
-/* harmony import */ var _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
+/* harmony import */ var _value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+/* harmony import */ var _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(31);
 
 
 /**
@@ -4334,146 +4473,6 @@ class AtomNodeView extends _BaseNodeView_js__WEBPACK_IMPORTED_MODULE_1__.BaseNod
 
 
 /***/ }),
-/* 33 */
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ValueFormatter: () => (/* binding */ ValueFormatter)
-/* harmony export */ });
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
-/* harmony import */ var _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
-/* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
-
-
-
-class ValueFormatter {
-    /**
-     * Prepares a value to be displayed in the GUI. For some data types, a maximum length can be specified.
-     * Values that are too long will be truncated an a button to expand the value will be shown.
-     * @param value The value to pretty-print
-     * @param maxLength The maximum length of the string to be displayed.
-     */
-    static formatValue(value, maxLength) {
-        switch (value.dataType) {
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Undefined:
-                return this.formatKeyword('undefined');
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Null:
-                return this.formatKeyword('null');
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Boolean:
-                return this.formatKeyword(value.isTruthy() ? 'true' : 'false');
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Integer:
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Float:
-                return this.formatNumberLiteral(value.asString().value);
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.String:
-                return this.formatStringLiteral(value.value, maxLength);
-            case _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_2__.ValueDataType.Array:
-                return this.processArrayValue(value);
-        }
-    }
-    static formatLiteral(token) {
-        switch (token.type) {
-            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.Identifier: {
-                const wrapper = this.makeWrapper('identifier');
-                wrapper.textContent = token.value;
-                return wrapper;
-            }
-            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.StringLiteral:
-                return ValueFormatter.formatStringLiteral(token.value);
-            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.IntLiteral:
-            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.FloatLiteral:
-                return ValueFormatter.formatNumberLiteral(token.value);
-            case _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_1__.TokenType.Keyword:
-                return ValueFormatter.formatKeyword(token.value);
-        }
-        throw new Error((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-value-unknowntoken', token.type));
-    }
-    static makeWrapper(dataType) {
-        const wrapper = document.createElement('span');
-        wrapper.classList.add('afa-value', 'afa-value-' + dataType);
-        return wrapper;
-    }
-    static formatKeyword(value) {
-        const wrapper = this.makeWrapper('keyword');
-        wrapper.textContent = value;
-        if (value === 'true') {
-            wrapper.classList.add('afa-value-bool', 'afa-value-true');
-        }
-        else if (value === 'false') {
-            wrapper.classList.add('afa-value-bool', 'afa-value-false');
-        }
-        return wrapper;
-    }
-    static formatNumberLiteral(value) {
-        const wrapper = this.makeWrapper('number');
-        wrapper.textContent = value;
-        return wrapper;
-    }
-    static formatStringLiteral(value, maxLength) {
-        const wrapper = this.makeWrapper('string');
-        const escapedValue = this.escapeString(value);
-        if (maxLength !== undefined && value.length > maxLength) {
-            wrapper.append('"');
-            const truncatedValue = escapedValue.substring(0, maxLength);
-            const contentTextNode = document.createTextNode(truncatedValue);
-            wrapper.appendChild(contentTextNode);
-            const expandButton = this.createInlayButton('»', () => {
-                contentTextNode.textContent = escapedValue;
-                expandButton.style.display = 'none';
-                collapseButton.style.display = '';
-            });
-            expandButton.title = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-value-expand', escapedValue.length);
-            const collapseButton = this.createInlayButton('←', () => {
-                contentTextNode.textContent = truncatedValue;
-                expandButton.style.display = '';
-                collapseButton.style.display = 'none';
-            });
-            collapseButton.style.display = 'none';
-            collapseButton.title = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__.i18n)('afa-gui-value-collapse');
-            wrapper.appendChild(expandButton);
-            wrapper.append('"');
-            wrapper.appendChild(collapseButton);
-        }
-        else {
-            wrapper.textContent = `"${escapedValue}"`;
-        }
-        return wrapper;
-    }
-    static processArrayValue(value) {
-        const wrapper = this.makeWrapper(value.dataType);
-        wrapper.appendChild(document.createTextNode('['));
-        const array = value.value;
-        for (let i = 0; i < array.length; i++) {
-            if (i > 0) {
-                wrapper.appendChild(document.createTextNode(', '));
-            }
-            wrapper.appendChild(this.formatValue(array[i]));
-        }
-        wrapper.appendChild(document.createTextNode(']'));
-        return wrapper;
-    }
-    static createInlayButton(caption, clickHandler) {
-        const button = document.createElement('button');
-        button.classList.add('afa-value-inlay-button');
-        button.textContent = caption;
-        button.addEventListener('click', (event) => {
-            event.stopPropagation();
-            clickHandler();
-        });
-        return button;
-    }
-    /** Escapes special characters in a string for display in double quotes */
-    static escapeString(value) {
-        return value
-            .replace(/\\/g, '\\\\')
-            .replace(/"/g, '\\"')
-            .replace(/\n/g, '\\n')
-            .replace(/\r/g, '\\r');
-    }
-}
-
-
-/***/ }),
 /* 34 */
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
@@ -4481,8 +4480,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   FunctionNodeView: () => (/* binding */ FunctionNodeView)
 /* harmony export */ });
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
 
 
 class FunctionNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__.BlockNodeView {
@@ -4570,8 +4569,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   IndexNodeView: () => (/* binding */ IndexNodeView)
 /* harmony export */ });
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
 
 
 class IndexNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__.BlockNodeView {
@@ -4606,8 +4605,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   OperatorNodeView: () => (/* binding */ OperatorNodeView)
 /* harmony export */ });
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
-/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
+/* harmony import */ var _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
 
 
 class OperatorNodeView extends _BlockNodeView_js__WEBPACK_IMPORTED_MODULE_1__.BlockNodeView {
@@ -4692,9 +4691,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   NodeValueView: () => (/* binding */ NodeValueView)
 /* harmony export */ });
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
 /* harmony import */ var _NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(38);
-/* harmony import */ var _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(33);
+/* harmony import */ var _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
 
 
 
@@ -4764,7 +4763,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _evaluator_value_Value_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
-/* harmony import */ var _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(33);
+/* harmony import */ var _ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
 
 
 
@@ -4936,7 +4935,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ParserException_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(41);
 /* harmony import */ var _Token_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(42);
 /* harmony import */ var _model_tokens_TokenType_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
-/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(10);
+/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
 
 
 
@@ -5717,7 +5716,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   FlattenAssociativeOpsTransformer: () => (/* binding */ FlattenAssociativeOpsTransformer)
 /* harmony export */ });
-/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
+/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(14);
 
 /**
  * Transforms a tree by flattening associative operators.
@@ -5827,8 +5826,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ImpactingBoolFilter: () => (/* binding */ ImpactingBoolFilter)
 /* harmony export */ });
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
-/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
+/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
 
 
 /**
@@ -5986,7 +5985,7 @@ class TreeNodeFactory {
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
 /* harmony import */ var _ViewFactoryWithAugmented_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(50);
 /**
  * Hit Details gadget for AbuseFilter
@@ -6049,8 +6048,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ViewFactoryWithAugmented: () => (/* binding */ ViewFactoryWithAugmented)
 /* harmony export */ });
-/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
-/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
+/* harmony import */ var _gui_treeViews_ViewFactory_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
+/* harmony import */ var _model_nodes_TreeNodeType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
 /* harmony import */ var _AugmentedOperatorNodeView_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(51);
 
 
@@ -6084,7 +6083,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AugmentedOperatorNodeView: () => (/* binding */ AugmentedOperatorNodeView)
 /* harmony export */ });
 /* harmony import */ var _gui_treeViews_OperatorNodeView_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(36);
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(23);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
 /* harmony import */ var _PatternExplorerPopup_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(52);
 
 
@@ -6170,9 +6169,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   PatternExplorerPopup: () => (/* binding */ PatternExplorerPopup)
 /* harmony export */ });
-/* harmony import */ var _evaluator_value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
-/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(33);
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(23);
+/* harmony import */ var _evaluator_value_ValueStringOperations_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(16);
+/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
 
 
 
@@ -6271,7 +6270,7 @@ class PatternExplorerPopup {
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
 /* harmony import */ var _NodeValueFrequencyView_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(54);
 var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
@@ -6451,11 +6450,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   NodeValueFrequencyView: () => (/* binding */ NodeValueFrequencyView)
 /* harmony export */ });
-/* harmony import */ var _evaluator_value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15);
+/* harmony import */ var _evaluator_value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
 /* harmony import */ var _gui_value_NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(38);
-/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(33);
+/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
 /* harmony import */ var _ValueFrequencyPopup_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(55);
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(23);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(10);
 
 
 
@@ -6595,8 +6594,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ValueFrequencyPopup: () => (/* binding */ ValueFrequencyPopup)
 /* harmony export */ });
 /* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
-/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(33);
-/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(23);
+/* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
 /* harmony import */ var _evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(3);
 
 
