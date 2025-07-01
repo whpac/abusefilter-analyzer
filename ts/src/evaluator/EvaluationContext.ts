@@ -72,6 +72,10 @@ export class EvaluationContext implements IEvaluationContext {
         return childContext;
     }
 
+    public isEquivalentTo(other: IEvaluationContext): boolean {
+        return this.rootContext === other.rootContext;
+    }
+
     /**
      * Stores the ID of the abuse log entry associated with this context.
      * This may be useful to further direct the user to the page with details

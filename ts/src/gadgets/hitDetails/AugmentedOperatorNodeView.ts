@@ -32,7 +32,8 @@ export class AugmentedOperatorNodeView extends OperatorNodeView {
             element.title = buttonTitle;
         }
         treeNode.addOnValueSetCallback((_, ec) => {
-            if (ec !== this.evaluationContext) return;
+            if (!ec.isEquivalentTo(this.evaluationContext)) return;
+
             element.disabled = treeNode.getValue(ec).isTruthy() !== true;
             if (!element.disabled) {
                 element.title = buttonTitle;

@@ -28,7 +28,7 @@ export class NodeValueView extends NodeValueViewBase implements IView {
     }
 
     protected override onValueSet(value: IValue, context: IEvaluationContext): void {
-        if (context.rootContext != this.relevantContext.rootContext) return;
+        if (!context.isEquivalentTo(this.relevantContext)) return;
 
         this.element.textContent = '';
         const maxLength = 15;
@@ -43,7 +43,7 @@ export class NodeValueView extends NodeValueViewBase implements IView {
     }
 
     protected override onErrorSet(errors: Error[], context: IEvaluationContext): void {
-        if (context.rootContext != this.relevantContext.rootContext) return;
+        if (!context.isEquivalentTo(this.relevantContext)) return;
 
         const shortText = document.createElement('span');
         shortText.classList.add('afa-data-error');

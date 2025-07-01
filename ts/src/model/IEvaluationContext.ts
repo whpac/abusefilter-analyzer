@@ -58,4 +58,12 @@ export interface IEvaluationContext {
      * the code.
      */
     createChildContext(): IEvaluationContext;
+
+    /**
+     * Checks whether this evaluation context is equivalent to another one.
+     * Two contexts are considered equivalent if they have the same root context.
+     * @param other Another evaluation context to compare with.
+     * @returns Returns true if the contexts are equivalent.
+     */
+    isEquivalentTo(other: IEvaluationContext): boolean;
 }
