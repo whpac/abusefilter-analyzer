@@ -316,6 +316,14 @@ mw.util.addCSS(`
     margin-left: 0.2em;
 }
 
+.afa-masscheck-frequency-loglinks {
+    display: block;
+    font-size: 0.9em;
+    padding-left: 0.4em;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
 summary {
     width: fit-content;
 }
@@ -460,6 +468,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _value_VariableValue_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 
 class EvaluationContext {
+    get metadata() {
+        // Maybe in future we will need to make a union of local and parent metadata,
+        // but for now it's sufficient to return the parent's one.
+        if (this.parentContext !== null) {
+            return this.parentContext.metadata;
+        }
+        return this._metadata;
+    }
     /**
      * Creates a new evaluation context.
      * @param parentContext The parent context, if any. If not provided, this context will be the root context.
@@ -469,6 +485,7 @@ class EvaluationContext {
         this.parentContext = null;
         /** Here our variables will be stored. */
         this.variables = new Map();
+        this._metadata = new Map();
         if (parentContext !== null) {
             this.parentContext = parentContext;
             this.rootContext = parentContext.rootContext;
@@ -502,7 +519,28 @@ class EvaluationContext {
         const childContext = new EvaluationContext(this);
         return childContext;
     }
+    /**
+     * Stores the ID of the abuse log entry associated with this context.
+     * This may be useful to further direct the user to the page with details
+     * of the log entry.
+     * @param logId The log ID to set in the metadata.
+     */
+    setLogId(logId) {
+        this._metadata.set(EvaluationContext.METADATA_LOG_ID, logId);
+    }
+    /**
+     * Stores the date when the abuse log entry was created.
+     * @param logDate The date of the log entry associated with this context.
+     */
+    setLogDate(logDate) {
+        if (typeof logDate === 'string') {
+            logDate = new Date(logDate);
+        }
+        this._metadata.set(EvaluationContext.METADATA_LOG_DATE, logDate);
+    }
 }
+EvaluationContext.METADATA_LOG_ID = 'logId';
+EvaluationContext.METADATA_LOG_DATE = 'logDate';
 
 
 /***/ }),
@@ -3849,13 +3887,13 @@ function initializeTranslations() {
 /* 24 */
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"afa-loading":"Loading...","afa-cantload":"Can\'t load the abuse filter: $1","afa-hitdetails-header":"Filter evaluation tree","afa-hitdetails-patternexplorer-header":"Match details","afa-hitdetails-patternexplorer-pattern":"Pattern:","afa-hitdetails-patternexplorer-nomatch":"No match found","afa-hitdetails-operatortooltip":"Click to see details of the match","afa-masscheck-header":"Check filter on recent log entries","afa-masscheck-description":"You can use this tool to evaluate the filter on a specified number of recent log entries. This may be useful to see what conditions are triggered and how many times.","afa-masscheck-form-numberlabel":"Number of log entries to check:","afa-masscheck-form-submitlabel":"Start","afa-masscheck-form-negative":"Please enter a valid positive number.","afa-masscheck-form-errorlog":"Error log","afa-masscheck-progress":"Processed $1 / $2 log entries.","afa-masscheck-progress-finishedall":"Processed all $1 log entries.","afa-masscheck-progress-finishedsome":"Processed $1 log entries – no more were available.","afa-masscheck-progress-date":"The oldest log entry is from $1.","afa-masscheck-evaluationerror":"Unknown error during evaluation: $1","afa-masscheck-value-tooltip":"Click to see the value frequency","afa-masscheck-value-multiple":"multiple values","afa-masscheck-value-frequency":"($1%)","afa-masscheck-value-frequencyerrors":"($1%, $2 errors)","afa-masscheck-value-errors":"($1 errors)","afa-masscheck-frequency-header":"Value frequency","afa-masscheck-frequency-times":"$1 times:","afa-masscheck-frequency-errors":"Errors ($1):","afa-gui-expandall":"Expand/Collapse all","afa-gui-options":"Options:","afa-gui-value-error":"Errors: $1","afa-gui-value-errorspeculative":"Errors: $1 (speculative)","afa-gui-value-unknowntoken":"Unknown token type: $1","afa-gui-value-expand":"Show the whole value ($1 characters)","afa-gui-value-collapse":"Collapse the value","afa-gui-filter-bool-name":"Show only impacting booleans","afa-gui-filter-bool-desc":"Hides most operands of AND that evaluate to true and of OR that evaluate to false. The resulting tree will be shorter and will contain only rules affecting the final result.","afa-gui-node-arraydef":"Array definition","afa-gui-node-assign":"Assignment","afa-gui-node-indexassign":"Assignment to array index","afa-gui-node-arrayappend":"Append to array","afa-gui-node-funccall":"Call function","afa-gui-node-index":"Get element at index","afa-gui-node-sequence":"Statement sequence","afa-gui-node-operator":"Operator"}');
+module.exports = /*#__PURE__*/JSON.parse('{"afa-loading":"Loading...","afa-cantload":"Can\'t load the abuse filter: $1","afa-hitdetails-header":"Filter evaluation tree","afa-hitdetails-patternexplorer-header":"Match details","afa-hitdetails-patternexplorer-pattern":"Pattern:","afa-hitdetails-patternexplorer-nomatch":"No match found","afa-hitdetails-operatortooltip":"Click to see details of the match","afa-masscheck-header":"Check filter on recent log entries","afa-masscheck-description":"You can use this tool to evaluate the filter on a specified number of recent log entries. This may be useful to see what conditions are triggered and how many times.","afa-masscheck-form-numberlabel":"Number of log entries to check:","afa-masscheck-form-submitlabel":"Start","afa-masscheck-form-negative":"Please enter a valid positive number.","afa-masscheck-form-errorlog":"Error log","afa-masscheck-progress":"Processed $1 / $2 log entries.","afa-masscheck-progress-finishedall":"Processed all $1 log entries.","afa-masscheck-progress-finishedsome":"Processed $1 log entries – no more were available.","afa-masscheck-progress-date":"The oldest log entry is from $1.","afa-masscheck-evaluationerror":"Unknown error during evaluation: $1","afa-masscheck-value-tooltip":"Click to see the value frequency","afa-masscheck-value-multiple":"multiple values","afa-masscheck-value-frequency":"($1%)","afa-masscheck-value-frequencyerrors":"($1%, $2 errors)","afa-masscheck-value-errors":"($1 errors)","afa-masscheck-frequency-header":"Value frequency","afa-masscheck-frequency-times":"$1 times:","afa-masscheck-frequency-times-tooltip":"Click to see, in which abuse log entries this value appeared","afa-masscheck-frequency-errors":"Errors ($1):","afa-masscheck-frequency-loglinks-showmore":"Show more","afa-gui-expandall":"Expand/Collapse all","afa-gui-options":"Options:","afa-gui-value-error":"Errors: $1","afa-gui-value-errorspeculative":"Errors: $1 (speculative)","afa-gui-value-unknowntoken":"Unknown token type: $1","afa-gui-value-expand":"Show the whole value ($1 characters)","afa-gui-value-collapse":"Collapse the value","afa-gui-filter-bool-name":"Show only impacting booleans","afa-gui-filter-bool-desc":"Hides most operands of AND that evaluate to true and of OR that evaluate to false. The resulting tree will be shorter and will contain only rules affecting the final result.","afa-gui-node-arraydef":"Array definition","afa-gui-node-assign":"Assignment","afa-gui-node-indexassign":"Assignment to array index","afa-gui-node-arrayappend":"Append to array","afa-gui-node-funccall":"Call function","afa-gui-node-index":"Get element at index","afa-gui-node-sequence":"Statement sequence","afa-gui-node-operator":"Operator"}');
 
 /***/ }),
 /* 25 */
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"afa-loading":"Wczytywanie...","afa-cantload":"Nie udało się załadować filtra nadużyć: $1","afa-hitdetails-header":"Drzewo obliczania filtra","afa-hitdetails-patternexplorer-header":"Szczegóły dopasowania","afa-hitdetails-patternexplorer-pattern":"Wzorzec:","afa-hitdetails-patternexplorer-nomatch":"Nie znaleziono dopasowania","afa-hitdetails-operatortooltip":"Kliknij, aby zobaczyć szczegóły dopasowania","afa-masscheck-header":"Sprawdź filtr na ostatnich wpisach w rejestrze","afa-masscheck-description":"Możesz użyć tego narzędzia, aby obliczyć filtr na określonej liczbie ostatnich wpisów w rejestrze. Może to być przydatne, jeśli chcesz zobaczyć, które warunki są spełniane i ile razy.","afa-masscheck-form-numberlabel":"Liczba wpisów rejestru do sprawdzenia:","afa-masscheck-form-submitlabel":"Rozpocznij","afa-masscheck-form-negative":"Wprowadź poprawną, dodatnią liczbę.","afa-masscheck-form-errorlog":"Rejestr błędów","afa-masscheck-progress":"Przetworzono $1 / $2 wpisów rejestru.","afa-masscheck-progress-finishedall":"Przetworzono $1 wpisów rejestru.","afa-masscheck-progress-finishedsome":"Przetworzono $1 wpisów rejestru – więcej nie było dostępne.","afa-masscheck-progress-date":"Najstarszy wpis pochodzi z $1.","afa-masscheck-evaluationerror":"Nieznany błąd podczas obliczania: $1","afa-masscheck-value-tooltip":"Kliknij, aby zobaczyć częstość wartości","afa-masscheck-value-multiple":"wiele wartości","afa-masscheck-value-frequency":"($1%)","afa-masscheck-value-frequencyerrors":"($1%, $2 błędów)","afa-masscheck-value-errors":"($1 błędów)","afa-masscheck-frequency-header":"Częstość wartości","afa-masscheck-frequency-times":"$1 razy:","afa-masscheck-frequency-errors":"Błędy ($1):","afa-gui-expandall":"Rozwiń/Zwiń wszystko","afa-gui-options":"Opcje:","afa-gui-value-error":"Błędy: $1","afa-gui-value-errorspeculative":"Błędy: $1 (spekulatywnie)","afa-gui-value-unknowntoken":"Nieznany typ tokenu: $1","afa-gui-value-expand":"Pokaż całą wartość ($1 znaków)","afa-gui-value-collapse":"Zwiń wartość","afa-gui-filter-bool-name":"Tylko istotne wartości logiczne","afa-gui-filter-bool-desc":"Ukrywa większość operandów AND, które są prawdziwe, oraz OR, które są fałszywe. Powstałe drzewo będzie krótsze i będzie zawierać tylko reguły wpływające na ostateczny wynik.","afa-gui-node-arraydef":"Definicja tablicy","afa-gui-node-assign":"Przypisanie","afa-gui-node-indexassign":"Przypisanie do indeksu tablicy","afa-gui-node-arrayappend":"Dopisanie na koniec tablicy","afa-gui-node-funccall":"Wywołanie funkcji","afa-gui-node-index":"Pobranie elementu spod indeksu","afa-gui-node-sequence":"Sekwencja instrukcji","afa-gui-node-operator":"Operator"}');
+module.exports = /*#__PURE__*/JSON.parse('{"afa-loading":"Wczytywanie...","afa-cantload":"Nie udało się załadować filtra nadużyć: $1","afa-hitdetails-header":"Drzewo obliczania filtra","afa-hitdetails-patternexplorer-header":"Szczegóły dopasowania","afa-hitdetails-patternexplorer-pattern":"Wzorzec:","afa-hitdetails-patternexplorer-nomatch":"Nie znaleziono dopasowania","afa-hitdetails-operatortooltip":"Kliknij, aby zobaczyć szczegóły dopasowania","afa-masscheck-header":"Sprawdź filtr na ostatnich wpisach w rejestrze","afa-masscheck-description":"Możesz użyć tego narzędzia, aby obliczyć filtr na określonej liczbie ostatnich wpisów w rejestrze. Może to być przydatne, jeśli chcesz zobaczyć, które warunki są spełniane i ile razy.","afa-masscheck-form-numberlabel":"Liczba wpisów rejestru do sprawdzenia:","afa-masscheck-form-submitlabel":"Rozpocznij","afa-masscheck-form-negative":"Wprowadź poprawną, dodatnią liczbę.","afa-masscheck-form-errorlog":"Rejestr błędów","afa-masscheck-progress":"Przetworzono $1 / $2 wpisów rejestru.","afa-masscheck-progress-finishedall":"Przetworzono $1 wpisów rejestru.","afa-masscheck-progress-finishedsome":"Przetworzono $1 wpisów rejestru – więcej nie było dostępne.","afa-masscheck-progress-date":"Najstarszy wpis pochodzi z $1.","afa-masscheck-evaluationerror":"Nieznany błąd podczas obliczania: $1","afa-masscheck-value-tooltip":"Kliknij, aby zobaczyć częstość wartości","afa-masscheck-value-multiple":"wiele wartości","afa-masscheck-value-frequency":"($1%)","afa-masscheck-value-frequencyerrors":"($1%, $2 błędów)","afa-masscheck-value-errors":"($1 błędów)","afa-masscheck-frequency-header":"Częstość wartości","afa-masscheck-frequency-times":"$1 razy:","afa-masscheck-frequency-times-tooltip":"Kliknij, aby sprawdzić, w których wpisach rejestru nadużyć ta wartość wystąpiła","afa-masscheck-frequency-errors":"Błędy ($1):","afa-masscheck-frequency-loglinks-showmore":"Pokaż więcej","afa-gui-expandall":"Rozwiń/Zwiń wszystko","afa-gui-options":"Opcje:","afa-gui-value-error":"Błędy: $1","afa-gui-value-errorspeculative":"Błędy: $1 (spekulatywnie)","afa-gui-value-unknowntoken":"Nieznany typ tokenu: $1","afa-gui-value-expand":"Pokaż całą wartość ($1 znaków)","afa-gui-value-collapse":"Zwiń wartość","afa-gui-filter-bool-name":"Tylko istotne wartości logiczne","afa-gui-filter-bool-desc":"Ukrywa większość operandów AND, które są prawdziwe, oraz OR, które są fałszywe. Powstałe drzewo będzie krótsze i będzie zawierać tylko reguły wpływające na ostateczny wynik.","afa-gui-node-arraydef":"Definicja tablicy","afa-gui-node-assign":"Przypisanie","afa-gui-node-indexassign":"Przypisanie do indeksu tablicy","afa-gui-node-arrayappend":"Dopisanie na koniec tablicy","afa-gui-node-funccall":"Wywołanie funkcji","afa-gui-node-index":"Pobranie elementu spod indeksu","afa-gui-node-sequence":"Sekwencja instrukcji","afa-gui-node-operator":"Operator"}');
 
 /***/ }),
 /* 26 */
@@ -6372,6 +6410,10 @@ mw.hook('userjs.abuseFilter').add((abuseFilter) => {
                         for (const [key, value] of Object.entries(variables)) {
                             evaluationContext.setVariable(key, abuseFilter.evaluator.value.Value.fromNative(value));
                         }
+                        evaluationContext.setLogId(logEntry.id);
+                        if (logEntry.timestamp) {
+                            evaluationContext.setLogDate(logEntry.timestamp);
+                        }
                         await evaluator.evaluateNode(rootNode, evaluationContext);
                     }
                     catch (error) {
@@ -6452,7 +6494,7 @@ class NodeValueFrequencyView extends _gui_value_NodeValueViewBase_js__WEBPACK_IM
             e.preventDefault();
         });
     }
-    onValueSet(value) {
+    onValueSet(value, context) {
         this.totalEvaluationsCount++;
         let found = false;
         for (const entry of this.values) {
@@ -6460,12 +6502,13 @@ class NodeValueFrequencyView extends _gui_value_NodeValueViewBase_js__WEBPACK_IM
             // and here we want to treat them as equal
             if (_evaluator_value_ValueComparer_js__WEBPACK_IMPORTED_MODULE_0__.ValueComparer.areEqual(entry.value, value, true) || (entry.value.isUndefined && value.isUndefined)) {
                 entry.count++;
+                entry.contexts.push(context);
                 found = true;
                 break;
             }
         }
         if (!found) {
-            this.values.push({ value, count: 1 });
+            this.values.push({ value, count: 1, contexts: [context] });
         }
         this.scheduleViewUpdate();
     }
@@ -6554,6 +6597,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _model_value_ValueDataType_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
 /* harmony import */ var _gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(33);
 /* harmony import */ var _i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(23);
+/* harmony import */ var _evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(3);
+
 
 
 
@@ -6591,12 +6636,93 @@ class ValueFrequencyPopup {
         const container = document.createElement('ul');
         for (const entry of valueFrequencies) {
             const value = document.createElement('li');
-            value.append((0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__.i18n)('afa-masscheck-frequency-times', entry.count));
+            const timesButton = document.createElement('a');
+            timesButton.href = 'javascript:void(0);';
+            timesButton.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__.i18n)('afa-masscheck-frequency-times', entry.count);
+            timesButton.title = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__.i18n)('afa-masscheck-frequency-times-tooltip');
+            timesButton.style.color = 'inherit';
+            value.appendChild(timesButton);
             value.append(' ');
             value.appendChild(_gui_value_ValueFormatter_js__WEBPACK_IMPORTED_MODULE_1__.ValueFormatter.formatValue(entry.value, 200));
             container.appendChild(value);
+            let logLinkWrapper = null;
+            timesButton.addEventListener('click', () => {
+                if (logLinkWrapper !== null) {
+                    logLinkWrapper.remove();
+                    logLinkWrapper = null;
+                }
+                else {
+                    logLinkWrapper = this.createLogLinkList(entry.contexts);
+                    value.appendChild(logLinkWrapper);
+                }
+            });
         }
         return container;
+    }
+    createLogLinkList(contexts) {
+        const logLinkWrapper = document.createElement('span');
+        logLinkWrapper.classList.add('afa-masscheck-frequency-loglinks');
+        contexts = contexts.filter(context => {
+            const logId = context.metadata.get(_evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_3__.EvaluationContext.METADATA_LOG_ID);
+            // Filter out contexts without a log ID
+            return typeof logId === 'number' && logId > 0;
+        });
+        // Sort from the newest (from biggest ids)
+        contexts = contexts.sort((a, b) => {
+            const aLogId = a.metadata.get(_evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_3__.EvaluationContext.METADATA_LOG_ID);
+            const bLogId = b.metadata.get(_evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_3__.EvaluationContext.METADATA_LOG_ID);
+            return bLogId - aLogId;
+        });
+        // If there are up to 10 log entries, show them all
+        // Else, show initially only the first five, and allow to expand
+        const showAllThreshold = 10;
+        const showLimitedNumber = 5;
+        const contextsToShow = contexts.length <= showAllThreshold ? contexts.length : showLimitedNumber;
+        const initiallyShownContexts = contexts.slice(0, contextsToShow);
+        const remainingContexts = contexts.slice(contextsToShow);
+        let i = 0;
+        for (const context of initiallyShownContexts) {
+            const logLink = this.createLogLink(context);
+            if (logLink === null)
+                continue;
+            if (i > 0) {
+                logLinkWrapper.append(', ');
+            }
+            logLinkWrapper.appendChild(logLink);
+            i++;
+        }
+        if (remainingContexts.length > 0) {
+            const commaBeforeShowMore = document.createTextNode(', ');
+            const showMoreLink = document.createElement('a');
+            showMoreLink.href = 'javascript:void(0);';
+            showMoreLink.textContent = (0,_i18n_i18n_js__WEBPACK_IMPORTED_MODULE_2__.i18n)('afa-masscheck-frequency-loglinks-showmore');
+            showMoreLink.addEventListener('click', () => {
+                for (const context of remainingContexts) {
+                    const logLink = this.createLogLink(context);
+                    if (logLink === null)
+                        continue;
+                    logLinkWrapper.append(', ');
+                    logLinkWrapper.appendChild(logLink);
+                }
+                commaBeforeShowMore.remove();
+                showMoreLink.remove();
+            });
+            logLinkWrapper.append(commaBeforeShowMore);
+            logLinkWrapper.appendChild(showMoreLink);
+        }
+        return logLinkWrapper;
+    }
+    createLogLink(context) {
+        var _a;
+        const logId = context.metadata.get(_evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_3__.EvaluationContext.METADATA_LOG_ID);
+        const logDate = context.metadata.get(_evaluator_EvaluationContext_js__WEBPACK_IMPORTED_MODULE_3__.EvaluationContext.METADATA_LOG_DATE);
+        if (logId === undefined)
+            return null;
+        const logLink = document.createElement('a');
+        logLink.href = mw.util.getUrl('Special:AbuseLog/' + logId);
+        logLink.textContent = (_a = logDate === null || logDate === void 0 ? void 0 : logDate.toLocaleDateString()) !== null && _a !== void 0 ? _a : logId.toString();
+        logLink.target = '_blank';
+        return logLink;
     }
     makeErrorContent(errors) {
         const container = document.createElement('div');
