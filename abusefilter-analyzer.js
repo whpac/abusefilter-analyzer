@@ -519,6 +519,9 @@ class EvaluationContext {
         const childContext = new EvaluationContext(this);
         return childContext;
     }
+    isEquivalentTo(other) {
+        return this.rootContext === other.rootContext;
+    }
     /**
      * Stores the ID of the abuse log entry associated with this context.
      * This may be useful to further direct the user to the page with details
@@ -4713,7 +4716,7 @@ class NodeValueView extends _NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_1__.N
         this.listenToChanges(node);
     }
     onValueSet(value, context) {
-        if (context.rootContext != this.relevantContext.rootContext)
+        if (!context.isEquivalentTo(this.relevantContext))
             return;
         this.element.textContent = '';
         const maxLength = 15;
@@ -4727,7 +4730,7 @@ class NodeValueView extends _NodeValueViewBase_js__WEBPACK_IMPORTED_MODULE_1__.N
         }
     }
     onErrorSet(errors, context) {
-        if (context.rootContext != this.relevantContext.rootContext)
+        if (!context.isEquivalentTo(this.relevantContext))
             return;
         const shortText = document.createElement('span');
         shortText.classList.add('afa-data-error');
@@ -6108,7 +6111,7 @@ class AugmentedOperatorNodeView extends _gui_treeViews_OperatorNodeView_js__WEBP
             element.title = buttonTitle;
         }
         treeNode.addOnValueSetCallback((_, ec) => {
-            if (ec !== this.evaluationContext)
+            if (!ec.isEquivalentTo(this.evaluationContext))
                 return;
             element.disabled = treeNode.getValue(ec).isTruthy() !== true;
             if (!element.disabled) {
