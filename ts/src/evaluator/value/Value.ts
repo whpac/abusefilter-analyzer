@@ -3,6 +3,7 @@ import { ValueDataType } from '../../model/value/ValueDataType.js';
 import { IToken } from '../../model/tokens/IToken.js';
 import { IValue } from '../../model/value/IValue.js';
 import { ValueConverter } from './ValueConverter.js';
+import { ValueFormatter } from '../../gui/value/ValueFormatter.js';
 
 /**
  * A class representing a value in the evaluation tree.
@@ -226,12 +227,7 @@ export class Value<TValue = unknown> implements IValue<TValue> {
                 return this.asString().value!;
             case ValueDataType.String: {
                 let val = this.value as string;
-                val = val.replace(/\\/g, '\\\\');
-                val = val.replace(/"/g, '\\"');
-                val = val.replace(/\n/g, '\\n');
-                val = val.replace(/\r/g, '\\r');
-                val = val.replace(/\t/g, '\\t');
-                // TODO: Are there any other? eg. \0, \x00
+                val = ValueFormatter.escapeString(val);
                 return '"' + val + '"';
             }
             case ValueDataType.Array:

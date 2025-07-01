@@ -139,7 +139,9 @@ export class ValueFormatter {
         return value
             .replace(/\\/g, '\\\\')
             .replace(/"/g, '\\"')
+            .replace(/\t/g, '\\t')
             .replace(/\n/g, '\\n')
             .replace(/\r/g, '\\r');
+        // TODO: Are there any other? eg. \0, \x00
     }
 }
