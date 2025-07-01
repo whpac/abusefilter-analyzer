@@ -274,6 +274,7 @@ mw.util.addCSS(`
 }
 
 .afa-masscheck-frequency-loglinks {
+    display: block;
     font-size: 0.9em;
     padding-left: 0.4em;
     max-height: 150px;

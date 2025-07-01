@@ -58,48 +58,93 @@ export class ValueFrequencyPopup {
             value.appendChild(ValueFormatter.formatValue(entry.value, 200));
             container.appendChild(value);
 
-            const logLinkWrapper = document.createElement('span');
-            logLinkWrapper.classList.add('afa-masscheck-frequency-loglinks');
-            logLinkWrapper.style.display = 'none';
-            value.appendChild(logLinkWrapper);
-
-            let i = 0;
-            // Sort from the newest (from biggest ids)
-            const contexts = entry.contexts.sort((a, b) => {
-                const aLogId = a.metadata.get(EvaluationContext.METADATA_LOG_ID) as number | undefined;
-                const bLogId = b.metadata.get(EvaluationContext.METADATA_LOG_ID) as number | undefined;
-                if (aLogId !== undefined && bLogId !== undefined) {
-                    return bLogId - aLogId;
-                }
-                return 0; // for undefined it's irrelevant, they will be removed anyway
-            });
-            for (const context of contexts) {
-                const logId = context.metadata.get(EvaluationContext.METADATA_LOG_ID) as number | undefined;
-                const logDate = context.metadata.get(EvaluationContext.METADATA_LOG_DATE) as Date | undefined;
-                
-                if (logId === undefined) continue;
-                
-                if (i > 0) {
-                    logLinkWrapper.append(', ');
-                }
-                const logLink = document.createElement('a');
-                logLink.href = mw.util.getUrl('Special:AbuseLog/' + logId);
-                logLink.textContent = logDate?.toLocaleDateString() ?? logId.toString();
-                logLink.target = '_blank';
-                logLinkWrapper.appendChild(logLink);
-                i++;
-            }
-
+            let logLinkWrapper: HTMLElement | null = null;
+            
             timesButton.addEventListener('click', () => {
-                if (logLinkWrapper.style.display === 'none') {
-                    logLinkWrapper.style.display = 'block';
+                if (logLinkWrapper !== null) {
+                    logLinkWrapper.remove();
+                    logLinkWrapper = null;
                 } else {
-                    logLinkWrapper.style.display = 'none';
+                    logLinkWrapper = this.createLogLinkList(entry.contexts);
+                    value.appendChild(logLinkWrapper);
                 }
             });
         }
 
         return container;
+    }
+
+    protected createLogLinkList(contexts: IEvaluationContext[]): HTMLElement {
+        const logLinkWrapper = document.createElement('span');
+        logLinkWrapper.classList.add('afa-masscheck-frequency-loglinks');
+
+        contexts = contexts.filter(context => {
+            const logId = context.metadata.get(EvaluationContext.METADATA_LOG_ID);
+            // Filter out contexts without a log ID
+            return typeof logId === 'number' && logId > 0;
+        });
+        // Sort from the newest (from biggest ids)
+        contexts = contexts.sort((a, b) => {
+            const aLogId = a.metadata.get(EvaluationContext.METADATA_LOG_ID) as number;
+            const bLogId = b.metadata.get(EvaluationContext.METADATA_LOG_ID) as number;
+            return bLogId - aLogId;
+        });
+        
+        // If there are up to 10 log entries, show them all
+        // Else, show initially only the first five, and allow to expand
+        
+        const showAllThreshold = 10;
+        const showLimitedNumber = 5;
+        
+        const contextsToShow = contexts.length <= showAllThreshold ? contexts.length : showLimitedNumber;
+        const initiallyShownContexts = contexts.slice(0, contextsToShow);
+        const remainingContexts = contexts.slice(contextsToShow);
+        
+        let i = 0;
+        for (const context of initiallyShownContexts) {
+            const logLink = this.createLogLink(context);
+            if (logLink === null) continue;
+            
+            if (i > 0) {
+                logLinkWrapper.append(', ');
+            }
+            logLinkWrapper.appendChild(logLink);
+            i++;
+        }
+
+        if (remainingContexts.length > 0) {
+            const commaBeforeShowMore = document.createTextNode(', ');
+            const showMoreLink = document.createElement('a');
+            showMoreLink.href = 'javascript:void(0);';
+            showMoreLink.textContent = i18n('afa-masscheck-frequency-loglinks-showmore');
+            showMoreLink.addEventListener('click', () => {
+                for (const context of remainingContexts) {
+                    const logLink = this.createLogLink(context);
+                    if (logLink === null) continue;
+                    logLinkWrapper.append(', ');
+                    logLinkWrapper.appendChild(logLink);
+                }
+                commaBeforeShowMore.remove();
+                showMoreLink.remove();
+            });
+            logLinkWrapper.append(commaBeforeShowMore);
+            logLinkWrapper.appendChild(showMoreLink);
+        }
+
+        return logLinkWrapper;
+    }
+
+    protected createLogLink(context: IEvaluationContext): HTMLElement | null {
+        const logId = context.metadata.get(EvaluationContext.METADATA_LOG_ID) as number | undefined;
+        const logDate = context.metadata.get(EvaluationContext.METADATA_LOG_DATE) as Date | undefined;
+        
+        if (logId === undefined) return null;
+        
+        const logLink = document.createElement('a');
+        logLink.href = mw.util.getUrl('Special:AbuseLog/' + logId);
+        logLink.textContent = logDate?.toLocaleDateString() ?? logId.toString();
+        logLink.target = '_blank';
+        return logLink;
     }
 
     protected makeErrorContent(errors: Error[]): HTMLElement {
