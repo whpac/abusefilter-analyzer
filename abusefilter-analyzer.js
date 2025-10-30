@@ -4854,7 +4854,14 @@ class AbuseFilterApi {
         let api = this.getApi();
         if (filterId.toString().startsWith('global-')) {
             filterId = filterId.toString().replace('global-', '');
-            api = new mw.ForeignApi('https://meta.wikimedia.org/w/api.php');
+            api = new mw.ForeignApi('https://meta.wikimedia.org/w/api.php', {
+                parameters: {
+                    format: 'json',
+                    formatversion: 2,
+                },
+                //@ts-expect-error types-mediawiki doesn't yet have 'userAgent' field
+                userAgent: 'abusefilter-analyzer (User:Msz2001)'
+            });
         }
         const response = await api.get({
             action: 'query',
@@ -4920,6 +4927,10 @@ class AbuseFilterApi {
     }
     static getApi() {
         return new mw.Api({
+            parameters: {
+                format: 'json',
+                formatversion: 2,
+            },
             //@ts-expect-error types-mediawiki doesn't yet have 'userAgent' field
             userAgent: 'abusefilter-analyzer (User:Msz2001)'
         });
